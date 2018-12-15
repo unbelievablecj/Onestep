@@ -13,9 +13,18 @@ public class Strategy implements Serializable {
     private String related_place;
     private List<DotStrategy> dotStrategy;
     private String title;
-    //jingdu
-    private double jing;
-    private double wei;
+
+    public Point getFeat_LatLng() {
+        return feat_LatLng;
+    }
+
+    public void setFeat_LatLng(Point feat_LatLng) {
+        this.feat_LatLng = feat_LatLng;
+    }
+
+    private Point feat_LatLng;
+
+
     public String getTitle() {
         return title;
     }
