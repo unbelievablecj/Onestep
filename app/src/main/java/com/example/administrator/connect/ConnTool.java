@@ -53,9 +53,9 @@ public class ConnTool {
         try {
             String json=g.toJson(user);
             RequestBody body = RequestBody.create(JSON, json);
-            Request request = new Request.Builder().url(Verified).post(body).build();
+            Request request = new Request.Builder().url(Login).post(body).build();
             Response response = client.newCall(request).execute();
-            Answer a= g.fromJson(response.body().toString(),Answer.class);
+            Answer a= g.fromJson(response.body().string(),Answer.class);
             if(a.getRes().equals("Yes"))return 1;
             else return 0;
         } catch (IOException e) {
