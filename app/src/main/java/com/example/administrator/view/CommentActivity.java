@@ -6,17 +6,22 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
+
+import org.w3c.dom.Comment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +32,7 @@ public class CommentActivity extends AppCompatActivity {
     public static final int TAKE_POTHO=1;
     private ImageView imageView;
     private Button button;
+    private TextView title;
     private Uri uri;
     private DotStrategy strategy;
 
@@ -37,17 +43,25 @@ public class CommentActivity extends AppCompatActivity {
 
         strategy = new DotStrategy();
 
+        final BottomSheetDialog dialog=new BottomSheetDialog(CommentActivity.this);
+        final View dialogView= LayoutInflater.from(CommentActivity.this)
+                .inflate(R.layout.choose_photo_pattern,null);
+
+        dialog.setContentView(dialogView);
+
+        TextView takePhoto= (TextView) dialogView.findViewById(R.id.take_photo);
+        TextView photoAlbum= (TextView) dialogView.findViewById(R.id.photo_album);
+        TextView cancel= (TextView) dialogView.findViewById(R.id.photo_cancel);//初始化底部弹出框按钮
+
 
         imageView=(ImageView)findViewById(R.id.pingluntupian);
-        button=(Button)findViewById(R.id.selectPhoto);
-        Button back = (Button)findViewById(R.id.writepinglunback);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        Button commit = (Button)findViewById(R.id.tijiaopinglun);
+        Button commit = (Button)findViewById(R.id.titleButton2);
+        title = (TextView)findViewById(R.id.title_name);
+        title.setText("写评论");
+
+        commit.setVisibility(View.VISIBLE);//显示隐藏控件
+        commit.setText("提交");
+
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,11 +78,28 @@ public class CommentActivity extends AppCompatActivity {
                 intent.putExtra("strategy_data", strategy);
                 setResult(RESULT_OK,intent);
                 finish();
+                }
+        });
 
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+        takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 File outImage=new File(getExternalCacheDir(),"output_image.jpg");

@@ -43,12 +43,15 @@
                 android:id="@+id/email_register"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/buttonshape1"
+                android:background="@color/textViewColor"
                 android:hint="@string/prompt_ID"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                tools:ignore="HardcodedText" />
+                android:layout_marginTop="15dp"
+                tools:ignore="HardcodedText"
+
+                />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -58,7 +61,7 @@
                 android:id="@+id/passwordR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/ivory"
+                android:background="@color/textViewColor"
                 android:hint="@string/prompt_password"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/action_sign_in_short"
@@ -66,13 +69,14 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:layout_marginTop="15dp"
                 tools:ignore="HardcodedText" />
 
             <EditText
                 android:id="@+id/confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/ivory"
+                android:background="@color/textViewColor"
                 android:hint="@string/confirm_pwd"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/acion_register"
@@ -80,21 +84,26 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:layout_marginTop="15dp"
                 tools:ignore="HardcodedText" />
 
             <EditText
                 android:id="@+id/register_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/buttonshape1"
-                android:hint="@string/register_name" />
+                android:background="@color/textViewColor"
+                android:hint="@string/register_name"
+                android:layout_marginTop="15dp"
+                />
 
             <LinearLayout
                 android:id="@+id/geticode_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                >
 
                 <EditText
                     android:id="@+id/identify_code"
@@ -121,7 +130,7 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/button_shape2"
                 android:text="@string/acion_register" />
 
