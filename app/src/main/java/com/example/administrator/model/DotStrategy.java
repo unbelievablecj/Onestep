@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class DotStrategy implements Serializable {
+    //地点名
     private String place_name;
+    //地点评论
     private String comment;
+    //地点图片
     private String picture;
+    //点赞数
     private int num_likes;
+    //发表时间
     private Date publish_time;
 
     public String getPlace_name() {

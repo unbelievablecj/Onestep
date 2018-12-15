@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +19,10 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -29,6 +32,11 @@ public class CommentActivity extends AppCompatActivity {
     private Button button;
     private Uri uri;
     private DotStrategy strategy;
+
+    /* 首先默认个文件保存路径 */
+    private static final String SAVE_PIC_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
+            Environment.getExternalStorageDirectory().getAbsolutePath() : "/mnt/sdcard";//保存到SD卡
+    private static final String SAVE_REAL_PATH = SAVE_PIC_PATH+ "/dotStrategy/savePic";//保存的确切位置
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,5 +131,23 @@ public class CommentActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+
+    public static void saveFile(Bitmap bm, String fileName, String path) throws IOException {
+        String subForder = SAVE_REAL_PATH + path;
+        File foder = new File(subForder);
+        if (!foder.exists()) {
+            foder.mkdirs();
+        }
+        File myCaptureFile = new File(subForder, fileName);
+        if (!myCaptureFile.exists()) {
+            myCaptureFile.createNewFile();
+        }
+
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        bos.flush();
+        bos.close();
     }
 }

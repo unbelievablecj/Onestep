@@ -11,8 +11,9 @@ import com.amap.api.maps.model.LatLng;
 
 public class Route implements Serializable {
 
-
+    //路线上的点集列表
     private List<Point> points;
+    //路线长度
     private Double total_distance;
 
     public List<Point> getPoints() {

@@ -5,13 +5,20 @@ import java.util.Date;
 import java.util.List;
 
 public class Strategy implements Serializable {
+
+    //路线类
     private Route route;
+    //总攻略的评论
     private String comment;
+    //总攻略的图片
     private String picture;
+    //总攻略的点赞数
     private int num_likes;
+    //总攻略的发表时间
     private Date publish_time;
-    private String related_place;
+    //地点攻略
     private List<DotStrategy> dotStrategy;
+    //攻略标题
     private String title;
 
     public Point getFeat_LatLng() {
@@ -94,13 +101,7 @@ public class Strategy implements Serializable {
         this.publish_time = publish_time;
     }
 
-    public String getRelated_place() {
-        return related_place;
-    }
 
-    public void setRelated_place(String related_place) {
-        this.related_place = related_place;
-    }
 
 
 
