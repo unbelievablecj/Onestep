@@ -767,7 +767,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         // 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
         mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Transport);
         //设置定位模式为AMapLocationMode.Hight_Accuracy，设备定位模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
         mLocationOption.setInterval(2000);
         //设置是否返回地址信息（默认返回地址信息）
