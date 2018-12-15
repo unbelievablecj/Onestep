@@ -33,7 +33,8 @@ public class ConnTool {
     /**
      * 建立Client
      */
-    public ConnTool(){
+    public ConnTool()
+    {
         client = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
@@ -69,7 +70,8 @@ public class ConnTool {
      * @param user
      * @return
      */
-    public int register(User user){
+    public int register(User user)
+    {
         return 0;
     }
 
@@ -78,17 +80,20 @@ public class ConnTool {
      * @param user 存邮箱
      * @return 1成功，0失败
      */
-    public int sendMail(User user){
+    public int sendMail(User user)
+    {
         try {
             String json=g.toJson(user);
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(Verified).post(body).build();
             Response response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            if(a.getRes().equals("success"))return 1;
+            else return 0;
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
         }
-        return 1;
     }
 
     /**
@@ -96,7 +101,8 @@ public class ConnTool {
      * @param user
      * @return
      */
-    public int changePwd(User user){
+    public int changePwd(User user)
+    {
         return 0;
     }
 
@@ -106,7 +112,8 @@ public class ConnTool {
      * @param user
      * @return
      */
-    public int uploadStrategy(Strategy strategy, User user){
+    public int uploadStrategy(Strategy strategy, User user)
+    {
         return 0;
     }
 
@@ -115,7 +122,8 @@ public class ConnTool {
      * @param fis
      * @return
      */
-    public String uploadImage(FileInputStream fis){
+    public String uploadImage(FileInputStream fis)
+    {
         return "";
     }
 
@@ -124,7 +132,8 @@ public class ConnTool {
      * @param filename
      * @return
      */
-    public FileOutputStream downloadImage(String filename) throws FileNotFoundException {
+    public FileOutputStream downloadImage(String filename) throws FileNotFoundException
+    {
         return new FileOutputStream(new File(""));
     }
 
@@ -137,7 +146,8 @@ public class ConnTool {
      * @param end
      * @return
      */
-    public List<Strategy> discover(double jing, double wei, int begin, int end){
+    public List<Strategy> discover(double jing, double wei, int begin, int end)
+    {
         List<Strategy> l=new ArrayList<Strategy>();
         return l;
     }
