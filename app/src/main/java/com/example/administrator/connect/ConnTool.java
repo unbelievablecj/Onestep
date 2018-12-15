@@ -45,11 +45,23 @@ public class ConnTool {
     /**
      *
      * @param user
-     * @return 0密码错误，1成功登陆，-1用户不存在
+     * @return 0密码错误，1成功登陆
      */
 
-    public int login(User user){
-        return 0;
+    public int login(User user)
+    {
+        try {
+            String json=g.toJson(user);
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url(Verified).post(body).build();
+            Response response = client.newCall(request).execute();
+            Answer a= g.fromJson(response.body().toString(),Answer.class);
+            if(a.getRes().equals("Yes"))return 1;
+            else return 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**
@@ -72,7 +84,6 @@ public class ConnTool {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(Verified).post(body).build();
             Response response = client.newCall(request).execute();
-            Log.i("SendVer","response:body"+response.body().string());
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
