@@ -13,7 +13,8 @@ public class Strategy implements Serializable {
     private String related_place;
     private List<DotStrategy> dotStrategy;
     private String title;
-
+    private double jing;
+    private double wei;
     public String getTitle() {
         return title;
     }
