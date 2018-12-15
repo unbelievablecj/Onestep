@@ -15,6 +15,7 @@ public class Strategy implements Serializable {
     private String title;
     //jingdu
     private double jing;
+    //weidu
     private double wei;
     public String getTitle() {
         return title;
