@@ -13,6 +13,10 @@ public class Strategy implements Serializable {
     private String related_place;
     private List<DotStrategy> dotStrategy;
     private String title;
+    //维度
+    private double Latitude;
+    //经度
+    private double Longitude;
 
     public String getTitle() {
         return title;
