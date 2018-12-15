@@ -10,12 +10,20 @@ import static org.junit.Assert.*;
  */
 public class ConnToolUnitTest {
     @Test
-    public void login() {
+    public void login1() {
         ConnTool ct=new ConnTool();
         User user=new User();
-        user.setUser_mail("96541249@qq.com");
+        user.setUser_mail("965412849@qq.com");
         user.setUser_pwd("123456");
         int res=ct.login(user);
         assertEquals(1, res);
+    }
+    @Test
+    public void sendmail(){
+        ConnTool ct=new ConnTool();
+        User user=new User();
+        user.setUser_mail("965412849@qq.com");
+        int res=ct.sendMail(user);
+        assertEquals(1,res);
     }
 }
