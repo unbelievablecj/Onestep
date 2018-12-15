@@ -26,4 +26,5 @@ public class ConnToolUnitTest {
         int res=ct.sendMail(user);
         assertEquals(1,res);
     }
+
 }
