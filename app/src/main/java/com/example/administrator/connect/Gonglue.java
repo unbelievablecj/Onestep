@@ -1,25 +1,135 @@
 package com.example.administrator.connect;
 
 import com.google.gson.annotations.SerializedName;
-//TODO 属性未完成
 /**
  * 用于与服务器传输总攻略类，需要映射到Strategy类
  */
 public class Gonglue {
+    /**
+     * 总攻略id
+     */
     @SerializedName("Gid")
     private int Gid;
+    /**
+     * 原定于表示点集，已废弃
+     */
     @SerializedName("Gpoint")
     private String Gpoint;
+    /**
+     * 用户id
+     */
     @SerializedName("Guser")
     private String Guser;
+    /**
+     * 经度，已废弃
+     */
     @SerializedName("Gjing")
     private double Gjing;
+    /**
+     * 维度，已废弃
+     */
     @SerializedName("Gwei")
     private double Gwei;
+    /**
+     * 评论
+     */
     @SerializedName("comment")
     private String comment;
+    /**
+     * 图片url集
+     */
     @SerializedName("picture")
     private String picture;
+    /**
+     * 路线点集
+     */
+    @SerializedName("route")
+    private String route;
+    /**
+     * 点赞数
+     */
+    @SerializedName("num_likes")
+    private String num_likes;
+    /**
+     * 发布时间
+     */
+    @SerializedName("publish_time")
+    private String publish_time;
+    /**
+     * 标题
+     */
+    @SerializedName("title")
+    private String title;
+    /**
+     * 经度
+     */
+    @SerializedName("Longitude")
+    private String  Longitude;
+    /**
+     * 维度
+     */
+    @SerializedName("Latitude")
+    private String  Latitude;
+
+    @SerializedName("dotStrategy")
+    private String dotStrategy;
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getNum_likes() {
+        return num_likes;
+    }
+
+    public void setNum_likes(String num_likes) {
+        this.num_likes = num_likes;
+    }
+
+    public String getPublish_time() {
+        return publish_time;
+    }
+
+    public void setPublish_time(String publish_time) {
+        this.publish_time = publish_time;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        Longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        Latitude = latitude;
+    }
+
+    public String getDotStrategy() {
+        return dotStrategy;
+    }
+
+    public void setDotStrategy(String dotStrategy) {
+        this.dotStrategy = dotStrategy;
+    }
+
     public String getPicture() {
         return picture;
     }
