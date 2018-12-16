@@ -23,10 +23,14 @@ import okhttp3.Response;
 
 public class ConnTool {
     private String url="http://115.159.198.216/YibuTest/";
-    private String Verified=url+"Verified";
-    private String Login=url+"Login";
-    private String Register=url+"Register";
-    private String ChangePwd = url+"changePwd";
+    private String verifiedUrl=url+"Verified";
+    private String loginUrl=url+"Login";
+    private String registerUrl=url+"Register";
+    private String changePwdUrl = url+"changePwd";
+    private String uploadImageUrl =url+"PicUpload";
+    private String downImageUrl=url+"PicDownload";
+    private String discoverUrl=url+"SearchNear";
+    private String uploadStrategy=url+"ShareUpdown";
     private Gson g;
     private MediaType JSON;
     private OkHttpClient client;
@@ -54,7 +58,7 @@ public class ConnTool {
         try {
             String json=g.toJson(user);
             RequestBody body = RequestBody.create(JSON, json);
-            Request request = new Request.Builder().url(Login).post(body).build();
+            Request request = new Request.Builder().url(loginUrl).post(body).build();
             Response response = client.newCall(request).execute();
             Answer a= g.fromJson(response.body().string(),Answer.class);
             if(a.getRes().equals("Yes"))return 1;
@@ -85,7 +89,7 @@ public class ConnTool {
         try {
             String json=g.toJson(user);
             RequestBody body = RequestBody.create(JSON, json);
-            Request request = new Request.Builder().url(Verified).post(body).build();
+            Request request = new Request.Builder().url(verifiedUrl).post(body).build();
             Response response = client.newCall(request).execute();
             Answer a=g.fromJson(response.body().string(),Answer.class);
             if(a.getRes().equals("success"))return 1;
