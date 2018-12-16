@@ -1,15 +1,24 @@
 package com.example.administrator.view;
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +31,7 @@ import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
 
 import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +40,7 @@ import java.util.Date;
 
 public class CommentActivity extends AppCompatActivity {
     public static final int TAKE_POTHO=1;
+    public static final int CHOOSE_PHOTO=2;
     private ImageView imageView;
     private Button button;
     private TextView title;
@@ -49,8 +60,8 @@ public class CommentActivity extends AppCompatActivity {
 
         dialog.setContentView(dialogView);
 
-        TextView takePhoto= (TextView) dialogView.findViewById(R.id.take_photo);
-        TextView photoAlbum= (TextView) dialogView.findViewById(R.id.photo_album);
+        TextView takePhoto= (TextView) dialogView.findViewById(R.id.take_photo);//拍照按钮
+        TextView photoAlbum= (TextView) dialogView.findViewById(R.id.photo_album);//打开相册按钮
         TextView cancel= (TextView) dialogView.findViewById(R.id.photo_cancel);//初始化底部弹出框按钮
 
 
@@ -102,10 +113,8 @@ public class CommentActivity extends AppCompatActivity {
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
                 File outImage=new File(getExternalCacheDir(),"output_image.jpg");
-
-
-
                 try{
                     if(outImage.exists())
                     {
@@ -128,12 +137,116 @@ public class CommentActivity extends AppCompatActivity {
                 Intent intent=new Intent("android.media.action.IMAGE_CAPTURE");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
                 startActivityForResult(intent,TAKE_POTHO);
+            }
+        });
 
-
-
+        photoAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                if(ContextCompat.checkSelfPermission(CommentActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(CommentActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                }
+                else{
+                    openAlbum();
+                }
             }
         });
     }
+
+
+    private void openAlbum()//打开相册
+    {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent,CHOOSE_PHOTO);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case 1:
+                if(grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    openAlbum();
+                else {
+                    Toast.makeText(this,"您拒绝了打开相册的权限哟",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
+
+    @TargetApi(19)
+    private void handleImageOnKitKat(Intent data)
+    {
+        String imagePath = null;
+        Uri uri =data.getData();
+        if(DocumentsContract.isDocumentUri(this,uri)){
+            //如果是document类型的uri，则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if("com.android.providers.media.documents".equals(uri.getAuthority())){
+                String id = docId.split(":")[1];//解析数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" +id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
+            }
+            else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagePath(contentUri,null);
+            }
+        }
+        else if ("content".equalsIgnoreCase(uri.getScheme())){
+            //如果是content类型的uri,则使用普通方式处理
+            imagePath = uri.getPath();
+        }
+        else if("file".equalsIgnoreCase(uri.getScheme())){
+            //如果是file类型的uri,直接获取图片路径即可
+            imagePath = uri.getPath();
+        }
+        displayImage(imagePath);//根据路径来显示图片
+    }
+
+    private void handleImageBeforeKitKat(Intent data){
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri,null);
+        displayImage(imagePath);
+    }
+
+    private String getImagePath(Uri uri,String selection)
+    {
+        String path = null;
+        //通过uri和selection来获取真实图片路径
+        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
+        if(cursor!=null)
+        {
+            if(cursor.moveToFirst()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+    public void displayImage(String imagePath){//把图片展示在对应区域
+        if(imagePath!=null){
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            imageView.setImageBitmap(bitmap);
+        }
+
+        else{
+            Toast.makeText(this,"获取图片失败了",Toast.LENGTH_SHORT).show();
+        }
+
+        Log.d("相册","可以读取");
+    }
+
+
+
+
+
+
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data)
     {
@@ -151,8 +264,25 @@ public class CommentActivity extends AppCompatActivity {
                     }
                 }
                 break;
+            case CHOOSE_PHOTO:
+                if(requestCode == 2)
+                {
+                    //判断手机系统版本号
+                    if(Build.VERSION.SDK_INT>=19){
+                        //4.4以上系统使用这个方法处理图片
+                        handleImageOnKitKat(data);
+                    }
+                    else
+                    {
+                        //4.4以下系统使用这个方法处理图片
+                        handleImageBeforeKitKat(data);
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
+
+
 }
