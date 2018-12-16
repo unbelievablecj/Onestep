@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
+import com.example.administrator.util.FilenameUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -122,8 +123,11 @@ public class CommentActivity extends AppCompatActivity {
                     try{
                         Bitmap bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
                         imageView.setImageBitmap(bitmap);
+                        saveFile(bitmap,"/camera");
                     }catch (FileNotFoundException e)
                     {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -134,13 +138,13 @@ public class CommentActivity extends AppCompatActivity {
     }
 
 
-    public static void saveFile(Bitmap bm, String fileName, String path) throws IOException {
+    public static void saveFile(Bitmap bm, String path) throws IOException {
         String subForder = SAVE_REAL_PATH + path;
         File foder = new File(subForder);
         if (!foder.exists()) {
             foder.mkdirs();
         }
-        File myCaptureFile = new File(subForder, fileName);
+        File myCaptureFile = new File(subForder, FilenameUtil.createFileName(foder));
         if (!myCaptureFile.exists()) {
             myCaptureFile.createNewFile();
         }
