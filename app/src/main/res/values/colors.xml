@@ -18,13 +18,13 @@
     <color name="mediumblue">#0000cd</color><!--中兰色 -->
     <color name="beige">#f5f5dc</color><!--米色 -->
     <color name="buttonshape1">#e0ffff</color>
-
+    <color name="textViewColor">#CED6D7</color>
 
     <color name="white">#FFFFFF</color>
 
     <drawable name="transparent">#00000000</drawable>
-    <color name="transparent">#00000000</color>
 
+    <color name="transparent">#0000</color><!-- 透明 -->
     <color name="dark_gray">#888888</color>
     <color name="header_toast_bg">#ccebfc</color>
     <color name="header_toast">#024ca1</color>

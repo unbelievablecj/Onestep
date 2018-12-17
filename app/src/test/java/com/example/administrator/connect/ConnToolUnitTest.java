@@ -13,8 +13,8 @@ public class ConnToolUnitTest {
     public void login1() {
         ConnTool ct=new ConnTool();
         User user=new User();
-        user.setUser_mail("965412849@qq.com");
-        user.setUser_pwd("123456");
+        user.setUser_mail("test");
+        user.setUser_pwd("test");
         int res=ct.login(user);
         assertEquals(1, res);
     }
