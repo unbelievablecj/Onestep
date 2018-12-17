@@ -143,12 +143,24 @@ public class ConnTool {
 
     /**
      * 返回图片下载流
-     * @param filename，不带ip
-     * @return 图片的输出流
+     * @param imageUrl，不带ip
+     * @return 图片的输出流,错误的话返回null
      */
-    public FileOutputStream downloadImage(String filename) throws FileNotFoundException
+    public byte[] downloadImage(String imageUrl) throws FileNotFoundException
     {
-        return new FileOutputStream(new File(""));
+        Request request = new Request.Builder()
+                .url(url+imageUrl)
+                .build();
+        byte[] bytes;
+        try {
+            Response response = client.newCall(request).execute();
+            bytes = response.body().bytes();
+            return bytes;
+        } catch (IOException e) {
+            Log.i("downloadImage","ioException");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
