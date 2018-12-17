@@ -1,5 +1,8 @@
 package com.example.administrator.connect;
 import android.util.Log;
+
+import com.example.administrator.model.DotStrategy;
+import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
 import com.google.gson.Gson;
@@ -17,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import java.text.SimpleDateFormat;
 
 public class ConnTool {
     private String url="http://115.159.198.216/YibuTest/";
@@ -52,6 +56,7 @@ public class ConnTool {
 
     public int login(User user)
     {
+
         try {
             String json=g.toJson(user);
             RequestBody body = RequestBody.create(JSON, json);
@@ -117,7 +122,8 @@ public class ConnTool {
      */
     public int changePwd(User user)
     {
-        return 0;
+
+          return 0;
     }
 
     /**
@@ -129,7 +135,43 @@ public class ConnTool {
     public int uploadStrategy(Strategy strategy, User user)
     {
 
-        return 1;
+       Gonglue gl=new Gonglue();
+       gl.setGuser(user.getUser_name());
+       gl.setComment(strategy.getComment());
+        List<DotStrategy> ds=strategy.getDotStrategy();
+        String temp="";
+        temp=ds.toString();
+       gl.setDotStrategy(temp);
+       Route rt=strategy.getRoute();
+       String temp2="";
+       temp2=rt.toString();
+       gl.setRoute(temp2);
+       gl.setComment(strategy.getComment());
+       gl.setNum_likes(String.valueOf(strategy.getNum_likes()));
+       gl.setPicture();
+       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       gl.setPublish_time(sdf.format(strategy.getPublish_time()));
+       gl.setLatitude("");
+       gl.setLongitude("");
+       gl.setTitle(strategy.getTitle());
+        try{
+           String json=g.toJson(gl);
+           RequestBody body=RequestBody.create(JSON, json);
+           Request request = new Request.Builder().url(uploadStrategy).post(body).build();
+           Response response = client.newCall(request).execute();
+           Answer a= g.fromJson(response.body().string(),Answer.class);
+           if(a.getRes().equals("Success"))
+               return 1;
+           else
+               return -1;
+           }
+           catch (IOException e)
+           {
+               e.printStackTrace();
+               return 0;
+           }
+
+
     }
 
     /**
