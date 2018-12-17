@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -133,12 +134,31 @@ public class ConnTool {
 
     /**
      *
-     * @param fis 要传输的图片输入流
+     * @param file 要传输的图片文件
      * @return 图片路径，不带ip
      */
-    public String uploadImage(FileInputStream fis)
+    public String uploadImage(File file)
     {
-        return "";
+        RequestBody image = RequestBody.create(MediaType.parse("image/png"), file);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", "", image)
+                .build();
+        Request request = new Request.Builder()
+                .url(uploadImageUrl)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = null;
+            response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            return a.getRes();
+        } catch (IOException e) {
+            Log.i("uploadImage","uploadException");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
