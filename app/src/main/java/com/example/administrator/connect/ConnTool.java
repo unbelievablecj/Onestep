@@ -148,7 +148,7 @@ public class ConnTool {
        gl.setRoute(temp2);
        gl.setComment(strategy.getComment());
        gl.setNum_likes(String.valueOf(strategy.getNum_likes()));
-       gl.setPicture();
+       gl.setPicture("");
        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
        gl.setPublish_time(sdf.format(strategy.getPublish_time()));
        gl.setLatitude("");
