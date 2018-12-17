@@ -1,5 +1,7 @@
 package com.example.administrator.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,8 +10,8 @@ public class DotStrategy implements Serializable {
     private String place_name;
     //地点评论
     private String comment;
-    //地点图片
-    private String picture;
+    //地点图片(只能放入一张)
+    private Picture picture;
     //点赞数
     private int num_likes;
     //发表时间
@@ -31,11 +33,12 @@ public class DotStrategy implements Serializable {
         this.comment = comment;
     }
 
-    public String getPicture() {
+
+    public Picture getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(Picture picture) {
         this.picture = picture;
     }
 

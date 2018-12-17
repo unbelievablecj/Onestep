@@ -32,7 +32,9 @@ import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
+import com.example.administrator.model.Picture;
 import com.example.administrator.util.FilenameUtil;
+import com.example.administrator.util.PictureUtil;
 
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -52,11 +54,14 @@ public class CommentActivity extends AppCompatActivity {
     private TextView title;
     private Uri uri;
     private DotStrategy strategy;
+    private Bitmap bitmap = null;
+    private Picture picture;
+
 
     /* 首先默认个文件保存路径 */
     private static final String SAVE_PIC_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
             Environment.getExternalStorageDirectory().getAbsolutePath() : "/mnt/sdcard";//保存到SD卡
-    private static final String SAVE_REAL_PATH = SAVE_PIC_PATH+ "/dotStrategy/savePic";//保存的确切位置
+    private static final String SAVE_REAL_PATH = SAVE_PIC_PATH+ "/onestep/dotStrategy/savePic";//保存的确切位置
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,14 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                if(bitmap!=null){
+                    try {
+                        picture = saveFile(bitmap,"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 Date date = new Date();
 
                 EditText related_place = findViewById(R.id.relationPlace);
@@ -95,6 +108,7 @@ public class CommentActivity extends AppCompatActivity {
                 strategy.setComment(comment.getText().toString());
                 strategy.setPlace_name(related_place.getText().toString());
                 strategy.setPublish_time(date);
+                strategy.setPicture(picture);
 
                 Intent intent = new Intent(CommentActivity.this,FragmentItemSetsActivity.class);
                 intent.putExtra("strategy_data", strategy);
@@ -245,7 +259,7 @@ public class CommentActivity extends AppCompatActivity {
 
     public void displayImage(String imagePath){//把图片展示在对应区域
         if(imagePath!=null){
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            bitmap = BitmapFactory.decodeFile(imagePath);
             imageView.setImageBitmap(bitmap);
         }
 
@@ -270,13 +284,10 @@ public class CommentActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK)
                 {
                     try{
-                        Bitmap bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                        bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
                         imageView.setImageBitmap(bitmap);
-                        saveFile(bitmap,"/camera");
                     }catch (FileNotFoundException e)
                     {
-                        e.printStackTrace();
-                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -302,13 +313,20 @@ public class CommentActivity extends AppCompatActivity {
     }
 
 
-    public static void saveFile(Bitmap bm, String path) throws IOException {
+    public static Picture saveFile(Bitmap bm, String path) throws IOException {
         String subForder = SAVE_REAL_PATH + path;
         File foder = new File(subForder);
+        String fileName = "";
         if (!foder.exists()) {
             foder.mkdirs();
         }
-        File myCaptureFile = new File(subForder, FilenameUtil.createFileName(foder));
+
+        fileName = FilenameUtil.createFileName(foder)+".JPEG";
+
+        File myCaptureFile = new File(subForder, FilenameUtil.createFileName(foder)+".JPEG");
+        Picture picture = new Picture(PictureUtil.getBytes(bm),fileName);
+
+
         if (!myCaptureFile.exists()) {
             myCaptureFile.createNewFile();
         }
@@ -317,5 +335,8 @@ public class CommentActivity extends AppCompatActivity {
         bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         bos.flush();
         bos.close();
+
+        return picture;
+
     }
 }

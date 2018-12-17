@@ -10,8 +10,9 @@ public class Strategy implements Serializable {
     private Route route;
     //总攻略的评论
     private String comment;
-    //总攻略的图片
-    private String picture;
+
+    //总攻略的图片(只有一张)
+    private Picture picture;
     //总攻略的点赞数
     private int num_likes;
     //总攻略的发表时间
@@ -77,14 +78,6 @@ public class Strategy implements Serializable {
         this.comment = comment;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
     public int getNum_likes() {
         return num_likes;
     }
@@ -101,7 +94,13 @@ public class Strategy implements Serializable {
         this.publish_time = publish_time;
     }
 
+    public Picture getPicture() {
+        return picture;
+    }
 
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
 
 
 

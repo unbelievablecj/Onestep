@@ -135,7 +135,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 if(resultCode == RESULT_OK){
                     DotStrategy dotStrategy = (DotStrategy)data.getSerializableExtra("strategy_data");
                     dotStrategies.add(dotStrategy);
-//                    Log.e(TAG,"信息："+dotStrategy.getComment());
+                    Log.e(TAG,"信息："+dotStrategy.getPicture().getName());
 
 
                     //按回退按钮
