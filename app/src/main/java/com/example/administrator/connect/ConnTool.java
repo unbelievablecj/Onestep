@@ -134,7 +134,7 @@ public class ConnTool {
      */
     public int uploadStrategy(Strategy strategy, User user)
     {
-        try{
+
        Gonglue gl=new Gonglue();
        gl.setGuser(user.getUser_name());
        gl.setComment(strategy.getComment());
@@ -148,16 +148,13 @@ public class ConnTool {
        gl.setRoute(temp2);
        gl.setComment(strategy.getComment());
        gl.setNum_likes(String.valueOf(strategy.getNum_likes()));
-        Request request1 = new Request.Builder().url(downImageUrl).build();
-        Response response1 =client.newCall(request1).execute();
-        String responseData=response1.body().string();
-       gl.setPicture(responseData);
+       gl.setPicture("");
        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
        gl.setPublish_time(sdf.format(strategy.getPublish_time()));
        gl.setLatitude("");
        gl.setLongitude("");
        gl.setTitle(strategy.getTitle());
-
+        try{
            String json=g.toJson(gl);
            RequestBody body=RequestBody.create(JSON, json);
            Request request = new Request.Builder().url(uploadStrategy).post(body).build();
