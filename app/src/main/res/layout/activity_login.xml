@@ -40,10 +40,11 @@
                 android:layout_height="wrap_content" />
 
             <AutoCompleteTextView
+                android:layout_marginTop="15dp"
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/aliceblue"
+                android:background="@color/textViewColor"
                 android:hint="@string/prompt_ID"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -55,10 +56,11 @@
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:layout_marginTop="20dp"
                 android:id="@+id/passwordL"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/ivory"
+                android:background="@color/textViewColor"
                 android:hint="@string/prompt_password"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/action_sign_in_short"

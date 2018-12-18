@@ -1,14 +1,15 @@
 package com.example.administrator.view;
 
 import android.Manifest;
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.util.Log;
-import android.widget.Toast;
-
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -34,6 +32,7 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CircleOptions;
@@ -42,8 +41,6 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.Poi;
 import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
@@ -53,14 +50,12 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
-
-
 import com.example.administrator.R;
+import com.example.administrator.model.DotStrategy;
+import com.example.administrator.model.Point;
+import com.example.administrator.model.Route;
+import com.example.administrator.model.Strategy;
 import com.example.administrator.util.ToastUtil;
-import com.example.administrator.util.Constants;
-
-import com.example.administrator.model.*;
-
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -140,7 +135,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 if(resultCode == RESULT_OK){
                     DotStrategy dotStrategy = (DotStrategy)data.getSerializableExtra("strategy_data");
                     dotStrategies.add(dotStrategy);
-//                    Log.e(TAG,"信息："+dotStrategy.getComment());
+                    Log.e(TAG,"信息："+dotStrategy.getPicture().getName());
 
 
                     //按回退按钮
@@ -376,7 +371,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 route = new Route();
                 route.setPoints(points);
                 route.setTotal_distance(distance);
-                route.setFeat_LatLng(new Point(total_Latitude/count,total_Longitude/count));
+                strategy.setFeat_LatLng(new Point(total_Latitude/count,total_Longitude/count));
                 strategy.setRoute(route);
                 strategy.setPublish_time(date);
                 strategy.setDotStrategy(dotStrategies);
@@ -392,6 +387,13 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
             @Override
             //点击写评论按钮
             public void onClick(View v) {
+
+                aMap.addMarker(new MarkerOptions()
+                        .anchor(0.5f, 0.5f)
+                        .icon(BitmapDescriptorFactory
+                                .fromBitmap(BitmapFactory.decodeResource(
+                                        getResources(), R.mipmap.review_marker)))
+                        .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
 
                 Intent intent = new Intent(getActivity(),CommentActivity.class);
                 startActivityForResult(intent,1);
@@ -844,7 +846,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         private AMap mamap;
         private List<PoiItem> mPois;
         private ArrayList<Marker> mPoiMarks = new ArrayList<Marker>();
-        public myPoiOverlay(AMap amap ,List<PoiItem> pois) {
+        public myPoiOverlay(AMap amap , List<PoiItem> pois) {
             mamap = amap;
             mPois = pois;
         }
