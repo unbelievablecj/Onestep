@@ -1,6 +1,7 @@
 package com.example.administrator.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,12 +38,28 @@ public class PersonalityFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_personality,container,false);
         initpersonality();
-        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.personalitylist);
+        final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.personalitylist);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        PersonalityMainAdapter adapter=new PersonalityMainAdapter(personalityList);
-//        adapter.setOnItemClickListener();
+        final PersonalityMainAdapter adapter=new PersonalityMainAdapter(personalityList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new PersonalityMainAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                position=recyclerView.getChildAdapterPosition(view);
+                switch (position){
+                    case 0:
+                        startActivity(new Intent(getContext(),MyWishListActivity.class));
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        startActivity(new Intent(getContext(),SettingsActivity.class));
+                }
+            }
+        });
         return view;
     }
     private void initpersonality(){
