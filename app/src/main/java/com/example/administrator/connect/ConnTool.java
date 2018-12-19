@@ -6,11 +6,15 @@ import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +50,7 @@ public class ConnTool {
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .build();
-        g=new Gson();
+        g=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         JSON=MediaType.parse("application/json; charset=utf-8");
     }
     /**
@@ -155,10 +159,10 @@ public class ConnTool {
            Request request = new Request.Builder().url(uploadStrategy).post(body).build();
            Response response = client.newCall(request).execute();
            Answer a= g.fromJson(response.body().string(),Answer.class);
-           if(a.getRes().equals("Success"))
+           if(a.getRes().equals("success"))
                return 1;
            else
-               return -1;
+               return 0;
            }
            catch (IOException e)
            {
@@ -199,9 +203,9 @@ public class ConnTool {
     }
 
     /**
-     * 返回图片下载流
+     *
      * @param imageUrl，不带ip
-     * @return 图片的输出流,错误的话返回null
+     * @return 图片的byte数组,错误的话返回null
      */
     public byte[] downloadImage(String imageUrl) throws FileNotFoundException
     {
@@ -226,35 +230,54 @@ public class ConnTool {
      * @param wei 维度
      * @param begin begin从1开始
      * @param end 结束位置
-     * @return 返回从begin开始到end结束的总攻略类，数量不足返回剩余全部，begin越界放回空串
+     * @return 返回从begin开始到end结束的总攻略类，数量不足返回剩余全部，begin越界放回空串,出现错误返回null
      */
     public List<Strategy> discover(double jing, double wei, int begin, int end)
     {
-        List<Strategy> l=new ArrayList<Strategy>();
-        return l;
+        Ask ask=new Ask();
+        ask.setBegin(begin);
+        ask.setEnd(end);
+        ask.setJing(jing);
+        ask.setWei(wei);
+        List<Gonglue> l;
+        List<Strategy> res=new ArrayList<Strategy>();
+        try {
+            String json=g.toJson(ask);
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url(discoverUrl).post(body).build();
+            Response response = client.newCall(request).execute();
+            Type type = new TypeToken<List<Gonglue>>() {
+            }.getType();
+            l=g.fromJson(response.body().string(),type);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        for(int i=0;i<l.size();i++){
+            res.add(Convert.GonglueToStrategy(l.get(i)));
+        }
+        return res;
     }
 
     /**
      *
      * @param s
      * @param user
-     * @return
+     * @return 1成功，0失败
      */
     public int changeStrategy(Strategy s,User user){
-        Gonglue gong=new Gonglue();
-        gong.setComment(s.getComment());
-
+        Gonglue gl=Convert.StrategyToGonglue(s,user);
         try {
-            String json=g.toJson(user);
+            String json=g.toJson(gl);
             RequestBody body = RequestBody.create(JSON, json);
-            Request request = new Request.Builder().url(verifiedUrl).post(body).build();
+            Request request = new Request.Builder().url(changeStrategyUrl).post(body).build();
             Response response = client.newCall(request).execute();
             Answer a=g.fromJson(response.body().string(),Answer.class);
             if(a.getRes().equals("success"))return 1;
             else return 0;
         } catch (IOException e) {
             e.printStackTrace();
-            return -1;
+            return 0;
         }
     }
 
