@@ -67,8 +67,10 @@ public class ConnTool {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(loginUrl).post(body).build();
             Response response = client.newCall(request).execute();
-            User u= g.fromJson(response.body().string(),User.class);
-            if(u.getUser_mail().equals(""))return null;
+            String temp=response.body().string();
+            User u= g.fromJson(temp,User.class);
+            if(u==null)return null;
+            if(u.getUser_mail()==null||u.getUser_mail().equals(""))return null;
             return u;
         } catch (IOException e) {
             e.printStackTrace();

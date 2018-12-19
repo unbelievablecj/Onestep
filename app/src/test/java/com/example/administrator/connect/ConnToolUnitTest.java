@@ -22,7 +22,17 @@ public class ConnToolUnitTest {
         user.setUser_mail("test");
         user.setUser_pwd("test");
         User user1=ct.login(user);
-        System.out.print(user1.getUser_pwd());
+        if(user1.getUser_mail()!=null)
+            assertEquals("test",user1.getUser_mail());
+    }
+    @Test
+    public void login2(){
+        ConnTool ct=new ConnTool();
+        User user=new User();
+        user.setUser_mail("test");
+        user.setUser_pwd("wrong");
+        User user1=ct.login(user);
+        assertEquals(null,user1);
     }
     @Test
     public void sendmail(){
