@@ -54,7 +54,7 @@ public class ConnTool {
      * @return 0密码错误，1成功登陆，-1未知错误
      */
 
-    public int login(User user)
+    public User login(User user)
     {
 
         try {
@@ -63,11 +63,11 @@ public class ConnTool {
             Request request = new Request.Builder().url(loginUrl).post(body).build();
             Response response = client.newCall(request).execute();
             Answer a= g.fromJson(response.body().string(),Answer.class);
-            if(a.getRes().equals("Yes"))return 1;
-            else return 0;
+            if(a.getRes().equals("Yes"))return new User();
+            else return new User();
         } catch (IOException e) {
             e.printStackTrace();
-            return -1;
+            return new User();
         }
     }
 
@@ -242,6 +242,15 @@ public class ConnTool {
         return l;
     }
 
+    /**
+     * 
+     * @param s
+     * @param user
+     * @return
+     */
+    public int changeStrategy(Strategy s,User user){
+        return 0;
+    }
 
 
 }
