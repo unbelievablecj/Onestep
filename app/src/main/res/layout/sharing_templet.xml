@@ -5,7 +5,7 @@
     <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="#1234"
+        android:background="@drawable/sharing_templet_shape"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="50dp">

@@ -20,18 +20,14 @@
             tools:layout_editor_absoluteY="0dp"
             tools:ignore="MissingConstraints"
             android:background="@drawable/personbackground"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            tools:ignore="MissingConstraints">
 
-            <ListView
-                android:id="@+id/list_view"
+
+        <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
-            </ListView>
-        </LinearLayout>
+                android:id="@+id/personalitylist">
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
