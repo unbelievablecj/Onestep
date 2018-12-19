@@ -5,7 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Strategy implements Serializable {
-
+    //总攻略id
+    private int id;
     //路线类
     private Route route;
     //总攻略的评论

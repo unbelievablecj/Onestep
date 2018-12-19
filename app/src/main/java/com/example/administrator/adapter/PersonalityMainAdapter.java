@@ -17,6 +17,8 @@ import java.util.List;
 
 public class PersonalityMainAdapter extends RecyclerView.Adapter<PersonalityMainAdapter.ViewHolder> {
     private List<Personality>mPersonalitylist;
+
+
     static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView personalityview;
         TextView personalitytext;

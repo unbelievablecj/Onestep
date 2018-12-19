@@ -32,6 +32,7 @@ public class ConnTool {
     private String downImageUrl=url+"PicDownload";
     private String discoverUrl=url+"SearchNear";
     private String uploadStrategy=url+"ShareUpdown";
+    private String changeStrategyUrl=url+"ChangeShare";
     private Gson g;
     private MediaType JSON;
     private OkHttpClient client;
