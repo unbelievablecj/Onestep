@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.util.Date;
 
 public class CommentActivity extends AppCompatActivity {
+    private static final String TAG = "CommentActivity";
     public static final int TAKE_POTHO=1;
     public static final int CHOOSE_PHOTO=2;
     private ImageView imageView;
@@ -92,13 +93,25 @@ public class CommentActivity extends AppCompatActivity {
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String fileName="";
+
                 Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
                 if(bitmap!=null){
                     try {
-                        picture = saveFile(bitmap,"");
+                        fileName = saveFile(bitmap,"");
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    Bitmap b = PictureUtil.compressSampling(fileName);
+
+                    Picture picture = new Picture(PictureUtil.getBytes(b),fileName);
+
+                    strategy.setPicture(picture);
+
+
                 }
 
                 Date date = new Date();
@@ -108,10 +121,14 @@ public class CommentActivity extends AppCompatActivity {
                 strategy.setComment(comment.getText().toString());
                 strategy.setPlace_name(related_place.getText().toString());
                 strategy.setPublish_time(date);
-                strategy.setPicture(picture);
+
+
 
                 Intent intent = new Intent(CommentActivity.this,FragmentItemSetsActivity.class);
+
                 intent.putExtra("strategy_data", strategy);
+//                Log.i(TAG, "运行到了这里 ");
+
                 setResult(RESULT_OK,intent);
                 finish();
                 }
@@ -313,7 +330,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
 
-    public static Picture saveFile(Bitmap bm, String path) throws IOException {
+    public static String saveFile(Bitmap bm, String path) throws IOException {
         String subForder = SAVE_REAL_PATH + path;
         File foder = new File(subForder);
         String fileName = "";
@@ -323,20 +340,19 @@ public class CommentActivity extends AppCompatActivity {
 
         fileName = FilenameUtil.createFileName(foder)+".JPEG";
 
-        File myCaptureFile = new File(subForder, FilenameUtil.createFileName(foder)+".JPEG");
-        Picture picture = new Picture(PictureUtil.getBytes(bm),fileName);
+        File myCaptureFile = new File(subForder, fileName);
 
 
         if (!myCaptureFile.exists()) {
             myCaptureFile.createNewFile();
         }
 
+
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
         bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         bos.flush();
         bos.close();
 
-        return picture;
-
+        return fileName;
     }
 }
