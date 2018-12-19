@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity{
                     case 0 :{
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
                         startActivity(intent);
+                        finish();
                         break;
                     }
                     case 1: {

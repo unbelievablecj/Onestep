@@ -51,10 +51,10 @@ public class ConnTool {
     /**
      *
      * @param user 传输用户的邮箱和密码
-     * @return 0密码错误，1成功登陆，-1未知错误
+     * @return 完整的user，null表示登陆失败
      */
 
-    public int login(User user)
+    public User login(User user)
     {
 
         try {
@@ -62,12 +62,12 @@ public class ConnTool {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(loginUrl).post(body).build();
             Response response = client.newCall(request).execute();
-            Answer a= g.fromJson(response.body().string(),Answer.class);
-            if(a.getRes().equals("Yes"))return 1;
-            else return 0;
+            User u= g.fromJson(response.body().string(),User.class);
+            if(u.getUser_mail().equals(""))return null;
+            return u;
         } catch (IOException e) {
             e.printStackTrace();
-            return -1;
+            return null;
         }
     }
 
@@ -118,12 +118,24 @@ public class ConnTool {
     /**
      *
      * @param user 存放验证码，用户邮箱和想要修改的密码
-     * @return 1成功，0验证码错误，-1未知错误
+     * @return 1成功，0验证码错误，-1未知错误,-2用户不存在
      */
     public int changePwd(User user)
     {
-
-          return 0;
+        try {
+            String json=g.toJson(user);
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url(changePwdUrl).post(body).build();
+            Response response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            if(a.getRes().equals("Ver_Wrong"))return 0;
+            else if(a.getRes().equals("User_Not_Exist"))return -2;
+            else if(a.getRes().equals("success"))return 1;
+            else return -1;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     /**
@@ -242,6 +254,15 @@ public class ConnTool {
         return l;
     }
 
+    /**
+     *
+     * @param s
+     * @param user
+     * @return
+     */
+    public int changeStrategy(Strategy s,User user){
+        return 0;
+    }
 
 
 }

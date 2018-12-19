@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:text="1"
+        android:id="@+id/wish_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="22dp"
+        />
+    <TextView
+        android:id="@+id/wish_place"
+        android:text="福州大学"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:textSize="22dp"
+        android:layout_weight="1"
+        />
+    <ImageView
+        android:id="@+id/location_icon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:background="@drawable/locationicon"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        />
+        <!--android:background="@drawable/locationicon"-->
+
+    <ImageView
+        android:id="@+id/delete_wish_icon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/deleteicon" />
+        <!--android:background="@drawable/deleteicon"-->
+
+
+</LinearLayout>
