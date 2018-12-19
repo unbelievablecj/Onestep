@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity{
                 state = 0;
                 switch (state){
                     case 0 :{
-                        Intent intent = new Intent(LoginActivity.this,MyWishListActivity.class);
+                        Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
                         startActivity(intent);
                         finish();
                         break;

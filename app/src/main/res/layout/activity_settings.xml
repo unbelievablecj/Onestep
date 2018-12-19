@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SettingsActivity">
+    tools:context=".view.SettingsActivity"
+    android:layout_marginTop="25dp"
+    >
     <com.example.administrator.util.TitleLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.example.administrator.util.TitleLayout>
@@ -31,7 +33,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:background="@drawable/bg_border"
-           android:text="     关于一步"
+           android:text="    关于一步"
            android:textSize="18dp"
            android:gravity="center_vertical"
 
