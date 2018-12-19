@@ -138,14 +138,17 @@ public class ConnTool {
        Gonglue gl=new Gonglue();
        gl.setGuser(user.getUser_name());
        gl.setComment(strategy.getComment());
+        Gson gson1 = new Gson();
+
         List<DotStrategy> ds=strategy.getDotStrategy();
-        String temp="";
-        temp=ds.toString();
-       gl.setDotStrategy(temp);
+        String toString1 = gson1.toJson(ds);
+
+
+       gl.setDotStrategy(toString1);
+        Gson gson2 = new Gson();
        Route rt=strategy.getRoute();
-       String temp2="";
-       temp2=rt.toString();
-       gl.setRoute(temp2);
+       String toString2=gson2.toJson(rt);
+       gl.setRoute(toString2);
        gl.setComment(strategy.getComment());
        gl.setNum_likes(String.valueOf(strategy.getNum_likes()));
        gl.setPicture("");
