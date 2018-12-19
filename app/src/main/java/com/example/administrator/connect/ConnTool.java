@@ -1,5 +1,8 @@
 package com.example.administrator.connect;
 import android.util.Log;
+
+import com.example.administrator.model.DotStrategy;
+import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
 import com.google.gson.Gson;
@@ -12,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import java.text.SimpleDateFormat;
 
 public class ConnTool {
     private String url="http://115.159.198.216/YibuTest/";
@@ -51,6 +56,7 @@ public class ConnTool {
 
     public int login(User user)
     {
+
         try {
             String json=g.toJson(user);
             RequestBody body = RequestBody.create(JSON, json);
@@ -116,7 +122,8 @@ public class ConnTool {
      */
     public int changePwd(User user)
     {
-        return 0;
+
+          return 0;
     }
 
     /**
@@ -128,27 +135,97 @@ public class ConnTool {
     public int uploadStrategy(Strategy strategy, User user)
     {
 
-        return 1;
+       Gonglue gl=new Gonglue();
+       gl.setGuser(user.getUser_name());
+       gl.setComment(strategy.getComment());
+        Gson gson1 = new Gson();
+
+        List<DotStrategy> ds=strategy.getDotStrategy();
+        String toString1 = gson1.toJson(ds);
+
+
+       gl.setDotStrategy(toString1);
+        Gson gson2 = new Gson();
+       Route rt=strategy.getRoute();
+       String toString2=gson2.toJson(rt);
+       gl.setRoute(toString2);
+       gl.setComment(strategy.getComment());
+       gl.setNum_likes(String.valueOf(strategy.getNum_likes()));
+       gl.setPicture("");
+       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       gl.setPublish_time(sdf.format(strategy.getPublish_time()));
+       gl.setLatitude("");
+       gl.setLongitude("");
+       gl.setTitle(strategy.getTitle());
+        try{
+           String json=g.toJson(gl);
+           RequestBody body=RequestBody.create(JSON, json);
+           Request request = new Request.Builder().url(uploadStrategy).post(body).build();
+           Response response = client.newCall(request).execute();
+           Answer a= g.fromJson(response.body().string(),Answer.class);
+           if(a.getRes().equals("Success"))
+               return 1;
+           else
+               return -1;
+           }
+           catch (IOException e)
+           {
+               e.printStackTrace();
+               return 0;
+           }
+
+
     }
 
     /**
      *
-     * @param fis 要传输的图片输入流
+     * @param file 要传输的图片文件
      * @return 图片路径，不带ip
      */
-    public String uploadImage(FileInputStream fis)
+    public String uploadImage(File file)
     {
-        return "";
+        RequestBody image = RequestBody.create(MediaType.parse("image/png"), file);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", "", image)
+                .build();
+        Request request = new Request.Builder()
+                .url(uploadImageUrl)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = null;
+            response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            return a.getRes();
+        } catch (IOException e) {
+            Log.i("uploadImage","uploadException");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * 返回图片下载流
-     * @param filename，不带ip
-     * @return 图片的输出流
+     * @param imageUrl，不带ip
+     * @return 图片的输出流,错误的话返回null
      */
-    public FileOutputStream downloadImage(String filename) throws FileNotFoundException
+    public byte[] downloadImage(String imageUrl) throws FileNotFoundException
     {
-        return new FileOutputStream(new File(""));
+        Request request = new Request.Builder()
+                .url(url+imageUrl)
+                .build();
+        byte[] bytes;
+        try {
+            Response response = client.newCall(request).execute();
+            bytes = response.body().bytes();
+            return bytes;
+        } catch (IOException e) {
+            Log.i("downloadImage","ioException");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
