@@ -139,7 +139,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
 
     private Gson gson = new Gson();
-    private String data;
+    private String strategyData;
 
 
     //从写评论界面返回信息
@@ -150,11 +150,12 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 if(resultCode == RESULT_OK){
                     DotStrategy dotStrategy = (DotStrategy)data.getSerializableExtra("strategy_data");
                     dotStrategies.add(dotStrategy);
+                    strategyData = gson.toJson(dotStrategy);
 
-//                    data = gson.toJson(dotStrategy);
+
 //
 //
-//                    FileCacheUtil.setCache();
+//                    FileCacheUtil.setCache(strategyData,getContext(),"docs_cache.txt",MODE_APPEND);
 
 
                     if(dotStrategy.getPicture()==null){
