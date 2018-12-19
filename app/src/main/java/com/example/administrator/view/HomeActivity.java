@@ -2,6 +2,7 @@ package com.example.administrator.view;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,16 +53,21 @@ import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
+import com.example.administrator.model.Picture;
 import com.example.administrator.model.Point;
 import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
+import com.example.administrator.util.FileCacheUtil;
+import com.example.administrator.util.PictureUtil;
 import com.example.administrator.util.ToastUtil;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
@@ -127,6 +133,15 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     private static int count = 0;
 
 
+    //带有攻略图片的图标
+    private View markerView;
+    private CircleImageView icon;
+
+
+    private Gson gson = new Gson();
+    private String strategyData;
+
+
     //从写评论界面返回信息
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -135,7 +150,40 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 if(resultCode == RESULT_OK){
                     DotStrategy dotStrategy = (DotStrategy)data.getSerializableExtra("strategy_data");
                     dotStrategies.add(dotStrategy);
-                    Log.e(TAG,"信息："+dotStrategy.getPicture().getName());
+                    strategyData = gson.toJson(dotStrategy);
+
+
+//
+//
+//                    FileCacheUtil.setCache(strategyData,getContext(),"docs_cache.txt",MODE_APPEND);
+
+
+                    if(dotStrategy.getPicture()==null){
+                        aMap.addMarker(new MarkerOptions()
+                                .anchor(0.5f, 0.5f)
+                                .icon(BitmapDescriptorFactory
+                                        .fromBitmap(BitmapFactory.decodeResource(
+                                                getResources(), R.mipmap.review_marker)))
+                                .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
+                    }else{
+                        markerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_strategy,null);
+                        icon = (CircleImageView) markerView.findViewById(R.id.marker_item_icon);
+                        Bitmap bitmap = PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes());
+//                        PictureUtil.compressSampling(dotStrategy.getPicture().getName())
+                        icon.setImageBitmap(bitmap);
+                        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
+                                .fromBitmap(PictureUtil.convertViewToBitmap(markerView));
+
+                        aMap.addMarker(new MarkerOptions()
+                                .anchor(0.5f, 0.5f)
+                                .icon(bitmapDescriptor)
+                                .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
+
+                    }
+
+
+
+//                    Log.e(TAG,"信息："+dotStrategy.getPicture().getName());
 
 
                     //按回退按钮
@@ -388,12 +436,12 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
             //点击写评论按钮
             public void onClick(View v) {
 
-                aMap.addMarker(new MarkerOptions()
-                        .anchor(0.5f, 0.5f)
-                        .icon(BitmapDescriptorFactory
-                                .fromBitmap(BitmapFactory.decodeResource(
-                                        getResources(), R.mipmap.review_marker)))
-                        .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
+//                aMap.addMarker(new MarkerOptions()
+//                        .anchor(0.5f, 0.5f)
+//                        .icon(BitmapDescriptorFactory
+//                                .fromBitmap(BitmapFactory.decodeResource(
+//                                        getResources(), R.mipmap.review_marker)))
+//                        .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
 
                 Intent intent = new Intent(getActivity(),CommentActivity.class);
                 startActivityForResult(intent,1);
@@ -425,7 +473,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         aMap.setOnInfoWindowClickListener(this);
         aMap.setInfoWindowAdapter(this);
         aMap.getUiSettings().setZoomControlsEnabled(false);
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(20));
         aMap.setMapTextZIndex(2);
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
