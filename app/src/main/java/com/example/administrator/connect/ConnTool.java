@@ -118,12 +118,24 @@ public class ConnTool {
     /**
      *
      * @param user 存放验证码，用户邮箱和想要修改的密码
-     * @return 1成功，0验证码错误，-1未知错误
+     * @return 1成功，0验证码错误，-1未知错误,-2用户不存在
      */
     public int changePwd(User user)
     {
-
-          return 0;
+        try {
+            String json=g.toJson(user);
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url(changePwdUrl).post(body).build();
+            Response response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            if(a.getRes().equals("Ver_Wrong"))return 0;
+            else if(a.getRes().equals("User_Not_Exist"))return -2;
+            else if(a.getRes().equals("success"))return 1;
+            else return -1;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     /**
