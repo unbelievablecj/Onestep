@@ -51,7 +51,7 @@ public class ConnTool {
     /**
      *
      * @param user 传输用户的邮箱和密码
-     * @return 0密码错误，1成功登陆，-1未知错误
+     * @return 完整的user，null表示登陆失败
      */
 
     public User login(User user)
@@ -62,12 +62,12 @@ public class ConnTool {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(loginUrl).post(body).build();
             Response response = client.newCall(request).execute();
-            Answer a= g.fromJson(response.body().string(),Answer.class);
-            if(a.getRes().equals("Yes"))return new User();
-            else return new User();
+            User u= g.fromJson(response.body().string(),User.class);
+            if(u.getUser_mail().equals(""))return null;
+            return u;
         } catch (IOException e) {
             e.printStackTrace();
-            return new User();
+            return null;
         }
     }
 
@@ -243,7 +243,7 @@ public class ConnTool {
     }
 
     /**
-     * 
+     *
      * @param s
      * @param user
      * @return
