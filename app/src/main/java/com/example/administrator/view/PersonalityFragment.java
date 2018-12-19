@@ -41,6 +41,7 @@ public class PersonalityFragment extends Fragment {
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         PersonalityMainAdapter adapter=new PersonalityMainAdapter(personalityList);
+        adapter.setOnItemClickListener();
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -53,5 +54,6 @@ public class PersonalityFragment extends Fragment {
         personalityList.add(three);
         Personality four=new Personality("设置",R.drawable.shezhi);
         personalityList.add(four);
+
     }
 }
