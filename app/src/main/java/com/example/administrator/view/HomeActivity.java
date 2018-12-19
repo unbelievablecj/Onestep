@@ -58,10 +58,13 @@ import com.example.administrator.model.Point;
 import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.util.FileCacheUtil;
+import com.example.administrator.util.FilenameUtil;
 import com.example.administrator.util.PictureUtil;
 import com.example.administrator.util.ToastUtil;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -152,10 +155,8 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     dotStrategies.add(dotStrategy);
                     strategyData = gson.toJson(dotStrategy);
 
-
-//
-//
-//                    FileCacheUtil.setCache(strategyData,getContext(),"docs_cache.txt",MODE_APPEND);
+                    Double feature = curLocation.getLatitude()+curLocation.getLongitude();
+                    String fileName = FilenameUtil.getDotStrategyName(feature);
 
 
                     if(dotStrategy.getPicture()==null){

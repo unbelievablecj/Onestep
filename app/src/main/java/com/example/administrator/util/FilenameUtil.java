@@ -2,6 +2,8 @@ package com.example.administrator.util;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -43,5 +45,12 @@ public class FilenameUtil {
             toSuffix = fileName.substring(index, fileName.length());
         }
         return new String[]{toPrefix, toSuffix};
+    }
+
+    public static String getDotStrategyName(Double d){
+        DecimalFormat df=(DecimalFormat)NumberFormat.getInstance();
+        df.setMaximumFractionDigits(0);
+
+        return df.format(d);
     }
 }

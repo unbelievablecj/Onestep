@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.R;
+import com.example.administrator.connect.ConnTool;
+import com.example.administrator.model.User;
 import com.example.administrator.util.JsonAnalyze;
 
 import org.json.JSONObject;
@@ -85,7 +87,6 @@ public class LoginActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
-
                 state = 0;
                 switch (state){
                     case 0 :{
@@ -119,38 +120,37 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void run() {
                 try {
-                    OkHttpClient client = new OkHttpClient.Builder()
-                            .connectTimeout(10, TimeUnit.SECONDS)
-                            .writeTimeout(10, TimeUnit.SECONDS)
-                            .readTimeout(20, TimeUnit.SECONDS)
-                            .build();
+//                    OkHttpClient client = new OkHttpClient.Builder()
+//                            .connectTimeout(10, TimeUnit.SECONDS)
+//                            .writeTimeout(10, TimeUnit.SECONDS)
+//                            .readTimeout(20, TimeUnit.SECONDS)
+//                            .build();
 
                     JSONObject emailAndPwd = new JSONObject();
-                    emailAndPwd.put("e-mail", email);
-                    emailAndPwd.put("userPwd", password);
+                    User user = new User();
+                    user.setUser_mail(email);
+                    user.setUser_pwd(password);
+                    ConnTool connTool = new ConnTool();
+                    user=connTool.login(user);
+//                    emailAndPwd.put("e-mail", email);
+//                    emailAndPwd.put("userPwd", password);
 
-                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//
+//                    RequestBody body = RequestBody.create(JSON, emailAndPwd.toString());
+//
+//                    Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Login").post(body).build();
+//                    Response response = client.newCall(request).execute();
 
-                    RequestBody body = RequestBody.create(JSON, emailAndPwd.toString());
-
-                    Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Login").post(body).build();
-                    Response response = client.newCall(request).execute();
-
-                    String responseData = new String("");
-                    if (response.isSuccessful()) {
-                        responseData = response.body().string();
-
-                        String answer=JsonAnalyze.getJsonString(responseData);
-                        Log.d("Login",answer);
-                        if(answer.equals("Yes"))
+//                    String responseData = new String("");
+                    if (user!=null) {
+//                        responseData = response.body().string();
+//
+//                        String answer=JsonAnalyze.getJsonString(responseData);
                             state = 0;
-                        else
-                            state = 1;
-                    } else {
-                        state =2 ;
-                        throw new IOException("无法连接到服务器，请检查网络连接");
                     }
-
+                    else
+                            state = 1;
                     //parseJSONWithJSONObject(responseData);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -18,10 +18,19 @@ public class SettingsActivity extends AppCompatActivity {
         TextView textView = (TextView)findViewById(R.id.title_name);
         textView.setText("设置");
         Button outLogin = (Button)findViewById(R.id.outLogin);
+        Button changePwd = (Button)findViewById(R.id.changePwd);
         outLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        changePwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this,ChangePwdActivity.class);
                 startActivity(intent);
             }
         });
