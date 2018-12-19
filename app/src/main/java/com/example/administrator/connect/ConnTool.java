@@ -148,28 +148,7 @@ public class ConnTool {
     public int uploadStrategy(Strategy strategy, User user)
     {
 
-       Gonglue gl=new Gonglue();
-       gl.setGuser(user.getUser_name());
-       gl.setComment(strategy.getComment());
-        Gson gson1 = new Gson();
-
-        List<DotStrategy> ds=strategy.getDotStrategy();
-        String toString1 = gson1.toJson(ds);
-
-
-       gl.setDotStrategy(toString1);
-        Gson gson2 = new Gson();
-       Route rt=strategy.getRoute();
-       String toString2=gson2.toJson(rt);
-       gl.setRoute(toString2);
-       gl.setComment(strategy.getComment());
-       gl.setNum_likes(String.valueOf(strategy.getNum_likes()));
-       gl.setPicture("");
-       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-       gl.setPublish_time(sdf.format(strategy.getPublish_time()));
-       gl.setLatitude("");
-       gl.setLongitude("");
-       gl.setTitle(strategy.getTitle());
+        Gonglue gl= Convert.StrategyToGonglue(strategy,user);
         try{
            String json=g.toJson(gl);
            RequestBody body=RequestBody.create(JSON, json);
@@ -262,7 +241,21 @@ public class ConnTool {
      * @return
      */
     public int changeStrategy(Strategy s,User user){
-        return 0;
+        Gonglue gong=new Gonglue();
+        gong.setComment(s.getComment());
+
+        try {
+            String json=g.toJson(user);
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url(verifiedUrl).post(body).build();
+            Response response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            if(a.getRes().equals("success"))return 1;
+            else return 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
 
