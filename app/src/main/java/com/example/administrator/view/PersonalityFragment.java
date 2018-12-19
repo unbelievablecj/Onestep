@@ -41,7 +41,7 @@ public class PersonalityFragment extends Fragment {
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         PersonalityMainAdapter adapter=new PersonalityMainAdapter(personalityList);
-        adapter.setOnItemClickListener();
+//        adapter.setOnItemClickListener();
         recyclerView.setAdapter(adapter);
         return view;
     }

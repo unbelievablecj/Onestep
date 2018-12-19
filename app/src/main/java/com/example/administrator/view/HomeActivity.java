@@ -57,8 +57,10 @@ import com.example.administrator.model.Picture;
 import com.example.administrator.model.Point;
 import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
+import com.example.administrator.util.FileCacheUtil;
 import com.example.administrator.util.PictureUtil;
 import com.example.administrator.util.ToastUtil;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,6 +138,10 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     private CircleImageView icon;
 
 
+    private Gson gson = new Gson();
+    private String data;
+
+
     //从写评论界面返回信息
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -144,6 +150,12 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 if(resultCode == RESULT_OK){
                     DotStrategy dotStrategy = (DotStrategy)data.getSerializableExtra("strategy_data");
                     dotStrategies.add(dotStrategy);
+
+//                    data = gson.toJson(dotStrategy);
+//
+//
+//                    FileCacheUtil.setCache();
+
 
                     if(dotStrategy.getPicture()==null){
                         aMap.addMarker(new MarkerOptions()
