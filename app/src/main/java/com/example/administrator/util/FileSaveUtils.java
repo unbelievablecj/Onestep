@@ -7,18 +7,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class SaveUserConfig {
+public class FileSaveUtils{
 
-    public static void saveFile(String text, String path) throws IOException {
+    private static final String SAVE_USER_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
+            Environment.getExternalStorageDirectory().getAbsolutePath() : "/mnt/sdcard";//保存到SD卡
+    private static final String SAVE_REAL_PATH = SAVE_USER_PATH+ "/onestep/";//保存的确切位置
+
+    public static void saveFile(String text, String path, String fileName) throws IOException {
 
         String subForder = SAVE_REAL_PATH + path;
         File foder = new File(subForder);
-        String fileName = "";
         if (!foder.exists()) {
             foder.mkdirs();
         }
 
-        fileName = "UerConfig" + ".txt";
 
         File myCaptureFile = new File(subForder, fileName);
 
@@ -33,9 +35,7 @@ public class SaveUserConfig {
 
     }
 
-    private static final String SAVE_USER_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
-            Environment.getExternalStorageDirectory().getAbsolutePath() : "/mnt/sdcard";//保存到SD卡
-    private static final String SAVE_REAL_PATH = SAVE_USER_PATH+ "/onestep/dotStrategy/saveUser";//保存的确切位置
+
 
     public static String getRealPath()
     {
