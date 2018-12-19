@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="25dp"
+    tools:context=".view.ChangePwdActivity"
+    android:orientation="vertical"
+    >
+    <com.example.administrator.util.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        ></com.example.administrator.util.TitleLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            android:id="@+id/changePwd_mail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_border"
+            android:hint="邮箱号"
+            />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:orientation="horizontal"
+          android:layout_marginTop="20dp"
+          >
+
+          <EditText
+              android:id="@+id/changePwd_ver"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="2"
+              android:hint="验证码"
+              android:background="@drawable/bg_border"
+
+              />
+          <Button
+              android:id="@+id/changePwd_get_ver"
+              android:text="获取验证码"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:background="@drawable/sendicode"
+              />
+
+
+      </LinearLayout>
+
+        <EditText
+            android:id="@+id/changePwd_newPwd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:hint="输入新的密码（最少6位）"
+            android:background="@drawable/bg_border"
+
+            />
+
+        <Button
+            android:id="@+id/changePwd_finish"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_shape"
+            android:text="完成"
+            />
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
