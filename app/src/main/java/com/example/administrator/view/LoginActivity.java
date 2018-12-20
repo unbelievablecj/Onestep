@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity{
     private  TextView t2;
     private CheckBox ck;
     private ProgressBar progressBar;
-
+    private User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity{
                  {
                      t2.setText(password);
                  }
-                if(progressBar.getVisibility()==View.GONE)
+                if(progressBar.getVisibility()==View.INVISIBLE)
                     progressBar.setVisibility(View.VISIBLE);//显示进度条
 
                  WorkThread sendMessage = new WorkThread();
@@ -101,26 +101,27 @@ public class LoginActivity extends AppCompatActivity{
                 state = 0;
                 switch (state){
                     case 0 :{
+
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
                         startActivity(intent);
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     }
                     case 1: {
                         Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         break;
                     }
                     case 2: {
                         Toast.makeText(LoginActivity.this, "服务器连接失败", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         break;
                     }
                     default:{
                         Toast.makeText(LoginActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         break;
                     }
                 }
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity{
 //                            .build();
 
                     JSONObject emailAndPwd = new JSONObject();
-                    User user = new User();
+                    user = new User();
                     user.setUser_mail(email);
                     user.setUser_pwd(password);
                     ConnTool connTool = new ConnTool();
@@ -170,11 +171,15 @@ public class LoginActivity extends AppCompatActivity{
 //
 //                        String answer=JsonAnalyze.getJsonString(responseData);
                             state = 0;
-
                         Gson gson = new Gson();
                         String temp = gson.toJson(user);
+                        Log.d("登录状态",temp);
+                        try {
+                            FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                        FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");
                     }
                     else
                             state = 1;
