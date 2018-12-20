@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.User;
+import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.JsonAnalyze;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -96,7 +98,7 @@ public class LoginActivity extends AppCompatActivity{
                 }
                 sendMessage.interrupt();
 
-//                state = 0;
+                state = 0;
                 switch (state){
                     case 0 :{
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
@@ -159,12 +161,20 @@ public class LoginActivity extends AppCompatActivity{
 //                    Response response = client.newCall(request).execute();
 
 //                    String responseData = new String("");
-                    Log.d("登录",user.getUser_name());
+
+
+//
+//                    Log.d("登录",temp);
                     if (user!=null) {
 //                        responseData = response.body().string();
 //
 //                        String answer=JsonAnalyze.getJsonString(responseData);
                             state = 0;
+
+                        Gson gson = new Gson();
+                        String temp = gson.toJson(user);
+
+                        FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");
                     }
                     else
                             state = 1;
