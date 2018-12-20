@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Strategy;
+import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.PictureUtil;
 import com.google.gson.Gson;
 
@@ -23,10 +24,13 @@ public class DotStrategyActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Gson gson = new Gson();
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dot_strategy);
         String string =(String)getIntent().getSerializableExtra("dotStrategyDetail");
-        DotStrategy dotStrategy = gson.fromJson(string,DotStrategy.class);
+        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+string+".txt");
+
+        DotStrategy dotStrategy = gson.fromJson(s,DotStrategy.class);
 
         TextView time = findViewById(R.id.doStrategy_time);
         DateFormat format = new SimpleDateFormat("yyyy MM-dd HH:mm:ss");

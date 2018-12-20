@@ -7,13 +7,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.User;
+import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.JsonAnalyze;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -35,7 +38,8 @@ public class LoginActivity extends AppCompatActivity{
     private  TextView t1;
     private  TextView t2;
     private CheckBox ck;
-
+    private ProgressBar progressBar;
+    private User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -59,10 +63,14 @@ public class LoginActivity extends AppCompatActivity{
         t1 = (TextView) findViewById(R.id.email);
         t2 =(TextView) findViewById(R.id.passwordL);
         ck = (CheckBox) findViewById(R.id.rememberPwd);
+        progressBar = (ProgressBar)findViewById(R.id.login_progress);
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)
             {
+
+
 
                 email = t1.getText().toString();
                 password = t2.getText().toString();
@@ -78,6 +86,8 @@ public class LoginActivity extends AppCompatActivity{
                  {
                      t2.setText(password);
                  }
+                if(progressBar.getVisibility()==View.INVISIBLE)
+                    progressBar.setVisibility(View.VISIBLE);//显示进度条
 
                  WorkThread sendMessage = new WorkThread();
                 sendMessage.start();
@@ -87,24 +97,31 @@ public class LoginActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
+
                 state = 0;
                 switch (state){
                     case 0 :{
+
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
                         startActivity(intent);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     }
                     case 1: {
                         Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                         break;
                     }
                     case 2: {
                         Toast.makeText(LoginActivity.this, "服务器连接失败", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                         break;
                     }
                     default:{
                         Toast.makeText(LoginActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                         break;
                     }
                 }
@@ -127,11 +144,13 @@ public class LoginActivity extends AppCompatActivity{
 //                            .build();
 
                     JSONObject emailAndPwd = new JSONObject();
-                    User user = new User();
+                    user = new User();
                     user.setUser_mail(email);
                     user.setUser_pwd(password);
                     ConnTool connTool = new ConnTool();
                     user=connTool.login(user);
+
+
 //                    emailAndPwd.put("e-mail", email);
 //                    emailAndPwd.put("userPwd", password);
 
@@ -143,11 +162,24 @@ public class LoginActivity extends AppCompatActivity{
 //                    Response response = client.newCall(request).execute();
 
 //                    String responseData = new String("");
+
+
+//
+//                    Log.d("登录",temp);
                     if (user!=null) {
 //                        responseData = response.body().string();
 //
 //                        String answer=JsonAnalyze.getJsonString(responseData);
                             state = 0;
+                        Gson gson = new Gson();
+                        String temp = gson.toJson(user);
+                        Log.d("登录状态",temp);
+                        try {
+                            FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                     else
                             state = 1;

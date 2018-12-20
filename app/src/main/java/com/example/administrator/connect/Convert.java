@@ -25,7 +25,10 @@ public class Convert {
         gl.setGid(strategy.getId());
         gl.setGuser(user.getUser_mail());
         gl.setComment(strategy.getComment());
-        gl.setPicture(g.toJson(strategy.getPicture()));
+        PicJson pj=new PicJson();
+        pj.setName(strategy.getPicture().getName());
+        pj.setUrl(strategy.getPicture().getUrl());
+        gl.setPicture(g.toJson(pj));
         gl.setRoute(g.toJson(strategy.getRoute()));
         gl.setNum_likes(Integer.toString(strategy.getNum_likes()));
         gl.setPublish_time(g.toJson(strategy.getPublish_time()));
@@ -46,7 +49,11 @@ public class Convert {
         st.setTitle(gl.getTitle());
         st.setFeat_LatLng(new Point(gl.getLatitude(),gl.getLongitude()));
         st.setRoute(g.fromJson(gl.getRoute(),Route.class));
-        st.setPicture(g.fromJson(gl.getPicture(),Picture.class));
+        PicJson pj=new PicJson();
+        pj=g.fromJson(gl.getPicture(),PicJson.class);
+        st.setPicture(new Picture());
+        st.getPicture().setUrl(pj.getUrl());
+        st.getPicture().setName(pj.getName());
         st.setPublish_time(g.fromJson(gl.getPublish_time(),Date.class));
         Type type = new TypeToken<List<DotStrategy>>() {
         }.getType();

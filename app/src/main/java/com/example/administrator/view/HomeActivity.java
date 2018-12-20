@@ -433,6 +433,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 route = new Route();
                 route.setPoints(points);
                 route.setTotal_distance(distance);
+                Log.i(TAG, "经度"+total_Latitude/count);
                 strategy.setFeat_LatLng(new Point(total_Latitude/count,total_Longitude/count));
                 strategy.setRoute(route);
                 strategy.setPublish_time(date);
@@ -735,13 +736,8 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
 //        Log.i(TAG, "文件找到");
 
-        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+marker.getId()+".txt");
+        String s = marker.getId();
         if(s!=null){
-
-                Log.i(TAG, "文件找到");
-
-
-
             Intent intent = new Intent(getActivity(),DotStrategyActivity.class);
             intent.putExtra("dotStrategyDetail",s);
             startActivityForResult(intent,2);
@@ -891,6 +887,9 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                         points.add(new Point(amapLocation.getLatitude(),amapLocation.getLongitude()));
                         total_Latitude+= amapLocation.getLatitude();
                         total_Longitude+= amapLocation.getLongitude();
+
+                        Log.i(TAG, "原来的 "+total_Latitude);
+
                         count++;
                         distance += distance;
 //                        Toast.makeText(getActivity(), "经纬度"+distance+"KM",Toast.LENGTH_SHORT).show();

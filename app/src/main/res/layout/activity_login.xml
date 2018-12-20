@@ -12,17 +12,13 @@
     tools:context=".view.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
 
     <com.example.administrator.util.TitleLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.example.administrator.util.TitleLayout>
+
+
+
 
     <ScrollView
         android:id="@+id/login_form"
@@ -106,7 +102,18 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/button_shape"
             android:text="@string/action_sign_in_short" />
+            <ProgressBar
+                android:id="@+id/login_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:visibility="invisible" />
+
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
