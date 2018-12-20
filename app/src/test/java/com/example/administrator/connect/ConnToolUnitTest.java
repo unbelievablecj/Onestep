@@ -35,6 +35,17 @@ public class ConnToolUnitTest {
         assertEquals(null,user1);
     }
     @Test
+    public void register(){
+        ConnTool ct=new ConnTool();
+        User user=new User();
+        user.setUser_mail("965412849@qq.com");
+        user.setUser_pwd("123456");
+        //验证码根据后台更改
+        user.setUser_ver("713594");
+        int res=ct.register(user);
+        assertEquals(-1,res);
+    }
+    @Test
     public void sendmail(){
         ConnTool ct=new ConnTool();
         User user=new User();
