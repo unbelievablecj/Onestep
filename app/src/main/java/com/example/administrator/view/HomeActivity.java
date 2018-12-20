@@ -880,7 +880,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     amapLocation.getSpeed();//获取速度信息  单位：米/秒
                     amapLocation.getLocationType();//查看是什么类型的点
                     Log.e(TAG, "获取点的类型" + amapLocation.getLocationType());
-                    if (amapLocation.getLocationType() == 1&&start_draw) {
+                    if (start_draw) {
 
 
                         drawLines(amapLocation);//一边定位一边连线
