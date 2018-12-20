@@ -58,11 +58,13 @@ import com.example.administrator.model.Point;
 import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.util.FileCacheUtil;
+import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.FilenameUtil;
 import com.example.administrator.util.PictureUtil;
 import com.example.administrator.util.ToastUtil;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -155,8 +157,9 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     dotStrategies.add(dotStrategy);
                     strategyData = gson.toJson(dotStrategy);
 
-                    Double feature = curLocation.getLatitude()+curLocation.getLongitude();
-                    String fileName = FilenameUtil.getDotStrategyName(feature);
+//                    Double feature = curLocation.getLatitude()+curLocation.getLongitude();
+//                    String fileName = FilenameUtil.getDotStrategyName(feature);
+
 
 
                     if(dotStrategy.getPicture()==null){
@@ -175,10 +178,20 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
                                 .fromBitmap(PictureUtil.convertViewToBitmap(markerView));
 
-                        aMap.addMarker(new MarkerOptions()
+
+
+
+                        Marker marker = aMap.addMarker(new MarkerOptions()
                                 .anchor(0.5f, 0.5f)
                                 .icon(bitmapDescriptor)
                                 .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
+
+                        try {
+                            FileSaveUtils.saveFile(strategyData,"dotStrategy",marker.getId()+".txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
 
@@ -720,7 +733,24 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     @Override
     public boolean onMarkerClick(Marker marker) {
 
+//        Log.i(TAG, "文件找到");
+
+        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+marker.getId()+".txt");
+        if(s!=null){
+
+                Log.i(TAG, "文件找到");
+
+
+
+            Intent intent = new Intent(getActivity(),DotStrategyActivity.class);
+            intent.putExtra("dotStrategyDetail",s);
+            startActivityForResult(intent,2);
+
+        }
+
         if (marker.getObject() != null) {
+
+
             whetherToShowDetailInfo(true);
             try {
                 PoiItem mCurrentPoi = (PoiItem) marker.getObject();

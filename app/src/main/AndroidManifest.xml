@@ -79,7 +79,9 @@
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.ShareSubmitActivity" />
         <activity android:name=".view.CommentActivity" />
-        <activity android:name=".view.StrategyActivity"></activity>
+        <activity android:name=".view.StrategyActivity"/>
+        <activity android:name=".view.DotStrategyActivity"/>
+
     </application>
 
 </manifest>
