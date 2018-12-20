@@ -1,11 +1,24 @@
 package com.example.administrator.connect;
+import android.util.Log;
+
+import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static org.junit.Assert.*;
 
@@ -90,5 +103,34 @@ public class ConnToolUnitTest {
         else{
             System.out.println("fail");
         }
+    }
+    @Test
+    public void uploadStrategy(){
+        OkHttpClient client;
+        MediaType JSON;
+        client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
+        JSON=MediaType.parse("application/json; charset=utf-8");
+        Gonglue gl= new Gonglue();
+        gl.setTitle("t");
+        try{
+            Gson g=new Gson();
+            String json=g.toJson(gl);
+            RequestBody body=RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/ShareUpdown").post(body).build();
+            Response response = client.newCall(request).execute();
+            Answer a= g.fromJson(response.body().string(),Answer.class);
+            assertEquals("success",a.getRes());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+
+        }
+
     }
 }
