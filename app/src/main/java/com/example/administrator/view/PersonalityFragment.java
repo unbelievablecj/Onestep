@@ -8,16 +8,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.PersonalityMainAdapter;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
 import com.example.administrator.model.Personality;
+import com.example.administrator.model.User;
+import com.example.administrator.util.FileSaveUtils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ import java.util.List;
 public class PersonalityFragment extends Fragment {
 
     private List<Personality>personalityList=new ArrayList<>();
+    private TextView userName;
     public PersonalityFragment() {
         // Required empty public constructor
     }
@@ -62,6 +68,14 @@ public class PersonalityFragment extends Fragment {
                 }
             }
         });
+
+        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+        Gson gson = new Gson();
+        User user = gson.fromJson(userResult,User.class);
+
+        userName = (TextView)view.findViewById(R.id.textView6);
+        userName.setText(user.getUser_name());
+
         return view;
     }
     private void initpersonality(){

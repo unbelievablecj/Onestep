@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class FileSaveUtils{
@@ -51,7 +52,7 @@ public class FileSaveUtils{
         //如果path是传递过来的参数，可以做一个非目录的判断
         if (file.isDirectory())
         {
-            Log.d("TestFile", "The File doesn't not exist.");
+            Log.d("TestFile", "The File doesn't exist.");
         }
         else
         {
@@ -80,6 +81,30 @@ public class FileSaveUtils{
         }
         return result;
 
+    }
+
+    public static void saveFileAdd(String content,String path,String fileName) {
+        fileName =  SAVE_REAL_PATH + path+fileName;
+        RandomAccessFile randomFile = null;
+        try {
+            // 打开一个随机访问文件流，按读写方式
+            randomFile = new RandomAccessFile(fileName, "rw");
+            // 文件长度，字节数
+            long fileLength = randomFile.length();
+            // 将写文件指针移到文件尾。
+            randomFile.seek(fileLength);
+            randomFile.writeBytes(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally{
+            if(randomFile != null){
+                try {
+                    randomFile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 

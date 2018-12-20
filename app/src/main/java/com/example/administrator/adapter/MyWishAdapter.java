@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.model.MyWish;
@@ -17,6 +18,7 @@ public class MyWishAdapter extends RecyclerView.Adapter<MyWishAdapter.ViewHolder
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        View myWishView;
         TextView seriaNumber;
         TextView place;
         ImageView locationIcon;
@@ -24,6 +26,7 @@ public class MyWishAdapter extends RecyclerView.Adapter<MyWishAdapter.ViewHolder
 
         public ViewHolder(View view) {
             super(view);
+            myWishView = view;
             seriaNumber = (TextView) view.findViewById(R.id.wish_num);
             place = (TextView)view.findViewById(R.id.wish_place);
             locationIcon = (ImageView)view.findViewById(R.id.location_icon);
@@ -38,7 +41,33 @@ public class MyWishAdapter extends RecyclerView.Adapter<MyWishAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.wish_list_item,parent,false);
-        ViewHolder holder=new ViewHolder(view);
+        final ViewHolder holder=new ViewHolder(view);
+        holder.myWishView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                MyWish myWish = myWishList.get(position);
+
+            }
+        });
+        holder.locationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                MyWish myWish = myWishList.get(position);
+
+            }
+        });
+        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                MyWish myWish = myWishList.get(position);
+                myWishList.remove(position);
+                notifyItemRemoved(position);//刷新被删除的地方
+                notifyItemRangeChanged(position, getItemCount()); //刷新被删除数据，以及其后面的数据
+            }
+        });
         return holder;
     }
     @Override
