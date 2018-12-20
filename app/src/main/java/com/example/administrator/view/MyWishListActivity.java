@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.MyWishAdapter;
@@ -22,10 +23,12 @@ public class MyWishListActivity extends AppCompatActivity {
 
         initMyWish();
         RecyclerView recyclerView =(RecyclerView)findViewById(R.id.my_wish_list);
+        TextView textView = (TextView )findViewById(R.id.title_name);
+        textView.setText("我的心愿单");
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         MyWishAdapter adapter = new MyWishAdapter(myWishList);
-       recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
 

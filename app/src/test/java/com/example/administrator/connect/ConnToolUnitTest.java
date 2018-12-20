@@ -21,8 +21,18 @@ public class ConnToolUnitTest {
         User user=new User();
         user.setUser_mail("test");
         user.setUser_pwd("test");
-        int res=ct.login(user);
-        assertEquals(1, res);
+        User user1=ct.login(user);
+        if(user1.getUser_mail()!=null)
+            assertEquals("test",user1.getUser_mail());
+    }
+    @Test
+    public void login2(){
+        ConnTool ct=new ConnTool();
+        User user=new User();
+        user.setUser_mail("test");
+        user.setUser_pwd("wrong");
+        User user1=ct.login(user);
+        assertEquals(null,user1);
     }
     @Test
     public void sendmail(){

@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Picture;
+import com.example.administrator.util.ActivityManagerApplication;
 import com.example.administrator.util.FilenameUtil;
 import com.example.administrator.util.PictureUtil;
 
@@ -217,7 +218,7 @@ public class CommentActivity extends AppCompatActivity {
                 if(grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     openAlbum();
                 else {
-                    Toast.makeText(this,"您拒绝了打开相册的权限哟",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"您拒绝了打开相册的权限",Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -227,6 +228,8 @@ public class CommentActivity extends AppCompatActivity {
     @TargetApi(19)
     private void handleImageOnKitKat(Intent data)
     {
+        if(data==null)
+            return;
         String imagePath = null;
         Uri uri =data.getData();
         if(DocumentsContract.isDocumentUri(this,uri)){
@@ -254,9 +257,13 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void handleImageBeforeKitKat(Intent data){
-        Uri uri = data.getData();
-        String imagePath = getImagePath(uri,null);
-        displayImage(imagePath);
+        if(data==null)
+            return;
+        else {
+            Uri uri = data.getData();
+            String imagePath = getImagePath(uri, null);
+            displayImage(imagePath);
+        }
     }
 
     private String getImagePath(Uri uri,String selection)
@@ -281,7 +288,7 @@ public class CommentActivity extends AppCompatActivity {
         }
 
         else{
-            Toast.makeText(this,"获取图片失败了",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"获取图片失败",Toast.LENGTH_SHORT).show();
         }
 
         Log.d("相册","可以读取");

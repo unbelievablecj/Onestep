@@ -32,7 +32,7 @@ public class GonglueToStrategyUtil {
 
             Gson gson1 = new Gson();
         List<DotStrategy> temp = gson1.fromJson(gl.getDotStrategy(), new TypeToken<List<DotStrategy>>() {}.getType());
-            st.setDotStrategy(temp);
+        st.setDotStrategy(temp);
 
 
         st.setNum_likes(Integer.parseInt(gl.getNum_likes()));

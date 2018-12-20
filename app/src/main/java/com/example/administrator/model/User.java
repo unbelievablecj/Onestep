@@ -36,6 +36,8 @@ public class User {
     public User(){
         user_name="";
         user_pwd="";
+        user_mail="";
+        user_ver="";
     }
 }
 

@@ -12,6 +12,8 @@ public class Strategy implements Serializable {
     //总攻略的评论
     private String comment;
 
+
+
     //总攻略的图片(只有一张)
     private Picture picture;
     //总攻略的点赞数
@@ -22,7 +24,10 @@ public class Strategy implements Serializable {
     private List<DotStrategy> dotStrategy;
     //攻略标题
     private String title;
-
+    //标签
+    private String label;
+    //经纬度
+    private Point feat_LatLng;
     public Point getFeat_LatLng() {
         return feat_LatLng;
     }
@@ -31,8 +36,14 @@ public class Strategy implements Serializable {
         this.feat_LatLng = feat_LatLng;
     }
 
-    private Point feat_LatLng;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -50,7 +61,7 @@ public class Strategy implements Serializable {
         this.label = label;
     }
 
-    private String label;
+
 
 
     public List<DotStrategy> getDotStrategy() {

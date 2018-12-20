@@ -64,15 +64,28 @@ public class Gonglue {
      * 经度
      */
     @SerializedName("Longitude")
-    private String  Longitude;
+    private double  Longitude;
     /**
      * 维度
      */
     @SerializedName("Latitude")
-    private String  Latitude;
+    private double  Latitude;
 
     @SerializedName("dotStrategy")
     private String dotStrategy;
+
+    @SerializedName("label")
+    private String label;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+
 
     public String getRoute() {
         return route;
@@ -106,19 +119,19 @@ public class Gonglue {
         this.title = title;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return Longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         Longitude = longitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return Latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         Latitude = latitude;
     }
 
