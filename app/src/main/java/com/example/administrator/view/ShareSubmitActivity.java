@@ -1,6 +1,7 @@
 package com.example.administrator.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,12 +12,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.administrator.R;
+import com.example.administrator.connect.ConnTool;
+import com.example.administrator.model.Picture;
 import com.example.administrator.model.Strategy;
+import com.example.administrator.model.User;
+import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.PictureUtil;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 public class ShareSubmitActivity extends AppCompatActivity {
 
     private int labelNum;
     private static final String TAG = "ShareSubmitActivity";
+
+    private Strategy strategy;
+    private User user;
+
 
     public ShareSubmitActivity() {
         this.labelNum = 8;
@@ -56,7 +69,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 CheckBox checkBox_group = findViewById(R.id.label_group);
                 CheckBox checkBox_single = findViewById(R.id.label_single);
                 String labelContent="";
-                Strategy strategy = (Strategy)getIntent().getSerializableExtra("strategy_data");
+                strategy = (Strategy)getIntent().getSerializableExtra("strategy_data");
 
 
                 if(checkBox_food.isChecked()){
@@ -95,11 +108,82 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
                 strategy.setTitle(title.getText().toString());
                 strategy.setLabel(labelContent);
-                Log.e(TAG,"时间"+strategy.getPublish_time().toString());
+
+
+                Bitmap b = PictureUtil.compressSampling("savePic20181220221707329.JPEG");
+                Picture picture = new Picture(PictureUtil.getBytes(b),"save");
+
+                strategy.setPicture(picture);
+
+
+
+                String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+                Gson gson = new Gson();
+                user = gson.fromJson(userResult,User.class);
+
+
+                ShareSubmitActivity.WorkThread sendMessage = new ShareSubmitActivity.WorkThread();
+                sendMessage.start();
+                try {
+                    sendMessage.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                sendMessage.interrupt();
+
+
+
+
+
                 startActivity(intent);
                 finish();
             }
         });
 
     }
+
+
+    private  class WorkThread extends Thread
+    {
+        @Override
+        public void run() {
+            try {
+//                    OkHttpClient client = new OkHttpClient.Builder()
+//                            .connectTimeout(10, TimeUnit.SECONDS)
+//                            .writeTimeout(10, TimeUnit.SECONDS)
+//                            .readTimeout(20, TimeUnit.SECONDS)
+//                            .build();
+
+                JSONObject emailAndPwd = new JSONObject();
+
+
+                ConnTool connTool = new ConnTool();
+                int result = connTool.uploadStrategy(strategy,user);
+                Log.i(TAG, "结果："+result);
+
+
+
+
+//                    emailAndPwd.put("e-mail", email);
+//                    emailAndPwd.put("userPwd", password);
+
+//                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//
+//                    RequestBody body = RequestBody.create(JSON, emailAndPwd.toString());
+//
+//                    Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Login").post(body).build();
+//                    Response response = client.newCall(request).execute();
+
+//                    String responseData = new String("");
+
+
+//
+//
+                //parseJSONWithJSONObject(responseData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
