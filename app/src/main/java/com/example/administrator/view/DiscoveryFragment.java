@@ -1,12 +1,15 @@
 package com.example.administrator.view;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -32,6 +35,7 @@ import java.util.List;
  */
 public class DiscoveryFragment extends Fragment  {
 
+    private SwipeRefreshLayout swipeRefresh;
     private View vkuanti;
     private List<fenxiangkuang> fenxiangkuangList=new ArrayList<>();
     public DiscoveryFragment() {
@@ -39,6 +43,7 @@ public class DiscoveryFragment extends Fragment  {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,8 +54,30 @@ public class DiscoveryFragment extends Fragment  {
         RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        fenxiangkuangAdapter adapter=new fenxiangkuangAdapter(fenxiangkuangList);
+        final fenxiangkuangAdapter adapter=new fenxiangkuangAdapter(fenxiangkuangList);
         recyclerView.setAdapter(adapter);
+        swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh1);
+        swipeRefresh.setColorSchemeColors(R.color.colorPrimary);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fenxiangkuangList.clear();
+                        List<fenxiangkuang>newDatas=new ArrayList<fenxiangkuang>();
+                        fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","156","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+                        newDatas.add(0,b);
+                        fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+                        newDatas.add(0,c);
+                        fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","104","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
+                        newDatas.add(0,a);
+                        adapter.addItem(newDatas);
+                        swipeRefresh.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
 
         return view;
     }

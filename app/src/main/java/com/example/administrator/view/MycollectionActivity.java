@@ -1,5 +1,8 @@
 package com.example.administrator.view;
 
+import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +18,20 @@ import java.util.List;
 public class MycollectionActivity extends AppCompatActivity {
 
     private List<fenxiangkuang> MycollectionList = new ArrayList<>();
+    private fenxiangkuangAdapter adapter;
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_collection);
-        initMycollection();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.Mycollectionliebiao);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        fenxiangkuangAdapter adapter = new fenxiangkuangAdapter(MycollectionList);
+        final fenxiangkuangAdapter adapter = new fenxiangkuangAdapter(MycollectionList);
         recyclerView.setAdapter(adapter);
+        initMycollection();
     }
+
     private void initMycollection(){
         fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
         MycollectionList.add(c);
@@ -35,4 +41,5 @@ public class MycollectionActivity extends AppCompatActivity {
         MycollectionList.add(a);
 
     }
+
 }

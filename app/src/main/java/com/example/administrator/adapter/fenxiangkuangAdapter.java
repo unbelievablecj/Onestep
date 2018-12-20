@@ -68,4 +68,11 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
     public int getItemCount(){
         return mtest1List.size();
     }
+    public void addItem(List<fenxiangkuang>newDatas){
+        mtest1List.remove(mtest1List);
+        mtest1List.addAll(newDatas);
+        notifyDataSetChanged();
+    }
+
+
 }
