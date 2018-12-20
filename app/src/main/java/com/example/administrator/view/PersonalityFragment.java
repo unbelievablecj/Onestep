@@ -34,7 +34,7 @@ public class PersonalityFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_personality,container,false);
         initpersonality();
@@ -52,8 +52,10 @@ public class PersonalityFragment extends Fragment {
                         startActivity(new Intent(getContext(),MyWishListActivity.class));
                         break;
                     case 1:
+                        startActivity(new Intent(getContext(), MycollectionActivity.class));
                         break;
                     case 2:
+                        startActivity(new Intent(getContext(),MyshareActivity.class));
                         break;
                     case 3:
                         startActivity(new Intent(getContext(),SettingsActivity.class));

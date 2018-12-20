@@ -30,10 +30,8 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiscoveryFragment extends Fragment implements View.OnTouchListener {
+public class DiscoveryFragment extends Fragment  {
 
-    private EditText start_time;
-    private EditText end_time;
     private View vkuanti;
     private List<fenxiangkuang> fenxiangkuangList=new ArrayList<>();
     public DiscoveryFragment() {
@@ -54,10 +52,6 @@ public class DiscoveryFragment extends Fragment implements View.OnTouchListener 
         fenxiangkuangAdapter adapter=new fenxiangkuangAdapter(fenxiangkuangList);
         recyclerView.setAdapter(adapter);
 
-        start_time=(EditText)view.findViewById(R.id.start_time);
-        end_time=(EditText)view.findViewById(R.id.end_time);
-        start_time.setOnTouchListener(this);
-        end_time.setOnTouchListener(this);
         return view;
     }
 
@@ -78,64 +72,4 @@ public class DiscoveryFragment extends Fragment implements View.OnTouchListener 
             fenxiangkuangList.add(c);
     }
 
-
-    public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            View view = View.inflate(getActivity(), R.layout.timeset, null);
-            final DatePicker datePicker = (DatePicker) view.findViewById(R.id.date_picker);
-            builder.setView(view);
-
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(System.currentTimeMillis());
-            datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), null);
-
-            if (v.getId() == R.id.start_time) {
-                final int inType = start_time.getInputType();
-                start_time.setInputType(InputType.TYPE_NULL);
-                start_time.onTouchEvent(event);
-                start_time.setInputType(inType);
-                start_time.setSelection(start_time.getText().length());
-
-                builder.setTitle("选择起始时间");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(String.format("%d-%02d-%02d",
-                                datePicker.getYear(),
-                                datePicker.getMonth() + 1,
-                                datePicker.getDayOfMonth()));
-                        start_time.setText(sb);
-                        end_time.requestFocus();
-                        dialog.cancel();
-                    }
-
-                });
-            } else if (v.getId() == R.id.end_time) {
-                int inType = end_time.getInputType();
-                end_time.setInputType(InputType.TYPE_NULL);
-                end_time.onTouchEvent(event);
-                end_time.setInputType(inType);
-                end_time.setSelection(end_time.getText().length());
-                builder.setTitle("选择结束时间");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(String.format("%d-%02d-%02d",
-                                datePicker.getYear(),
-                                datePicker.getMonth() + 1,
-                                datePicker.getDayOfMonth()));
-                        end_time.setText(sb);
-                        dialog.cancel();
-                    }
-                });
-            }
-            Dialog dialog = builder.create();
-            dialog.show();
-        }
-        return true;
-    }
 }
