@@ -79,7 +79,7 @@ public class CommentActivity extends AppCompatActivity {
         dialog.setContentView(dialogView);
 
         TextView takePhoto= (TextView) dialogView.findViewById(R.id.take_photo);//拍照按钮
-        TextView photoAlbum= (TextView) dialogView.findViewById(R.id.photo_album);//打开相册按钮
+        final TextView photoAlbum= (TextView) dialogView.findViewById(R.id.photo_album);//打开相册按钮
         TextView cancel= (TextView) dialogView.findViewById(R.id.photo_cancel);//初始化底部弹出框按钮
 
 
@@ -99,8 +99,12 @@ public class CommentActivity extends AppCompatActivity {
 
                 Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
                 if(bitmap!=null){
+
+
                     try {
                         fileName = saveFile(bitmap,"");
+
+
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -111,6 +115,8 @@ public class CommentActivity extends AppCompatActivity {
                     Picture picture = new Picture(PictureUtil.getBytes(b),fileName);
 
                     strategy.setPicture(picture);
+
+
 
 
                 }

@@ -735,13 +735,8 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
 //        Log.i(TAG, "文件找到");
 
-        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+marker.getId()+".txt");
+        String s = marker.getId();
         if(s!=null){
-
-                Log.i(TAG, "文件找到");
-
-
-
             Intent intent = new Intent(getActivity(),DotStrategyActivity.class);
             intent.putExtra("dotStrategyDetail",s);
             startActivityForResult(intent,2);
