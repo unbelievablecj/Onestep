@@ -27,6 +27,8 @@ import okhttp3.Response;
 import java.text.SimpleDateFormat;
 
 public class ConnTool {
+
+    private static String TAG = "ConnTool";
     private String url="http://115.159.198.216/YibuTest/";
     private String verifiedUrl=url+"Verified";
     private String loginUrl=url+"Login";
@@ -149,20 +151,24 @@ public class ConnTool {
      * 将strategy和user和为Gonglue类后再转为json传输
      * @param strategy 要上传的总攻略类
      * @param user 当前登陆的用户
-     * @return 1成功，0未知错误
+     * @return 1成功，0未知错误,-1数据库错误
      */
     public int uploadStrategy(Strategy strategy, User user)
     {
 
         Gonglue gl= Convert.StrategyToGonglue(strategy,user);
         try{
+
            String json=g.toJson(gl);
+            Log.i(TAG, json);
            RequestBody body=RequestBody.create(JSON, json);
            Request request = new Request.Builder().url(uploadStrategy).post(body).build();
            Response response = client.newCall(request).execute();
            Answer a= g.fromJson(response.body().string(),Answer.class);
            if(a.getRes().equals("success"))
                return 1;
+           else if(a.getRes().equals("sql_wrong"))
+               return -1;
            else
                return 0;
            }

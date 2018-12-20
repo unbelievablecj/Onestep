@@ -153,6 +153,8 @@ public class CommentActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    Log.i(TAG, "图片名"+fileName);
+
                     Bitmap b = PictureUtil.compressSampling(fileName);
 
                     Picture picture = new Picture(PictureUtil.getBytes(b),fileName);
