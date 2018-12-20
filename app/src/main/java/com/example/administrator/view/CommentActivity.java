@@ -3,7 +3,9 @@ package com.example.administrator.view;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -22,6 +24,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -49,6 +52,7 @@ import java.util.Date;
 
 public class CommentActivity extends AppCompatActivity {
     private static final String TAG = "CommentActivity";
+//    private int state = -1;
     public static final int TAKE_POTHO=1;
     public static final int CHOOSE_PHOTO=2;
     private ImageView imageView;
@@ -58,6 +62,9 @@ public class CommentActivity extends AppCompatActivity {
     private DotStrategy strategy;
     private Bitmap bitmap = null;
     private Picture picture;
+    private EditText label;
+    private EditText content;
+    private Button back;
 
 
     /* 首先默认个文件保存路径 */
@@ -78,6 +85,9 @@ public class CommentActivity extends AppCompatActivity {
 
         dialog.setContentView(dialogView);
 
+        content = (EditText)findViewById(R.id.pinglunneirong);//评论内容
+        label = (EditText)findViewById(R.id.relationPlace); //评论标签
+
         TextView takePhoto= (TextView) dialogView.findViewById(R.id.take_photo);//拍照按钮
         TextView photoAlbum= (TextView) dialogView.findViewById(R.id.photo_album);//打开相册按钮
         TextView cancel= (TextView) dialogView.findViewById(R.id.photo_cancel);//初始化底部弹出框按钮
@@ -88,6 +98,27 @@ public class CommentActivity extends AppCompatActivity {
         title = (TextView)findViewById(R.id.title_name);
         title.setText("写评论");
 
+        back = (Button)findViewById(R.id.titleButton1) ;
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(CommentActivity.this);
+                builder.setTitle("提示：");
+                builder.setMessage("如果现在退出当前页面，目前编辑的信息会消失哦！");
+                //设置确定按钮
+                builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                //设置取消按钮
+                builder.setPositiveButton("取消",null);
+                //显示弹窗
+                builder.show();
+            }
+        });
+
         commit.setVisibility(View.VISIBLE);//显示隐藏控件
         commit.setText("提交");
 
@@ -96,6 +127,18 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String fileName="";
+
+                if (label.getText().length()==0)
+                {
+                    Toast.makeText(CommentActivity.this,"标签不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                else if(content.getText().length()==0)
+                {
+                    Toast.makeText(CommentActivity.this,"内容不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
                 if(bitmap!=null){
@@ -134,6 +177,10 @@ public class CommentActivity extends AppCompatActivity {
                 finish();
                 }
         });
+
+
+
+
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -362,4 +409,37 @@ public class CommentActivity extends AppCompatActivity {
 
         return fileName;
     }
+
+
+
+
+
+//监听系统返回键
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //点击返回键
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            //声明弹出对象并初始化
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+            builder.setTitle("提示：");
+            builder.setMessage("如果现在退出当前页面，目前编辑的信息会消失哦！");
+            //设置确定按钮
+            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            //设置取消按钮
+            builder.setPositiveButton("取消",null);
+            //显示弹窗
+            builder.show();
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+
+
+
 }
+
