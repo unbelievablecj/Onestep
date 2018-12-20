@@ -79,7 +79,8 @@
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.ShareSubmitActivity" />
         <activity android:name=".view.CommentActivity" />
-        <activity android:name=".view.StrategyActivity" />
+        <activity android:name=".view.StrategyActivity"/>
+        <activity android:name=".view.DotStrategyActivity"/>
         <activity android:name=".view.MyWishListActivity" />
         <activity android:name=".view.ChangePwdActivity" />
         <activity android:name=".view.MyshareActivity" />
