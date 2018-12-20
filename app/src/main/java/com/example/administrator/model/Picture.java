@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Picture implements Serializable {
     private static final long serialVersionUID = 1L;
-    private transient byte[] bitmapBytes = null;
+    private byte[] bitmapBytes = null;
     private String name = null;
     private String url;
 
