@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity{
                 }
                 sendMessage.interrupt();
 
-//                state = 0;
+                state = 0;
                 switch (state){
                     case 0 :{
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
