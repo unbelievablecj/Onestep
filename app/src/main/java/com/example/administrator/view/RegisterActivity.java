@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.R;
+import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.User;
 import com.example.administrator.util.JsonAnalyze;
 import com.google.gson.Gson;
@@ -101,15 +102,15 @@ public class RegisterActivity extends AppCompatActivity {
                     sendMessage.interrupt();
 
                     switch (stateR2){
-                        case 0 :{
+                        case 1 :{
                             Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                             break;
                         }
-                        case 1: {
+                        case 0: {
                             Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
                             break;
                         }
-                        case 2: {
+                        case -1: {
                             Toast.makeText(RegisterActivity.this, "用户已存在", Toast.LENGTH_SHORT).show();
                             break;
                         }
@@ -184,45 +185,47 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .connectTimeout(10, TimeUnit.SECONDS)
-                        .writeTimeout(10, TimeUnit.SECONDS)
-                        .readTimeout(20, TimeUnit.SECONDS)
-                        .build();
-
-                JSONObject userInformation = new JSONObject();
-                userInformation.put("user_name",userName);
-                userInformation.put("user_pwd", pwd);
-                Log.d("Register",pwd);
-                userInformation.put("user_mail", email);
-                userInformation.put("user_ver",icode);
+//                OkHttpClient client = new OkHttpClient.Builder()
+//                        .connectTimeout(10, TimeUnit.SECONDS)
+//                        .writeTimeout(10, TimeUnit.SECONDS)
+//                        .readTimeout(20, TimeUnit.SECONDS)
+//                        .build();
+//
+//                JSONObject userInformation = new JSONObject();
+//                userInformation.put("user_name",userName);
+//                userInformation.put("user_pwd", pwd);
+//                Log.d("Register",pwd);
+//                userInformation.put("user_mail", email);
+//                userInformation.put("user_ver",icode);
                 User user=new User();
                 user.setUser_mail(email);
                 user.setUser_pwd(pwd);
                 user.setUser_name(userName);
                 user.setUser_ver(icode);
                 Gson gson = new Gson();
-                String json = gson.toJson(user);
-                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                RequestBody body = RequestBody.create(JSON, json);
-                Log.d("Register",json);
-                Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Register").post(body).build();
-
-                Response response = client.newCall(request).execute();
-                String responseData = new String("");
-                responseData = response.body().string();
-                Log.d("Register",responseData);
-                if (response.isSuccessful()) {
-                    String answer=JsonAnalyze.getJsonString(responseData);
-                    if(answer.equals("Yes"))
-                        stateR2 = 0;
-                    if(answer.equals("Ver_Wrong"))
-                        stateR2 = 1;
-                    if(answer.equals("User_Exist"))
-                        stateR2 = 2;
-                } else {
-                    throw new IOException("无法连接到服务器，请检查网络连接");
-                }
+//                String json = gson.toJson(user);
+////                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+////                RequestBody body = RequestBody.create(JSON, json);
+////                Log.d("Register",json);
+////                Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Register").post(body).build();
+////
+////                Response response = client.newCall(request).execute();
+////                String responseData = new String("");
+////                responseData = response.body().string();
+////                Log.d("Register",responseData);
+                ConnTool connTool = new ConnTool();
+                stateR2=connTool.register(user);
+//                if (response.isSuccessful()) {
+//                    String answer=JsonAnalyze.getJsonString(responseData);
+//                    if(answer.equals("Yes"))
+//                        stateR2 = 0;
+//                    if(answer.equals("Ver_Wrong"))
+//                        stateR2 = 1;
+//                    if(answer.equals("User_Exist"))
+//                        stateR2 = 2;
+//                } else {
+//                    throw new IOException("无法连接到服务器，请检查网络连接");
+//                }
 
                 //parseJSONWithJSONObject(responseData);
             } catch (Exception e) {
@@ -236,31 +239,53 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .connectTimeout(10, TimeUnit.SECONDS)
-                        .writeTimeout(10, TimeUnit.SECONDS)
-                        .readTimeout(20, TimeUnit.SECONDS)
-                        .build();
-
-                JSONObject userInformation = new JSONObject();
-                userInformation.put("user_name",null);
-                userInformation.put("user_mail", email);
-                userInformation.put("user_pwd", null);
-                userInformation.put("user_ver",null);
-
-                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                RequestBody body = RequestBody.create(JSON, userInformation.toString());
-
-                Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Verified").post(body).build();
-                Response response = client.newCall(request).execute();
-
-                String responseData = new String("");
-                if (response.isSuccessful()) {
-                    responseData = response.body().string();
-                    Log.d("Register",responseData);
-                } else {
-                    throw new IOException("无法连接到服务器，请检查网络连接");
+//                OkHttpClient client = new OkHttpClient.Builder()
+//                        .connectTimeout(10, TimeUnit.SECONDS)
+//                        .writeTimeout(10, TimeUnit.SECONDS)
+//                        .readTimeout(20, TimeUnit.SECONDS)
+//                        .build();
+//
+//                JSONObject userInformation = new JSONObject();
+//                userInformation.put("user_name",null);
+//                userInformation.put("user_mail", email);
+//                userInformation.put("user_pwd", null);
+//                userInformation.put("user_ver",null);
+                int state;
+                User user=new User();
+                user.setUser_mail(email);
+                user.setUser_pwd(pwd);
+                user.setUser_name(userName);
+                user.setUser_ver(icode);
+                ConnTool connTool = new ConnTool();
+                state = connTool.sendMail(user);
+                switch (state)
+                {
+                    case 1:
+                        Toast.makeText(RegisterActivity.this,"发送成功",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 0:
+                        Toast.makeText(RegisterActivity.this,"发送失败",Toast.LENGTH_SHORT).show();
+                        break;
+                    case -1:
+                        Toast.makeText(RegisterActivity.this,"未知错误",Toast.LENGTH_SHORT).show();
+                        break;
+                        default:
+                            break;
                 }
+
+//                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//                RequestBody body = RequestBody.create(JSON, userInformation.toString());
+//
+//                Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Verified").post(body).build();
+//                Response response = client.newCall(request).execute();
+
+//                String responseData = new String("");
+//                if (response.isSuccessful()) {
+//                    responseData = response.body().string();
+//                    Log.d("Register",responseData);
+//                } else {
+//                    throw new IOException("无法连接到服务器，请检查网络连接");
+//                }
                 //parseJSONWithJSONObject(responseData);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity{
     private  TextView t1;
     private  TextView t2;
     private CheckBox ck;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -59,10 +61,14 @@ public class LoginActivity extends AppCompatActivity{
         t1 = (TextView) findViewById(R.id.email);
         t2 =(TextView) findViewById(R.id.passwordL);
         ck = (CheckBox) findViewById(R.id.rememberPwd);
+        progressBar = (ProgressBar)findViewById(R.id.login_progress);
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)
             {
+
+
 
                 email = t1.getText().toString();
                 password = t2.getText().toString();
@@ -78,6 +84,8 @@ public class LoginActivity extends AppCompatActivity{
                  {
                      t2.setText(password);
                  }
+                if(progressBar.getVisibility()==View.GONE)
+                    progressBar.setVisibility(View.VISIBLE);//显示进度条
 
                  WorkThread sendMessage = new WorkThread();
                 sendMessage.start();
@@ -87,24 +95,30 @@ public class LoginActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
-                state = 0;
+
+//                state = 0;
                 switch (state){
                     case 0 :{
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
                         startActivity(intent);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     }
                     case 1: {
                         Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                     case 2: {
                         Toast.makeText(LoginActivity.this, "服务器连接失败", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                     default:{
                         Toast.makeText(LoginActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                 }
@@ -132,6 +146,8 @@ public class LoginActivity extends AppCompatActivity{
                     user.setUser_pwd(password);
                     ConnTool connTool = new ConnTool();
                     user=connTool.login(user);
+
+
 //                    emailAndPwd.put("e-mail", email);
 //                    emailAndPwd.put("userPwd", password);
 
@@ -143,6 +159,7 @@ public class LoginActivity extends AppCompatActivity{
 //                    Response response = client.newCall(request).execute();
 
 //                    String responseData = new String("");
+                    Log.d("登录",user.getUser_name());
                     if (user!=null) {
 //                        responseData = response.body().string();
 //
