@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,22 @@ public class Convert {
         gl.setLatitude(strategy.getFeat_LatLng().getLatitude());
         gl.setLongitude(strategy.getFeat_LatLng().getLongitude());
         gl.setLabel(strategy.getLabel());
-        gl.setDotStrategy(g.toJson(strategy.getDotStrategy()));
+
+        List<DotStrategy> ls=strategy.getDotStrategy();
+        List<DotJson> dotjson=new ArrayList<DotJson>();
+        DotJson dj;
+        for(int i=0;i<ls.size();i++){
+            dj=new DotJson();
+            dj.setComment(ls.get(i).getComment());
+            dj.setNum_likes(ls.get(i).getNum_likes());
+            dj.setPicture(new PicJson());
+            dj.getPicture().setName(ls.get(i).getPicture().getName());
+            dj.getPicture().setUrl(ls.get(i).getPicture().getUrl());
+            dj.setPlace_name(ls.get(i).getPlace_name());
+            dj.setPublish_time(ls.get(i).getPublish_time());
+            dotjson.add(dj);
+        }
+        gl.setDotStrategy(g.toJson(dotjson));
         return gl;
     }
     public static Strategy GonglueToStrategy(Gonglue gl){
@@ -55,10 +71,23 @@ public class Convert {
         st.getPicture().setUrl(pj.getUrl());
         st.getPicture().setName(pj.getName());
         st.setPublish_time(g.fromJson(gl.getPublish_time(),Date.class));
-        Type type = new TypeToken<List<DotStrategy>>() {
+        Type type = new TypeToken<List<DotJson>>() {
         }.getType();
-        List<DotStrategy> ls=g.fromJson(gl.getDotStrategy(),type);
-        st.setDotStrategy(ls);
+        List<DotJson> ls=g.fromJson(gl.getDotStrategy(),type);
+        List<DotStrategy> res=new ArrayList<DotStrategy>();
+        DotStrategy ds;
+        for(int i=0;i<ls.size();i++){
+            ds=new DotStrategy();
+            ds.setComment(ls.get(i).getComment());
+            ds.setNum_likes(ls.get(i).getNum_likes());
+            ds.setPicture(new Picture());
+            ds.getPicture().setName(ls.get(i).getPicture().getName());
+            ds.getPicture().setUrl(ls.get(i).getPicture().getUrl());
+            ds.setPlace_name(ls.get(i).getPlace_name());
+            ds.setPublish_time(ls.get(i).getPublish_time());
+            res.add(ds);
+        }
+        st.setDotStrategy(res);
         return st;
 
     }

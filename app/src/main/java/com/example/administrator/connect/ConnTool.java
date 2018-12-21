@@ -1,4 +1,5 @@
 package com.example.administrator.connect;
+import android.bluetooth.BluetoothAssignedNumbers;
 import android.util.Log;
 
 import com.example.administrator.model.DotStrategy;
@@ -30,6 +31,7 @@ public class ConnTool {
 
     private static String TAG = "ConnTool";
     private String url="http://115.159.198.216/YibuTest/";
+    //private String url="http://127.0.0.1/YibuTest/";
     private String verifiedUrl=url+"Verified";
     private String loginUrl=url+"Login";
     private String registerUrl=url+"Register";
@@ -254,9 +256,14 @@ public class ConnTool {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(discoverUrl).post(body).build();
             Response response = client.newCall(request).execute();
+            Answer a=g.fromJson(response.body().string(),Answer.class);
+            if(a.getRes().equals("sql_wrong")){
+                return null;
+            }
+
             Type type = new TypeToken<List<Gonglue>>() {
             }.getType();
-            l=g.fromJson(response.body().string(),type);
+            l=g.fromJson(a.getRes(),type);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
