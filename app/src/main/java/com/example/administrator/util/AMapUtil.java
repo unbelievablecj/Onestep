@@ -13,6 +13,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.widget.EditText;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusPath;
@@ -22,6 +23,19 @@ import com.amap.api.services.route.RouteRailwayItem;
 import com.example.administrator.R;
 
 public class AMapUtil {
+
+
+	public static AMapLocation getCurLocation() {
+		return curLocation;
+	}
+
+	public static void setCurLocation(AMapLocation curLocation) {
+		AMapUtil.curLocation = curLocation;
+	}
+
+	private static AMapLocation curLocation;
+
+
 	/**
 	 * 判断edittext是否null
 	 */

@@ -57,6 +57,7 @@ import com.example.administrator.model.Picture;
 import com.example.administrator.model.Point;
 import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
+import com.example.administrator.util.AMapUtil;
 import com.example.administrator.util.FileCacheUtil;
 import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.FilenameUtil;
@@ -906,6 +907,8 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     sdf.format(date);
                     privLocation = amapLocation;
                     curLocation = amapLocation;
+
+                    AMapUtil.setCurLocation(curLocation);
 
 //
                 } else {

@@ -50,6 +50,8 @@ public class Convert {
             dj.getPicture().setUrl(ls.get(i).getPicture().getUrl());
             dj.setPlace_name(ls.get(i).getPlace_name());
             dj.setPublish_time(ls.get(i).getPublish_time());
+            dj.setLongitude(ls.get(i).getLongitude());
+            dj.setLatitude(ls.get(i).getLatitude());
             dotjson.add(dj);
         }
         gl.setDotStrategy(g.toJson(dotjson));
@@ -85,6 +87,8 @@ public class Convert {
             ds.getPicture().setUrl(ls.get(i).getPicture().getUrl());
             ds.setPlace_name(ls.get(i).getPlace_name());
             ds.setPublish_time(ls.get(i).getPublish_time());
+            ds.setLongitude(ls.get(i).getLongitude());
+            ds.setLatitude(ls.get(i).getLatitude());
             res.add(ds);
         }
         st.setDotStrategy(res);

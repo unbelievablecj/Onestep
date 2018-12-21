@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
+import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Picture;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
@@ -22,7 +23,9 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class ShareSubmitActivity extends AppCompatActivity {
 
@@ -57,7 +60,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShareSubmitActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ShareSubmitActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
                 Intent intent  = new Intent(ShareSubmitActivity.this,FragmentItemSetsActivity.class);
 
 
@@ -111,11 +114,11 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 strategy.setTitle(title.getText().toString());
                 strategy.setLabel(labelContent);
 
-
-                Bitmap b = PictureUtil.compressSampling("savePic201812200612364251.JPEG");
-                Picture picture = new Picture(PictureUtil.getBytes(b),"saveaa");
-
-                strategy.setPicture(picture);
+//
+//                Bitmap b = PictureUtil.compressSampling("savePic201812200612364251.JPEG");
+//                Picture picture = new Picture(PictureUtil.getBytes(b),"saveaa");
+//
+//                strategy.setPicture(picture);
 
 
                 try {
@@ -138,11 +141,6 @@ public class ShareSubmitActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
-
-
-
-
-
                 startActivity(intent);
                 finish();
             }
@@ -162,6 +160,16 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
 
                 ConnTool connTool = new ConnTool();
+
+                List<DotStrategy> dotStrategies = strategy.getDotStrategy();
+
+                String id;
+                for(DotStrategy dotStrategy:dotStrategies){
+                    id = connTool.uploadImage(new File(FileSaveUtils.getRealPath()+"dotStrategy/savePic/"+dotStrategy.getPicture().getName()));
+                    dotStrategy.getPicture().setUrl(id);
+                }
+
+
                 int result = connTool.uploadStrategy(strategy,user);
                 Log.i(TAG, "结果："+result);
 

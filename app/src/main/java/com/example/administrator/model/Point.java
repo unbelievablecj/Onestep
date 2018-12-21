@@ -5,9 +5,6 @@ import java.io.Serializable;
 public class Point implements Serializable {
     //纬度
     private Double Latitude;
-
-
-
     //经度
     private Double Longitude;
 

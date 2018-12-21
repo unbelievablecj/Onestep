@@ -15,6 +15,27 @@ public class DotJson {
     private int num_likes;
     //发表时间
     private Date publish_time;
+    //经度
+    private Double Latitude;
+    //经度
+
+    public Double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        Latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        Longitude = longitude;
+    }
+
+    private Double Longitude;
 
     public String getPlace_name() {
         return place_name;
