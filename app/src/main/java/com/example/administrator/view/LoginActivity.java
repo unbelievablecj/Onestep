@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity{
     private  TextView t1;
     private  TextView t2;
     private CheckBox ck;
-    private ProgressBar progressBar;
+    private View progressBar;
     private User user;
 
     @Override
@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity{
                  {
                      t2.setText(password);
                  }
-                if(progressBar.getVisibility()==View.INVISIBLE)
                     progressBar.setVisibility(View.VISIBLE);//显示进度条
 
                  WorkThread sendMessage = new WorkThread();
@@ -104,24 +103,24 @@ public class LoginActivity extends AppCompatActivity{
 
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
                         startActivity(intent);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+//                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     }
                     case 1: {
                         Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                     case 2: {
                         Toast.makeText(LoginActivity.this, "服务器连接失败", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                     default:{
                         Toast.makeText(LoginActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                 }
@@ -166,15 +165,16 @@ public class LoginActivity extends AppCompatActivity{
 
 //
 //                    Log.d("登录",temp);
-                    if (user!=null) {
+                    if (user.getUser_name()!=null) {
 //                        responseData = response.body().string();
 //
 //                        String answer=JsonAnalyze.getJsonString(responseData);
                             state = 0;
                         Gson gson = new Gson();
                         String temp = gson.toJson(user);
-                        Log.d("登录状态",temp);
+                        Log.d("登录状态11",temp);
                         try {
+//                            FileSaveUtils.saveFile("","","");
                             FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");
                         } catch (IOException e) {
                             e.printStackTrace();

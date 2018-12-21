@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +67,7 @@ public class CommentActivity extends AppCompatActivity {
     private EditText label;
     private EditText content;
     private Button back;
-
+    private View progressBar;
 
     /* 首先默认个文件保存路径 */
     private static final String SAVE_PIC_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
@@ -96,8 +97,10 @@ public class CommentActivity extends AppCompatActivity {
 
         imageView=(ImageView)findViewById(R.id.pingluntupian);
         Button commit = (Button)findViewById(R.id.titleButton2);
+        progressBar = (ProgressBar)findViewById(R.id.write_comment_progress);
         title = (TextView)findViewById(R.id.title_name);
         title.setText("写评论");
+
 
         back = (Button)findViewById(R.id.titleButton1) ;
         back.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +144,8 @@ public class CommentActivity extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.VISIBLE);
+
                 if(bitmap!=null){
 
 
@@ -185,6 +189,8 @@ public class CommentActivity extends AppCompatActivity {
                 intent.putExtra("strategy_data", strategy);
 //                Log.i(TAG, "运行到了这里 ");
 
+                Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
                 setResult(RESULT_OK,intent);
                 finish();
                 }

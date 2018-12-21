@@ -75,8 +75,8 @@ public class MyWishAdapter extends RecyclerView.Adapter<MyWishAdapter.ViewHolder
         MyWish myWish=myWishList.get(position);
         holder.place.setText(myWish.getPlace());
         holder.seriaNumber.setText(myWish.getSerialNumber());
-        holder.locationIcon.setImageResource(myWish.getImageOneID());
-        holder.deleteIcon.setImageResource(myWish.getImageTwoID());
+//        holder.locationIcon.setImageResource(R.drawable.locationicon);
+//        holder.deleteIcon.setImageResource(R.drawable.deleteicon);
     }
     @Override
     public int getItemCount(){

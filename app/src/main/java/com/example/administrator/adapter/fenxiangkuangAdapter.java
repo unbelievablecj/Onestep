@@ -14,7 +14,17 @@ import java.util.List;
 
 public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdapter.ViewHolder> {
     private List<fenxiangkuang> mtest1List;
+    private int flag;
+    public interface OnItemClickListener{
+        void onItemClick(View view,int position);
+    }
+    private fenxiangkuangAdapter.OnItemClickListener mOnItemClickListener;
+    public void setOnItemClickListener(fenxiangkuangAdapter.OnItemClickListener mOnItemClickListener){
+        this.mOnItemClickListener=mOnItemClickListener;
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
+        View fengxiangview;
         ImageView touxiang;
         ImageView dianzan;
         ImageView pinglun;
@@ -28,6 +38,7 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
 
         public ViewHolder(View view) {
             super(view);
+            fengxiangview=view;
             ditu = (ImageView) view.findViewById(R.id.findtupian);
             touxiang = (ImageView) view.findViewById(R.id.touxiang);
             dianzan = (ImageView) view.findViewById(R.id.dianzan);
@@ -47,11 +58,20 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.sharing_templet,parent,false);
-        ViewHolder holder=new ViewHolder(view);
+        final ViewHolder holder=new ViewHolder(view);
+        holder.dianzan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position=holder.getAdapterPosition();
+                fenxiangkuang fenxiangkuang=mtest1List.get(position);
+
+            }
+        });
+
         return holder;
     }
     @Override
-    public void onBindViewHolder(ViewHolder holder,int position){
+    public void onBindViewHolder(final ViewHolder holder, final int position){
         fenxiangkuang fenxiangkuang=mtest1List.get(position);
         holder.touxiang.setImageResource(fenxiangkuang.getTouxiangid());
         holder.dianzan.setImageResource(fenxiangkuang.getDianzanid());
@@ -63,6 +83,15 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
         holder.dianzanshu.setText(fenxiangkuang.getDianzan());
         holder.pinglunshu.setText(fenxiangkuang.getPinglun());
         holder.time.setText(fenxiangkuang.getTime());
+        if(mOnItemClickListener!=null){
+            holder.itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    int posotion=holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.itemView,position);
+                }
+            });
+        }
     }
     @Override
     public int getItemCount(){
