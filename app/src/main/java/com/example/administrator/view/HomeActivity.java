@@ -884,6 +884,10 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
 
                         drawLines(amapLocation);//一边定位一边连线
+
+
+
+
                         points.add(new Point(amapLocation.getLatitude(),amapLocation.getLongitude()));
                         total_Latitude+= amapLocation.getLatitude();
                         total_Longitude+= amapLocation.getLongitude();

@@ -23,8 +23,11 @@ import android.widget.ImageView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
+import com.example.administrator.model.Strategy;
+import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.fenxiangkuang;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,9 +41,17 @@ public class DiscoveryFragment extends Fragment  {
     private SwipeRefreshLayout swipeRefresh;
     private View vkuanti;
     private List<fenxiangkuang> fenxiangkuangList=new ArrayList<>();
+    private Strategy strategy;
+
+
+
+
     public DiscoveryFragment() {
         // Required empty public constructor
     }
+
+
+
 
 
     @SuppressLint("ResourceAsColor")
@@ -98,5 +109,22 @@ public class DiscoveryFragment extends Fragment  {
             fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
             fenxiangkuangList.add(c);
     }
+
+
+    private class ReadFileThread extends Thread{
+
+
+        @Override
+        public void run() {
+            super.run();
+
+            File file =  new File(FileSaveUtils.getRealPath()+"");
+
+
+
+
+        }
+    }
+
 
 }
