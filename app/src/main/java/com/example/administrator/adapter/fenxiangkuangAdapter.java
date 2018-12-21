@@ -72,15 +72,19 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position){
         final fenxiangkuang fenxiangkuang=mtest1List.get(position);
-//        boolean isCheck=fenxiangkuang.
         holder.touxiang.setImageResource(fenxiangkuang.getTouxiangid());
-//        holder.dianzan.setImageResource(fenxiangkuang.getDianzanid());
-        if(fenxiangkuang.isZanFocus()){
-            holder.dianzan.setImageResource(R.drawable.dianzan1);
-        }else {
+        final boolean[] ischeck = {fenxiangkuang.isZanFocus()};
+        if (ischeck[0]){
             holder.dianzan.setImageResource(R.drawable.dianzan2);
+        }else {
+            holder.dianzan.setImageResource(R.drawable.dianzan1);
         }
-        holder.shoucan.setImageResource(fenxiangkuang.getShoucanid());
+        final boolean[] isscheck={fenxiangkuang.isShoucanFocus()};
+        if (isscheck[0]){
+            holder.shoucan.setImageResource(R.drawable.shoucang);
+        }else {
+            holder.shoucan.setImageResource(R.drawable.shoucan);
+        }
         holder.pinglun.setImageResource(fenxiangkuang.getPinglunid());
         holder.ditu.setImageResource(fenxiangkuang.getDituid());
         holder.name.setText(fenxiangkuang.getName());
@@ -97,18 +101,37 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
                 }
             });
         }
-//        holder.dianzan.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                boolean flag=fenxiangkuang.isZanFocus();
-//                if (flag){
-//                    fenxiangkuang.delZanNum();
-//                }else {
-//                    fenxiangkuang.addZanNum();
-//                }
-//                fenxiangkuang.setZanFocus(!flag);
-//            }
-//        });
+        holder.dianzan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            if (ischeck[0] ==true){
+                holder.dianzan.setImageResource(R.drawable.dianzan1);
+                int count;
+                count=Integer.valueOf(fenxiangkuang.getDianzan());
+//                count--;//正常来说从服务器得到的数据是实时更新的，点赞后会刷新数据，这里暂时没有所以先注释掉；
+                holder.dianzanshu.setText(count+"");
+                ischeck[0] =false;
+            }else {
+                holder.dianzan.setImageResource(R.drawable.dianzan2);
+                int count;
+                count=Integer.valueOf(fenxiangkuang.getDianzan());
+                count++;
+                holder.dianzanshu.setText(count+"");
+                ischeck[0]=true;
+            }
+        }});
+        holder.shoucan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isscheck[0]==true){
+                    holder.shoucan.setImageResource(R.drawable.shoucan);
+                    isscheck[0]=false;
+                }else {
+                    holder.shoucan.setImageResource(R.drawable.shoucang);
+                    isscheck[0]=true;
+                }
+            }
+        });
     }
     @Override
     public int getItemCount(){

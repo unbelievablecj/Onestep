@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DotStrategyActivity extends AppCompatActivity {
+public class OtherDotStrategyActivity extends AppCompatActivity {
 
     private Button addToMyWishList;
     private int flag = 0;
@@ -37,23 +37,23 @@ public class DotStrategyActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dot_strategy);
+        setContentView(R.layout.activity_other_dot_strategy);
         String string =(String)getIntent().getSerializableExtra("dotStrategyDetail");
         String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+string+".txt");
 
         final DotStrategy dotStrategy = gson.fromJson(s,DotStrategy.class);
 
-        TextView time = findViewById(R.id.doStrategy_time);
+        TextView time = findViewById(R.id.other_doStrategy_time);
         DateFormat format = new SimpleDateFormat("yyyy MM-dd HH:mm:ss");
         time.setText(format.format(dotStrategy.getPublish_time()));
 
-        TextView text = findViewById(R.id.doStrategy_text);
+        TextView text = findViewById(R.id.other_doStrategy_text);
         text.setText(dotStrategy.getComment());
 
-        ImageView img = findViewById(R.id.doStrategy_img);
+        ImageView img = findViewById(R.id.other_doStrategy_img);
         img.setImageBitmap(PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes()));
 
-        TextView place = findViewById(R.id.doStrategy_place);
+        TextView place = findViewById(R.id.other_doStrategy_place);
         place.setText(dotStrategy.getPlace_name());
 
         addToMyWishList = (Button)findViewById(R.id.add_to_my_wishlist);
@@ -69,7 +69,7 @@ public class DotStrategyActivity extends AppCompatActivity {
                         myWishList.add(myWish);//加入新的心愿
                         temp =gson.toJson(myWishList);
                         FileSaveUtils.saveFile(temp, "SaveUser", "myWishList.txt");//存入文件
-                        Toast.makeText(DotStrategyActivity.this, "添加心愿成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OtherDotStrategyActivity.this, "添加心愿成功", Toast.LENGTH_SHORT).show();
                         flag = 1;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -77,7 +77,7 @@ public class DotStrategyActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(DotStrategyActivity.this,"已添加过此心愿",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OtherDotStrategyActivity.this,"已添加过此心愿",Toast.LENGTH_SHORT).show();
                 }
             }
         });

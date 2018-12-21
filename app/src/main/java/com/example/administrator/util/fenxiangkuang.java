@@ -1,5 +1,7 @@
 package com.example.administrator.util;
 
+import android.renderscript.Sampler;
+
 public class fenxiangkuang {
     private String name;
     private String address;
@@ -11,8 +13,8 @@ public class fenxiangkuang {
     private int dianzanid;
     private int pinglunid;
     private int shoucanid;
-    private boolean zanFocus;
-    private int zanNum;
+    private boolean ZanFocus;//演示需要，事后可以把这两个布尔值把上面的dianzanid和shoucanid覆盖掉，用来记录收藏和点赞的状态。
+    private boolean ShoucanFocus;//
 
     public fenxiangkuang(String name, String address, String time, String dianzan, String pinglun, int dituid, int touxiangid, int dianzanid, int pinglunid, int shoucanid) {
         this.name=name;
@@ -58,25 +60,16 @@ public class fenxiangkuang {
     }
 
     public boolean isZanFocus(){
-        return zanFocus;
+        return ZanFocus;
+    }
+    public boolean isShoucanFocus(){
+        return ShoucanFocus;
+    }
+    public void setShoucanFocus(boolean shoucanFocus){
+        this.ShoucanFocus=shoucanFocus;
     }
 
     public void setZanFocus(boolean zanFocus) {
-        this.zanFocus = zanFocus;
-    }
-
-
-    public void addZanNum(){
-        zanNum++;
-    }
-    public void delZanNum(){
-        zanNum--;
-    }
-    public int getZanNum() {
-        return zanNum;
-    }
-
-    public void setZanNum(int zanNum) {
-        this.zanNum = zanNum;
+        this.ZanFocus = zanFocus;
     }
 }
