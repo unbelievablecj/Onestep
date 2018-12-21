@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
@@ -132,5 +133,16 @@ public class ConnToolUnitTest {
 
         }
 
+    }
+    @Test
+    public void discover(){
+        double jing=119;
+        double wei=26;
+        ConnTool ct=new ConnTool();
+        List<Strategy> ls=ct.discover(119,26,1,10);
+        if(ls==null) System.out.print("null");
+        else System.out.print(ls.size());
+        //跟据数据库改变
+        assertEquals(2,ls.size());
     }
 }

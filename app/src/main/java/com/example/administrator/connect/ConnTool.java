@@ -31,6 +31,7 @@ public class ConnTool {
 
     private static String TAG = "ConnTool";
     private String url="http://115.159.198.216/YibuTest/";
+    //private String url="http://127.0.0.1/YibuTest/";
     private String verifiedUrl=url+"Verified";
     private String loginUrl=url+"Login";
     private String registerUrl=url+"Register";
