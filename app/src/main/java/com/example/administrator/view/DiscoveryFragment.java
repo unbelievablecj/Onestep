@@ -85,7 +85,7 @@ public class DiscoveryFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
-//        inittest1();
+        inittest1();
         final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -149,7 +149,7 @@ public class DiscoveryFragment extends Fragment  {
     }
 
     private void inittest1(){
-            fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","104","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
+            fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","10","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
             fenxiangkuangList.add(a);
             ImageView imageView = (ImageView)vkuanti.findViewById(R.id.findtupian);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +159,9 @@ public class DiscoveryFragment extends Fragment  {
                     startActivity(intent);
                 }
             });
-            fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","156","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+            fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","15","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
             fenxiangkuangList.add(b);
-            fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+            fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","17","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
             fenxiangkuangList.add(c);
     }
 
