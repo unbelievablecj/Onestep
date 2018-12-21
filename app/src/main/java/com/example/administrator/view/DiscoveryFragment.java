@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.administrator.R;
+import com.example.administrator.adapter.PersonalityMainAdapter;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
 import com.example.administrator.util.fenxiangkuang;
 
@@ -51,11 +52,18 @@ public class DiscoveryFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
         inittest1();
-        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
+        final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         final fenxiangkuangAdapter adapter=new fenxiangkuangAdapter(fenxiangkuangList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new fenxiangkuangAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                position=recyclerView.getChildAdapterPosition(view);
+                startActivity(new Intent(getContext(),StrategyActivity.class));
+            }
+        });
         swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh1);
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -85,14 +93,6 @@ public class DiscoveryFragment extends Fragment  {
     private void inittest1(){
             fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","104","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
             fenxiangkuangList.add(a);
-            ImageView imageView = (ImageView)vkuanti.findViewById(R.id.findtupian);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(),StrategyActivity.class);
-                    startActivity(intent);
-                }
-            });
             fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","156","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
             fenxiangkuangList.add(b);
             fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
