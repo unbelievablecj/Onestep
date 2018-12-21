@@ -67,20 +67,26 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
 
             }
         });
-
         return holder;
     }
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position){
-        fenxiangkuang fenxiangkuang=mtest1List.get(position);
+        final fenxiangkuang fenxiangkuang=mtest1List.get(position);
+//        boolean isCheck=fenxiangkuang.
         holder.touxiang.setImageResource(fenxiangkuang.getTouxiangid());
-        holder.dianzan.setImageResource(fenxiangkuang.getDianzanid());
+//        holder.dianzan.setImageResource(fenxiangkuang.getDianzanid());
+        if(fenxiangkuang.isZanFocus()){
+            holder.dianzan.setImageResource(R.drawable.dianzan1);
+        }else {
+            holder.dianzan.setImageResource(R.drawable.dianzan2);
+        }
         holder.shoucan.setImageResource(fenxiangkuang.getShoucanid());
         holder.pinglun.setImageResource(fenxiangkuang.getPinglunid());
         holder.ditu.setImageResource(fenxiangkuang.getDituid());
         holder.name.setText(fenxiangkuang.getName());
         holder.address.setText(fenxiangkuang.getAddress());
-        holder.dianzanshu.setText(fenxiangkuang.getDianzan());
+//        holder.dianzanshu.setText(fenxiangkuang.getDianzan());
+        holder.dianzanshu.setText(fenxiangkuang.getZanNum()+"");
         holder.pinglunshu.setText(fenxiangkuang.getPinglun());
         holder.time.setText(fenxiangkuang.getTime());
         if(mOnItemClickListener!=null){
@@ -92,6 +98,18 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
                 }
             });
         }
+        holder.dianzan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean flag=fenxiangkuang.isZanFocus();
+                if (flag){
+                    fenxiangkuang.setZanNum(fenxiangkuang.getZanNum()-1);
+                }else {
+                    fenxiangkuang.setZanNum(fenxiangkuang.getZanNum()+1);
+                }
+                fenxiangkuang.setZanFocus(!flag);
+            }
+        });
     }
     @Override
     public int getItemCount(){
@@ -102,6 +120,5 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
         mtest1List.addAll(newDatas);
         notifyDataSetChanged();
     }
-
 
 }

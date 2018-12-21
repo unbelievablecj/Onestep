@@ -11,6 +11,8 @@ public class fenxiangkuang {
     private int dianzanid;
     private int pinglunid;
     private int shoucanid;
+    private boolean zanFocus;
+    private int zanNum;
 
     public fenxiangkuang(String name, String address, String time, String dianzan, String pinglun, int dituid, int touxiangid, int dianzanid, int pinglunid, int shoucanid) {
         this.name=name;
@@ -53,5 +55,28 @@ public class fenxiangkuang {
     }
     public int getShoucanid(){
         return shoucanid;
+    }
+
+    public boolean isZanFocus(){
+        return zanFocus;
+    }
+
+    public void setZanFocus(boolean zanFocus) {
+        this.zanFocus = zanFocus;
+    }
+
+
+    public void addZanNum(){
+        zanNum++;
+    }
+    public void delZanNum(){
+        zanNum--;
+    }
+    public int getZanNum() {
+        return zanNum;
+    }
+
+    public void setZanNum(int zanNum) {
+        this.zanNum = zanNum;
     }
 }
