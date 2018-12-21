@@ -6,6 +6,11 @@ import java.io.Serializable;
 
 public class Picture implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public void setBitmapBytes(byte[] bitmapBytes) {
+        this.bitmapBytes = bitmapBytes;
+    }
+
     private byte[] bitmapBytes = null;
 
     public void setName(String name) {

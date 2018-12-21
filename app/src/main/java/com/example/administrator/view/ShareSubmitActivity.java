@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
+import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Picture;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
@@ -26,7 +27,9 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class ShareSubmitActivity extends AppCompatActivity {
 
@@ -87,7 +90,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShareSubmitActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ShareSubmitActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
                 Intent intent  = new Intent(ShareSubmitActivity.this,FragmentItemSetsActivity.class);
 
 
@@ -160,13 +163,6 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 user = gson.fromJson(userResult,User.class);
 
 
-//                //显示进度条
-////                ProgressDialog.Builder progressDialog = new ProgressDialog.Builder(ShareSubmitActivity.this);
-////                progressDialog.setTitle("正在提交分享");
-////                progressDialog.setMessage("请稍等");
-////                progressDialog.setCancelable(true);
-////                progressDialog.show();
-
                 ShareSubmitActivity.WorkThread sendMessage = new ShareSubmitActivity.WorkThread();
                 sendMessage.start();
                 try {
@@ -200,6 +196,16 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
 
                 ConnTool connTool = new ConnTool();
+
+                List<DotStrategy> dotStrategies = strategy.getDotStrategy();
+
+                String id;
+                for(DotStrategy dotStrategy:dotStrategies){
+                    id = connTool.uploadImage(new File(FileSaveUtils.getRealPath()+"dotStrategy/savePic/"+dotStrategy.getPicture().getName()));
+                    dotStrategy.getPicture().setUrl(id);
+                }
+
+
                 int result = connTool.uploadStrategy(strategy,user);
                 Log.i(TAG, "结果："+result);
 

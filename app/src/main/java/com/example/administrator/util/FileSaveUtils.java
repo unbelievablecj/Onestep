@@ -32,9 +32,6 @@ public class FileSaveUtils{
             foder.mkdirs();
         }
 
-
-
-
         File myCaptureFile = new File(subForder, fileName);
 
         if (!myCaptureFile.exists()) {

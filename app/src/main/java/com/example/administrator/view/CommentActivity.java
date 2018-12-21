@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Picture;
+import com.example.administrator.util.AMapUtil;
 import com.example.administrator.util.ActivityManagerApplication;
 import com.example.administrator.util.FilenameUtil;
 import com.example.administrator.util.PictureUtil;
@@ -183,6 +184,9 @@ public class CommentActivity extends AppCompatActivity {
                 strategy.setComment(comment.getText().toString());
                 strategy.setPlace_name(related_place.getText().toString());
                 strategy.setPublish_time(date);
+                strategy.setLatitude(AMapUtil.getCurLocation().getLatitude());
+                strategy.setLongitude(AMapUtil.getCurLocation().getLongitude());
+
 
 
 
