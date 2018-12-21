@@ -83,6 +83,11 @@ public class MyWishAdapter extends RecyclerView.Adapter<MyWishAdapter.ViewHolder
         return myWishList.size();
     }
 
+    public List<MyWish> getMyWishList()
+    {
+        return myWishList;
+    }
+
 }
 
 
