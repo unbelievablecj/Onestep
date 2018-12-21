@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.administrator.R;
+import com.example.administrator.util.FileSaveUtils;
+
+import java.io.IOException;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             // 如果没有权限, 就去申请权限
             // this: 上下文
             // Dialog显示的正文
-            // RC_CAMERA_AND_RECORD_AUDIO 请求码, 用于回调的时候判断是哪次申请z
+            // RC_CAMERA_AND_RECORD_AUDIO 请求码, 用于回调的时候判断是哪次申请
             // perms 就是申请的权限
             EasyPermissions.requestPermissions(this, "需要申请您手机的读写文件权限", RC_CAMERA__CALENDAR_STORAGE_PHONE_LOCATION, perms);
 

@@ -1,10 +1,14 @@
 package com.example.administrator.view;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -31,6 +35,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
     private Strategy strategy;
     private User user;
+    private Button back;
 
 
     public ShareSubmitActivity() {
@@ -52,6 +57,31 @@ public class ShareSubmitActivity extends AppCompatActivity {
 //
 //            }
 //        });
+
+
+
+        back = (Button)findViewById(R.id.titleButton1) ;
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(ShareSubmitActivity.this);
+                builder.setTitle("提示：");
+                builder.setMessage("如果现在退出当前页面，目前编辑的信息会消失哦！");
+                //设置确定按钮
+                builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                //设置取消按钮
+                builder.setPositiveButton("取消",null);
+                //显示弹窗
+                builder.show();
+            }
+        });
+
+
 
         Button commit = (Button)findViewById(R.id.tijiaofengxiang1);
         commit.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +160,13 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 user = gson.fromJson(userResult,User.class);
 
 
+//                //显示进度条
+////                ProgressDialog.Builder progressDialog = new ProgressDialog.Builder(ShareSubmitActivity.this);
+////                progressDialog.setTitle("正在提交分享");
+////                progressDialog.setMessage("请稍等");
+////                progressDialog.setCancelable(true);
+////                progressDialog.show();
+
                 ShareSubmitActivity.WorkThread sendMessage = new ShareSubmitActivity.WorkThread();
                 sendMessage.start();
                 try {
@@ -138,6 +175,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
+
 
 
 
@@ -171,5 +209,31 @@ public class ShareSubmitActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    //监听系统返回键
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //点击返回键
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            //声明弹出对象并初始化
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+            builder.setTitle("提示：");
+            builder.setMessage("如果现在退出当前页面，目前编辑的信息会消失哦！");
+            //设置确定按钮
+            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            //设置取消按钮
+            builder.setPositiveButton("取消",null);
+            //显示弹窗
+            builder.show();
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
 
 }

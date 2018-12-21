@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
@@ -16,15 +17,19 @@ import com.example.administrator.model.Strategy;
 import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.PictureUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DotStrategyActivity extends AppCompatActivity {
 
     private Button addToMyWishList;
+    private int flag = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,14 +60,24 @@ public class DotStrategyActivity extends AppCompatActivity {
         addToMyWishList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyWish myWish=new MyWish("0",dotStrategy.getPlace_name());
-                Gson gson = new Gson();
-                String temp = gson.toJson(myWish);
-                Log.d("心愿单",temp);
-                try {
-                    FileSaveUtils.saveFileAdd(temp+",","SaveUser","myWishList.txt");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(flag == 0) {
+                    MyWish myWish = new MyWish("★", dotStrategy.getPlace_name());
+                    Gson gson = new Gson();
+                    try {
+                        String temp=FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/myWishList.txt");
+                        List<MyWish> myWishList =  gson.fromJson(temp,new TypeToken<List<MyWish>>(){}.getType());//取出所有心愿
+                        myWishList.add(myWish);//加入新的心愿
+                        temp =gson.toJson(myWishList);
+                        FileSaveUtils.saveFile(temp, "SaveUser", "myWishList.txt");//存入文件
+                        Toast.makeText(DotStrategyActivity.this, "添加心愿成功", Toast.LENGTH_SHORT).show();
+                        flag = 1;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(DotStrategyActivity.this,"已添加过此心愿",Toast.LENGTH_SHORT).show();
                 }
             }
         });
