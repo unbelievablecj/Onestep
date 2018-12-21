@@ -114,11 +114,11 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 strategy.setTitle(title.getText().toString());
                 strategy.setLabel(labelContent);
 
-//
-//                Bitmap b = PictureUtil.compressSampling("savePic201812200612364251.JPEG");
-//                Picture picture = new Picture(PictureUtil.getBytes(b),"saveaa");
-//
-//                strategy.setPicture(picture);
+
+                Bitmap b = PictureUtil.compressSampling("savePic201812200612364251.JPEG");
+                Picture picture = new Picture(PictureUtil.getBytes(b),"saveaa");
+
+                strategy.setPicture(picture);
 
 
                 try {
