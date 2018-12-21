@@ -98,18 +98,18 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
                 }
             });
         }
-        holder.dianzan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean flag=fenxiangkuang.isZanFocus();
-                if (flag){
-                    fenxiangkuang.setZanNum(fenxiangkuang.getZanNum()-1);
-                }else {
-                    fenxiangkuang.setZanNum(fenxiangkuang.getZanNum()+1);
-                }
-                fenxiangkuang.setZanFocus(!flag);
-            }
-        });
+//        holder.dianzan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                boolean flag=fenxiangkuang.isZanFocus();
+//                if (flag){
+//                    fenxiangkuang.delZanNum();
+//                }else {
+//                    fenxiangkuang.addZanNum();
+//                }
+//                fenxiangkuang.setZanFocus(!flag);
+//            }
+//        });
     }
     @Override
     public int getItemCount(){

@@ -85,12 +85,19 @@ public class DiscoveryFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
-        inittest1();
-        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
+//        inittest1();
+        final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         final fenxiangkuangAdapter adapter=new fenxiangkuangAdapter(fenxiangkuangList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new fenxiangkuangAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                position=recyclerView.getChildAdapterPosition(view);
+                startActivity(new Intent(getContext(),StrategyActivity.class));
+            }
+        });
         swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh1);
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -123,6 +130,15 @@ public class DiscoveryFragment extends Fragment  {
                         }
                             swipeRefresh.setRefreshing(false);
 
+
+
+
+//                        fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","156","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+//                        newDatas.add(0,b);
+//                        fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+//                        newDatas.add(0,c);
+//                        fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","104","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
+//                        newDatas.add(0,a);
 
                     }
                 },2000);

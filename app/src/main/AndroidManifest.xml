@@ -45,7 +45,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="228669e8f503148c9274a13f9ded2477" />
+            android:value="43a61b8649708792f043d820653f650f" />
 
         <service android:name="com.amap.api.location.APSService" />
 
