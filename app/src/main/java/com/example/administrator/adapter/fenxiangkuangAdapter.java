@@ -46,7 +46,7 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
             shoucan = (ImageView) view.findViewById(R.id.shoucan);
             address = (TextView) view.findViewById(R.id.address);
             name = (TextView) view.findViewById(R.id.name);
-            time = (TextView) view.findViewById(R.id.time);
+            time = (TextView) view.findViewById(R.id.strategy_time);
             dianzanshu = (TextView) view.findViewById(R.id.dianzanshu);
             pinglunshu = (TextView) view.findViewById(R.id.pinglunshu);
         }
@@ -85,8 +85,7 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
         holder.ditu.setImageResource(fenxiangkuang.getDituid());
         holder.name.setText(fenxiangkuang.getName());
         holder.address.setText(fenxiangkuang.getAddress());
-//        holder.dianzanshu.setText(fenxiangkuang.getDianzan());
-        holder.dianzanshu.setText(fenxiangkuang.getZanNum()+"");
+        holder.dianzanshu.setText(fenxiangkuang.getDianzan());
         holder.pinglunshu.setText(fenxiangkuang.getPinglun());
         holder.time.setText(fenxiangkuang.getTime());
         if(mOnItemClickListener!=null){

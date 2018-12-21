@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.example.administrator.R;
@@ -85,7 +86,7 @@ public class DiscoveryFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
-//        inittest1();
+        inittest1();
         final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -94,8 +95,20 @@ public class DiscoveryFragment extends Fragment  {
         adapter.setOnItemClickListener(new fenxiangkuangAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
+                TextView textView = view.findViewById(R.id.strategy_time);
+                TextView address = view.findViewById(R.id.address);
+                String s = address.getText().toString()+textView.getText().toString();
+
+                Log.i(TAG, "onItemClick: "+s);
+
+                Intent intent = new Intent(getActivity(),StrategyActivity.class);
+                intent.putExtra("otherStrategies",s);
+
+
+
                 position=recyclerView.getChildAdapterPosition(view);
-                startActivity(new Intent(getContext(),StrategyActivity.class));
+                startActivity(intent);
             }
         });
         swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh1);
@@ -191,11 +204,7 @@ public class DiscoveryFragment extends Fragment  {
                 for(Strategy strategy:strategies){
 
                     Gson gson = new Gson();
-                    try {
-                        FileSaveUtils.saveFile(gson.toJson(strategy).toString(),"otherStrategies",strategy.getTitle()+format.format(strategy.getPublish_time()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
 
                     for(DotStrategy dotStrategy:strategy.getDotStrategy()){
                         try {
@@ -204,6 +213,14 @@ public class DiscoveryFragment extends Fragment  {
                             e.printStackTrace();
                         }
                     }
+
+
+                    try {
+                        FileSaveUtils.saveFile(gson.toJson(strategy),"otherStrategies",strategy.getTitle()+format.format(strategy.getPublish_time())+".txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
 
