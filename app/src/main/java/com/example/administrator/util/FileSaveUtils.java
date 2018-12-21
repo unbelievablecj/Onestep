@@ -29,6 +29,34 @@ public class FileSaveUtils{
         }
 
 
+
+
+        File myCaptureFile = new File(subForder, fileName);
+
+        if (!myCaptureFile.exists()) {
+            myCaptureFile.createNewFile();
+        }
+
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bos.write(text.getBytes());
+        bos.flush();
+        bos.close();
+
+    }
+
+
+    public static void saveFile(String text, String path) throws IOException {
+
+        String subForder = SAVE_REAL_PATH + path;
+        File foder = new File(subForder);
+        if (!foder.exists()) {
+            foder.mkdirs();
+        }
+
+
+        String fileName = FilenameUtil.createFileName(foder)+".txt";
+
+
         File myCaptureFile = new File(subForder, fileName);
 
         if (!myCaptureFile.exists()) {
@@ -72,7 +100,7 @@ public class FileSaveUtils{
             }
             catch (java.io.FileNotFoundException e)
             {
-                Log.d("TestFile", "The File doesn't not exist.");
+                Log.d("TestFile", "The File doesn't exist.");
             }
             catch (IOException e)
             {

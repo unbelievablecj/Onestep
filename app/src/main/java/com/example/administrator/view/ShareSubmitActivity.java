@@ -22,6 +22,8 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 public class ShareSubmitActivity extends AppCompatActivity {
 
     private int labelNum;
@@ -105,20 +107,26 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
                 }
 
-
+                Gson gson = new Gson();
                 strategy.setTitle(title.getText().toString());
                 strategy.setLabel(labelContent);
 
 
-                Bitmap b = PictureUtil.compressSampling("savePic201812210032105315.JPEG");
+                Bitmap b = PictureUtil.compressSampling("savePic201812200612364251.JPEG");
                 Picture picture = new Picture(PictureUtil.getBytes(b),"saveaa");
 
                 strategy.setPicture(picture);
 
 
+                try {
+                    FileSaveUtils.saveFile(gson.toJson(strategy),"strategy");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
-                Gson gson = new Gson();
+
                 user = gson.fromJson(userResult,User.class);
 
 
@@ -148,11 +156,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-//                    OkHttpClient client = new OkHttpClient.Builder()
-//                            .connectTimeout(10, TimeUnit.SECONDS)
-//                            .writeTimeout(10, TimeUnit.SECONDS)
-//                            .readTimeout(20, TimeUnit.SECONDS)
-//                            .build();
+
 
                 JSONObject emailAndPwd = new JSONObject();
 
@@ -161,24 +165,6 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 int result = connTool.uploadStrategy(strategy,user);
                 Log.i(TAG, "结果："+result);
 
-
-
-
-//                    emailAndPwd.put("e-mail", email);
-//                    emailAndPwd.put("userPwd", password);
-
-//                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-//
-//                    RequestBody body = RequestBody.create(JSON, emailAndPwd.toString());
-//
-//                    Request request = new Request.Builder().url("http://115.159.198.216/YibuTest/Login").post(body).build();
-//                    Response response = client.newCall(request).execute();
-
-//                    String responseData = new String("");
-
-
-//
-//
                 //parseJSONWithJSONObject(responseData);
             } catch (Exception e) {
                 e.printStackTrace();

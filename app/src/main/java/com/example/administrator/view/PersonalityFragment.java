@@ -74,7 +74,7 @@ public class PersonalityFragment extends Fragment {
         User user = gson.fromJson(userResult,User.class);
 
         userName = (TextView)view.findViewById(R.id.textView6);
-//        userName.setText(user.getUser_name());
+        userName.setText(user.getUser_name());
 
         return view;
     }

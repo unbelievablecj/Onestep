@@ -12,8 +12,6 @@ public class Strategy implements Serializable {
     //总攻略的评论
     private String comment;
 
-
-
     //总攻略的图片(只有一张)
     private Picture picture;
     //总攻略的点赞数
