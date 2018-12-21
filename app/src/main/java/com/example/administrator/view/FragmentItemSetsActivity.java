@@ -19,7 +19,6 @@ public class FragmentItemSetsActivity extends AppCompatActivity {
     private FragmentTransaction transaction;
     private FragmentManager fragmentManager;
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 

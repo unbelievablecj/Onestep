@@ -23,8 +23,12 @@ public class FileSaveUtils{
     public static void saveFile(String text, String path, String fileName) throws IOException {
 
         String subForder = SAVE_REAL_PATH + path;
+        Log.d("文件存取",SAVE_REAL_PATH);
         File foder = new File(subForder);
         if (!foder.exists()) {
+            Log.d("文件存在",SAVE_REAL_PATH);
+
+
             foder.mkdirs();
         }
 
@@ -111,29 +115,35 @@ public class FileSaveUtils{
 
     }
 
-    public static void saveFileAdd(String content,String path,String fileName) {
-        fileName =  SAVE_REAL_PATH + path+fileName;
-        RandomAccessFile randomFile = null;
-        try {
-            // 打开一个随机访问文件流，按读写方式
-            randomFile = new RandomAccessFile(fileName, "rw");
-            // 文件长度，字节数
-            long fileLength = randomFile.length();
-            // 将写文件指针移到文件尾。
-            randomFile.seek(fileLength);
-            randomFile.writeBytes(content);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally{
-            if(randomFile != null){
-                try {
-                    randomFile.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    public static void saveFileAdd(String text, String path, String fileName) throws IOException {
+
+        String subForder = SAVE_REAL_PATH + path;
+        Log.d("文件存取",SAVE_REAL_PATH);
+        File foder = new File(subForder);
+        if (!foder.exists()) {
+            Log.d("文件存在",SAVE_REAL_PATH);
+
+
+            foder.mkdirs();
         }
+
+
+
+
+        File myCaptureFile = new File(subForder, fileName);
+
+        if (!myCaptureFile.exists()) {
+            myCaptureFile.createNewFile();
+        }
+
+        FileOutputStream bos = new FileOutputStream(myCaptureFile,true);
+        bos.write(text.getBytes());
+        bos.flush();
+        bos.close();
+
     }
+
+
 
 
 

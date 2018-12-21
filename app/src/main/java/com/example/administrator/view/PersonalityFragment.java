@@ -22,6 +22,7 @@ import com.example.administrator.adapter.fenxiangkuangAdapter;
 import com.example.administrator.model.Personality;
 import com.example.administrator.model.User;
 import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.GetUserInfomation;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -69,12 +70,12 @@ public class PersonalityFragment extends Fragment {
             }
         });
 
-        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
-        Gson gson = new Gson();
-        User user = gson.fromJson(userResult,User.class);
-
-        userName = (TextView)view.findViewById(R.id.textView6);
-        userName.setText(user.getUser_name());
+//        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+//        Gson gson = new Gson();
+        User user = GetUserInfomation.Get();
+//        Log.d("个人界面",user.getUser_name());
+         userName = (TextView)view.findViewById(R.id.textView6);
+         userName.setText(user.getUser_name());
 
         return view;
     }

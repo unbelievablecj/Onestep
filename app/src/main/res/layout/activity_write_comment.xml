@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="25dp"
     tools:context=".view.CommentActivity">
+    <ProgressBar
+        android:id="@+id/write_comment_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
 
 
     <LinearLayout
@@ -19,6 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
+
 
         <com.example.administrator.util.TitleLayout
             android:layout_width="match_parent"
@@ -86,6 +94,7 @@
                     />
 
             </ScrollView>
+
             <ImageView
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
