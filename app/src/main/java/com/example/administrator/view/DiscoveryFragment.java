@@ -86,11 +86,18 @@ public class DiscoveryFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
 //        inittest1();
-        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
+        final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         final fenxiangkuangAdapter adapter=new fenxiangkuangAdapter(fenxiangkuangList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new fenxiangkuangAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                position=recyclerView.getChildAdapterPosition(view);
+                startActivity(new Intent(getContext(),StrategyActivity.class));
+            }
+        });
         swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh1);
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
