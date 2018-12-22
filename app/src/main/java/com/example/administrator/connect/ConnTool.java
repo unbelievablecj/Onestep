@@ -35,7 +35,7 @@ public class ConnTool {
     private String verifiedUrl=url+"Verified";
     private String loginUrl=url+"Login";
     private String registerUrl=url+"Register";
-    private String changePwdUrl = url+"changePwd";
+    private String changePwdUrl = url+"ChangePwd";
     private String uploadImageUrl =url+"PicUpload";
     private String downImageUrl=url+"PicDownload";
     private String discoverUrl=url+"SearchNear";
