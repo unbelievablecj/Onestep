@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.example.administrator.R;
@@ -85,7 +86,7 @@ public class DiscoveryFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
-//        inittest1();
+        inittest1();
         final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -94,8 +95,20 @@ public class DiscoveryFragment extends Fragment  {
         adapter.setOnItemClickListener(new fenxiangkuangAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
+                TextView textView = view.findViewById(R.id.strategy_time);
+                TextView address = view.findViewById(R.id.address);
+                String s = address.getText().toString()+textView.getText().toString();
+
+                Log.i(TAG, "onItemClick: "+s);
+
+                Intent intent = new Intent(getActivity(),StrategyActivity.class);
+                intent.putExtra("otherStrategies",s);
+
+
+
                 position=recyclerView.getChildAdapterPosition(view);
-                startActivity(new Intent(getContext(),StrategyActivity.class));
+                startActivity(intent);
             }
         });
         swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh1);
@@ -149,7 +162,7 @@ public class DiscoveryFragment extends Fragment  {
     }
 
     private void inittest1(){
-            fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","104","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
+            fenxiangkuang a=new fenxiangkuang("旅法师","福州大学","2018.11.27","10","26",R.drawable.fuzhoudaxue,R.drawable.touxianglvfa,R.drawable.dianzan1,R.drawable.pinglun,R.drawable.shoucan);
             fenxiangkuangList.add(a);
             ImageView imageView = (ImageView)vkuanti.findViewById(R.id.findtupian);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +172,9 @@ public class DiscoveryFragment extends Fragment  {
                     startActivity(intent);
                 }
             });
-            fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","156","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+            fenxiangkuang b=new fenxiangkuang("利威尔兵短","闽江学院","2018.11.25","15","32",R.drawable.malatang,R.drawable.touxiangbinzhang,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
             fenxiangkuangList.add(b);
-            fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","170","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
+            fenxiangkuang c=new fenxiangkuang("血大板","师大学生街","2018.11.21","17","46",R.drawable.naicha,R.drawable.longnvpu,R.drawable.dianzan2,R.drawable.pinglun,R.drawable.shoucang);
             fenxiangkuangList.add(c);
     }
 
@@ -191,11 +204,7 @@ public class DiscoveryFragment extends Fragment  {
                 for(Strategy strategy:strategies){
 
                     Gson gson = new Gson();
-                    try {
-                        FileSaveUtils.saveFile(gson.toJson(strategy).toString(),"otherStrategies",strategy.getTitle()+format.format(strategy.getPublish_time()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
 
                     for(DotStrategy dotStrategy:strategy.getDotStrategy()){
                         try {
@@ -204,6 +213,14 @@ public class DiscoveryFragment extends Fragment  {
                             e.printStackTrace();
                         }
                     }
+
+
+                    try {
+                        FileSaveUtils.saveFile(gson.toJson(strategy),"otherStrategies",strategy.getTitle()+format.format(strategy.getPublish_time())+".txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
 

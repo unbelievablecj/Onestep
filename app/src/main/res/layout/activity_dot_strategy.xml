@@ -26,7 +26,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@drawable/my_wish_button_shape"
+            android:background="@drawable/button_color_select"
             android:text="加入我的心愿单"
             android:textColor="@color/white"
             />

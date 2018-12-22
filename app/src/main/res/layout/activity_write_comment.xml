@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="25dp"
+
     tools:context=".view.CommentActivity">
     <ProgressBar
         android:id="@+id/write_comment_progress"
@@ -42,6 +43,9 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/bg_border"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
             >
 
 

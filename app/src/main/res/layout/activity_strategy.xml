@@ -10,36 +10,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#808080">
+        android:background="#F4F4F4">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#ffffff">
+            android:padding="5dp"
+            android:background="#ffff"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="相关地点："
                 android:gravity="center_vertical"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
             <TextView
-                android:id="@+id/didian"
+                android:id="@+id/otherStrategy_place"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:text="福州大学"
                 android:textColor="#000000"/>
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="5dp">
+            android:layout_height="1dp"
+            android:background="#BBBBBB">
 
-        </LinearLayout>
+        </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#ffffff"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -51,6 +57,7 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
+                android:id="@+id/otherStrategy_label"
                 android:maxLines="1"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="60dp"
@@ -67,6 +74,8 @@
             <TextView
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
+                android:id="@+id/otherStrategy_distance"
+
                 android:layout_alignParentRight="true"
                 android:maxLines="1"
                 android:textSize="18sp"
@@ -77,10 +86,17 @@
                 />
 
         </RelativeLayout>
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/fuzhoudaxue"/>
+            android:layout_height="400dp"
+            android:background="#fff">
+
+            <com.amap.api.maps.MapView
+                android:id="@+id/strategy_map"
+                android:layout_width="wrap_content"
+                android:layout_height="380dp" />
+
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"

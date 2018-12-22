@@ -15,6 +15,7 @@ import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.User;
 import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.GetUserInfomation;
 import com.example.administrator.util.JsonAnalyze;
 import com.google.gson.Gson;
 
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         TextView title = (TextView)findViewById(R.id.title_name);
         title.setText("登录账号");
         TextView forGetPwd = (TextView) findViewById(R.id.loginForgetPwd);
@@ -65,6 +67,17 @@ public class LoginActivity extends AppCompatActivity{
         ck = (CheckBox) findViewById(R.id.rememberPwd);
         progressBar = (ProgressBar)findViewById(R.id.login_progress);
 
+        User userOld = GetUserInfomation.Get();
+//        if(userOld.getUser_mail()!=null)
+//        t1.setText(userOld.getUser_mail());
+
+        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+        Log.d("登录",userResult);
+        if(userResult.length()!=0) {
+            userOld=GetUserInfomation.Get();
+            t1.setText(userOld.getUser_mail());
+        }
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)
@@ -82,11 +95,11 @@ public class LoginActivity extends AppCompatActivity{
                 }
 
                  t1.setText(email);
-                 if(ck.isChecked())
-                 {
-                     t2.setText(password);
-                 }
-                    progressBar.setVisibility(View.VISIBLE);//显示进度条
+//                 if(ck.isChecked())
+//                 {
+//
+//                 }
+                 progressBar.setVisibility(View.VISIBLE);//显示进度条
 
                  WorkThread sendMessage = new WorkThread();
                 sendMessage.start();
@@ -97,7 +110,7 @@ public class LoginActivity extends AppCompatActivity{
                 }
                 sendMessage.interrupt();
 
-                state = 0;
+//                state = 0;
                 switch (state){
                     case 0 :{
 
@@ -119,7 +132,7 @@ public class LoginActivity extends AppCompatActivity{
                         break;
                     }
                     default:{
-                        Toast.makeText(LoginActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                         break;
                     }

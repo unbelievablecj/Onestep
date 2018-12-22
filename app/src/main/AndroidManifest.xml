@@ -45,7 +45,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="228669e8f503148c9274a13f9ded2477" />
+            android:value="43a61b8649708792f043d820653f650f" />
 
         <service android:name="com.amap.api.location.APSService" />
 
@@ -59,9 +59,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".view.MainActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".view.MainActivity">
+
+            <!-- android:launchMode="singleTask" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,12 +79,13 @@
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.ShareSubmitActivity" />
         <activity android:name=".view.CommentActivity" />
-        <activity android:name=".view.StrategyActivity"/>
-        <activity android:name=".view.DotStrategyActivity"/>
+        <activity android:name=".view.StrategyActivity" />
+        <activity android:name=".view.DotStrategyActivity" />
         <activity android:name=".view.MyWishListActivity" />
         <activity android:name=".view.ChangePwdActivity" />
         <activity android:name=".view.MyshareActivity" />
-        <activity android:name=".view.MycollectionActivity"></activity>
+        <activity android:name=".view.MycollectionActivity" />
+        <activity android:name=".view.OtherDotStrategyActivity"></activity>
     </application>
 
 </manifest>

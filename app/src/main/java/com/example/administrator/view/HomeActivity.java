@@ -806,7 +806,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         options.aboveMaskLayer(true);
         aMap.addPolyline(options);
         //距离的计算
-        distance = AMapUtils.calculateLineDistance(new LatLng(privLocation.getLatitude(),
+        distance+= AMapUtils.calculateLineDistance(new LatLng(privLocation.getLatitude(),
                 privLocation.getLongitude()), new LatLng(curLocation.getLatitude(),
                 curLocation.getLongitude()));
 
@@ -896,7 +896,6 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                         Log.i(TAG, "原来的 "+total_Latitude);
 
                         count++;
-                        distance += distance;
 //                        Toast.makeText(getActivity(), "经纬度"+distance+"KM",Toast.LENGTH_SHORT).show();
 
 

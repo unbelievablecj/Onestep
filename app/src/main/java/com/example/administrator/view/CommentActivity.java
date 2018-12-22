@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -144,7 +145,12 @@ public class CommentActivity extends AppCompatActivity {
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
+                //显示进度条
+                ProgressDialog.Builder progressDialog = new ProgressDialog.Builder(CommentActivity.this);
+                progressDialog.setTitle("正在提交评论");
+                progressDialog.setMessage("请稍等");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
 
                 if(bitmap!=null){
 
@@ -189,8 +195,10 @@ public class CommentActivity extends AppCompatActivity {
                 intent.putExtra("strategy_data", strategy);
 //                Log.i(TAG, "运行到了这里 ");
 
+
+
                 Toast.makeText(CommentActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
+
                 setResult(RESULT_OK,intent);
                 finish();
                 }
