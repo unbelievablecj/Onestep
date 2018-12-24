@@ -1,6 +1,7 @@
 package com.example.administrator.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -118,6 +119,19 @@ public class StrategyActivity extends AppCompatActivity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
+        String s = marker.getId();
+        if(s!=null){
+            Intent intent = new Intent(this,OtherDotStrategyActivity.class);
+            intent.putExtra("dotStrategyDetail",s);
+            startActivityForResult(intent,2);
+
+        }
+
+
+
+
+
         return false;
     }
 
@@ -183,6 +197,8 @@ public class StrategyActivity extends AppCompatActivity implements
 
             List<DotStrategy>dotStrategies = strategy.getDotStrategy();
 
+            int flag = 1;
+
             for(DotStrategy dotStrategy:dotStrategies){
 
 //                markerView = LayoutInflater.from(StrategyActivity.this).inflate(R.layout.marker_strategy,null);
@@ -192,6 +208,11 @@ public class StrategyActivity extends AppCompatActivity implements
 //                BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
 //                        .fromBitmap(PictureUtil.convertViewToBitmap(markerView));
 
+                if(flag==1){
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(dotStrategy.getLatitude(),dotStrategy.getLongitude())));
+                    flag =0;
+
+                }
 
                 Marker marker = aMap.addMarker(new MarkerOptions()
                         .anchor(0.5f, 0.5f)
@@ -199,15 +220,18 @@ public class StrategyActivity extends AppCompatActivity implements
                                 .fromBitmap(BitmapFactory.decodeResource(
                                         getResources(), R.mipmap.review_marker)))
                         .position(new LatLng(dotStrategy.getLatitude(), dotStrategy.getLongitude())));
+
+
+                try {
+                    FileSaveUtils.saveFile(gson.toJson(dotStrategy),"otherDotStrategy",marker.getId()+".txt");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             List<Point>points = strategy.getRoute().getPoints();
 
             drawLines(points);
-            aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(points.get(0).getLatitude(),points.get(0).getLongitude())));
-
-
-
 
 
         }

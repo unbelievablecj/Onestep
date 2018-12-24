@@ -39,7 +39,7 @@ public class OtherDotStrategyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_dot_strategy);
         String string =(String)getIntent().getSerializableExtra("dotStrategyDetail");
-        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+string+".txt");
+        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"otherDotStrategy/"+string+".txt");
 
         final DotStrategy dotStrategy = gson.fromJson(s,DotStrategy.class);
 
@@ -50,8 +50,8 @@ public class OtherDotStrategyActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.other_doStrategy_text);
         text.setText(dotStrategy.getComment());
 
-        ImageView img = findViewById(R.id.other_doStrategy_img);
-        img.setImageBitmap(PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes()));
+//        ImageView img = findViewById(R.id.other_doStrategy_img);
+//        img.setImageBitmap(PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes()));
 
         TextView place = findViewById(R.id.other_doStrategy_place);
         place.setText(dotStrategy.getPlace_name());
@@ -62,12 +62,24 @@ public class OtherDotStrategyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(flag == 0) {
                     MyWish myWish = new MyWish("★", dotStrategy.getPlace_name());
+
                     Gson gson = new Gson();
                     try {
                         String temp=FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/myWishList.txt");
-                        List<MyWish> myWishList =  gson.fromJson(temp,new TypeToken<List<MyWish>>(){}.getType());//取出所有心愿
-                        myWishList.add(myWish);//加入新的心愿
-                        temp =gson.toJson(myWishList);
+                        if(temp!="") {
+                            List<MyWish> myWishList = gson.fromJson(temp, new TypeToken<List<MyWish>>() {
+                            }.getType());//取出所有心愿
+                            myWishList.add(myWish);
+                            temp = gson.toJson(myWishList);
+                        }
+                        else
+                        {
+                            List<MyWish> myWishList = new ArrayList<>();
+                            myWishList.add(myWish);//加入新的心愿
+                            temp =gson.toJson(myWishList);
+                        }
+
+                        Log.d("otherdot11", myWish.getPlace());
                         FileSaveUtils.saveFile(temp, "SaveUser", "myWishList.txt");//存入文件
                         Toast.makeText(OtherDotStrategyActivity.this, "添加心愿成功", Toast.LENGTH_SHORT).show();
                         flag = 1;

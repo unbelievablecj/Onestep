@@ -145,7 +145,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
                 strategy.setLabel(labelContent);
 
 
-                Bitmap b = PictureUtil.compressSampling("savePic201812210606517670.JPEG");
+                Bitmap b = PictureUtil.compressSampling("savePic201812220932383863.JPEG");
                 Picture picture = new Picture(PictureUtil.getBytes(b),"saveaa");
 
                 strategy.setPicture(picture);
@@ -199,11 +199,11 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
                 List<DotStrategy> dotStrategies = strategy.getDotStrategy();
 
-                String id;
-                for(DotStrategy dotStrategy:dotStrategies){
-                    id = connTool.uploadImage(new File(FileSaveUtils.getRealPath()+"dotStrategy/savePic/"+dotStrategy.getPicture().getName()));
-                    dotStrategy.getPicture().setUrl(id);
-                }
+//                String id;
+//                for(DotStrategy dotStrategy:dotStrategies){
+//                    id = connTool.uploadImage(new File(FileSaveUtils.getRealPath()+"dotStrategy/savePic/"+dotStrategy.getPicture().getName()));
+//                    dotStrategy.getPicture().setUrl(id);
+//                }
 
 
                 int result = connTool.uploadStrategy(strategy,user);

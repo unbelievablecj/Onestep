@@ -28,9 +28,6 @@ import java.util.List;
 
 public class DotStrategyActivity extends AppCompatActivity {
 
-    private Button addToMyWishList;
-    private int flag = 0;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Gson gson = new Gson();
@@ -50,37 +47,17 @@ public class DotStrategyActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.doStrategy_text);
         text.setText(dotStrategy.getComment());
 
-        ImageView img = findViewById(R.id.doStrategy_img);
-        img.setImageBitmap(PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes()));
+
+        if(dotStrategy.getPicture()!=null){
+            ImageView img = findViewById(R.id.doStrategy_img);
+            img.setImageBitmap(PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes()));
+        }
+
 
         TextView place = findViewById(R.id.doStrategy_place);
         place.setText(dotStrategy.getPlace_name());
 
-        addToMyWishList = (Button)findViewById(R.id.add_to_my_wishlist);
-        addToMyWishList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(flag == 0) {
-                    MyWish myWish = new MyWish("★", dotStrategy.getPlace_name());
-                    Gson gson = new Gson();
-                    try {
-                        String temp=FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/myWishList.txt");
-                        List<MyWish> myWishList =  gson.fromJson(temp,new TypeToken<List<MyWish>>(){}.getType());//取出所有心愿
-                        myWishList.add(myWish);//加入新的心愿
-                        temp =gson.toJson(myWishList);
-                        FileSaveUtils.saveFile(temp, "SaveUser", "myWishList.txt");//存入文件
-                        Toast.makeText(DotStrategyActivity.this, "添加心愿成功", Toast.LENGTH_SHORT).show();
-                        flag = 1;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                {
-                    Toast.makeText(DotStrategyActivity.this,"已添加过此心愿",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
 
 
 

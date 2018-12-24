@@ -65,18 +65,12 @@ public class DiscoveryFragment extends Fragment  {
     private List<fenxiangkuang>newDatas=new ArrayList<fenxiangkuang>();
     private static String TAG = "DiscoveryFragment";
 
-
-
-
-
-
-
     public DiscoveryFragment() {
+
+        start=1;
+        end= 10;
         // Required empty public constructor
     }
-
-
-
 
 
     @SuppressLint("ResourceAsColor")
@@ -206,13 +200,13 @@ public class DiscoveryFragment extends Fragment  {
                     Gson gson = new Gson();
 
 
-                    for(DotStrategy dotStrategy:strategy.getDotStrategy()){
-                        try {
-                            dotStrategy.getPicture().setBitmapBytes(connTool.downloadImage(dotStrategy.getPicture().getUrl()));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
+//                    for(DotStrategy dotStrategy:strategy.getDotStrategy()){
+//                        try {
+//                            dotStrategy.getPicture().setBitmapBytes(connTool.downloadImage(dotStrategy.getPicture().getUrl()));
+//                        } catch (FileNotFoundException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
 
 
                     try {
