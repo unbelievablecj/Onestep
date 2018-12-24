@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.administrator.R;
+import com.example.administrator.model.ActivityCollector;
 import com.example.administrator.util.FileSaveUtils;
 
 import java.io.IOException;
@@ -24,10 +25,23 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
     };;
 
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);//从活动栈中删除活动
+    }
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityCollector.addActivity(this);
 
 
         //判断有没有权限

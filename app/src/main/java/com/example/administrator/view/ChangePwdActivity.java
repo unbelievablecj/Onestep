@@ -3,6 +3,11 @@ package com.example.administrator.view;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.Selection;
+import android.text.Spannable;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +38,9 @@ public class ChangePwdActivity extends AppCompatActivity {
     private  int state = -1;
     private  int state2 = -1;
     private TimeCount time;
+    private boolean flagViewPwd = false;
+    private Button canViewPwd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +54,7 @@ public class ChangePwdActivity extends AppCompatActivity {
         mail.setText(oidUserPwd.getUser_mail());
         change = (Button)findViewById(R.id.changePwd_finish);
         newPassword = (EditText) findViewById(R.id.changePwd_newPwd);
+        canViewPwd =(Button)findViewById(R.id.can_view_pwd);
 
         time = new TimeCount(60000, 1000);
         sendVer.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +76,36 @@ public class ChangePwdActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
+
+
+            }
+        });
+
+
+
+        canViewPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(flagViewPwd == false)
+                {
+                    flagViewPwd = true;
+                    canViewPwd.setBackground(getDrawable(R.drawable.viewpwd));
+                    newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+
+                }
+                else
+                {
+                    flagViewPwd = false;
+                    canViewPwd.setBackground(getDrawable(R.drawable.disview));
+                    newPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+
+                newPassword.postInvalidate();
+                CharSequence text = newPassword.getText();
+                if (text instanceof Spannable) {
+                    Spannable spanText = (Spannable)text;
+                    Selection.setSelection(spanText, text.length());
+                }//让光标到达末尾
 
 
             }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
+import com.example.administrator.model.ActivityCollector;
 import com.example.administrator.model.User;
 import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.GetUserInfomation;
@@ -43,10 +44,24 @@ public class LoginActivity extends AppCompatActivity{
     private User user;
 
     @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);//从活动栈中删除活动
+    }
+
+
+
+
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActivityCollector.addActivity(this);
+
 
 
         TextView title = (TextView)findViewById(R.id.title_name);
@@ -115,10 +130,11 @@ public class LoginActivity extends AppCompatActivity{
                     case 0 :{
 
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
+                        ActivityCollector.finishAll();
                         startActivity(intent);
                         progressBar.setVisibility(View.GONE);
 //                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
-                        finish();
+
                         break;
                     }
                     case 1: {

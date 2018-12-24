@@ -8,8 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.administrator.R;
+import com.example.administrator.model.ActivityCollector;
 
 public class FragmentItemSetsActivity extends AppCompatActivity {
 
@@ -18,6 +20,17 @@ public class FragmentItemSetsActivity extends AppCompatActivity {
     private PersonalityFragment fragment3;
     private FragmentTransaction transaction;
     private FragmentManager fragmentManager;
+    private long mExitTime = System.currentTimeMillis();//mExitTime为系统时间
+
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);//从活动栈中删除活动
+    }
+
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,10 +65,17 @@ public class FragmentItemSetsActivity extends AppCompatActivity {
         }
     };
 
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_itemsets);
+        ActivityCollector.addActivity(FragmentItemSetsActivity.this);
+
         fragment1 = new HomeActivity();
         fragment2 = new DiscoveryFragment();
         fragment3 = new PersonalityFragment();
@@ -87,5 +107,23 @@ public class FragmentItemSetsActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - mExitTime < 800) {  //两次连点间隔小于0.8秒
+            ActivityCollector.finishAll();  //关闭所有活动，退出应用
+            android.os.Process.killProcess(android.os.Process.myPid());//关闭进程
+        }
+        else{
+            Toast.makeText(FragmentItemSetsActivity.this,"再按一次返回键退出应用",Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();   //这里赋值最关键，别忘记
+        }
+    }
+
 
 }
