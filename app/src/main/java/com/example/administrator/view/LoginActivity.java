@@ -1,12 +1,15 @@
 package com.example.administrator.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,8 @@ public class LoginActivity extends AppCompatActivity{
     private CheckBox ck;
     private View progressBar;
     private User user;
+    private SharedPreferences sp;
+
 
     @Override
     public void onDestroy()
@@ -81,6 +86,7 @@ public class LoginActivity extends AppCompatActivity{
         t2 =(TextView) findViewById(R.id.passwordL);
         ck = (CheckBox) findViewById(R.id.rememberPwd);
         progressBar = (ProgressBar)findViewById(R.id.login_progress);
+        sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
         User userOld = GetUserInfomation.Get();
 //        if(userOld.getUser_mail()!=null)
@@ -91,6 +97,12 @@ public class LoginActivity extends AppCompatActivity{
         if(userResult.length()!=0) {
             userOld=GetUserInfomation.Get();
             t1.setText(userOld.getUser_mail());
+            if(sp.getBoolean("ISCHECK", false))
+            {
+                ck.setChecked(true);
+                t2.setText(userOld.getUser_pwd());
+            }
+
         }
 
         login.setOnClickListener(new View.OnClickListener(){
@@ -110,10 +122,6 @@ public class LoginActivity extends AppCompatActivity{
                 }
 
                  t1.setText(email);
-//                 if(ck.isChecked())
-//                 {
-//
-//                 }
                  progressBar.setVisibility(View.VISIBLE);//显示进度条
 
                  WorkThread sendMessage = new WorkThread();
@@ -156,6 +164,22 @@ public class LoginActivity extends AppCompatActivity{
                 return;
             }
         });
+
+
+
+        ck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if (ck.isChecked()) {
+                    sp.edit().putBoolean("ISCHECK", true).commit();
+
+                }else {
+                    sp.edit().putBoolean("ISCHECK", false).commit();
+                }
+
+            }
+        });
+
+
 
     }
 
