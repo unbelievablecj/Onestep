@@ -257,10 +257,9 @@ public class ConnTool {
             Request request = new Request.Builder().url(discoverUrl).post(body).build();
             Response response = client.newCall(request).execute();
             Answer a=g.fromJson(response.body().string(),Answer.class);
-            if(a.getRes().equals("sql_wrong")){
+            if(a.getRes().equals("sql_wrong")) {
                 return null;
             }
-
             Type type = new TypeToken<List<Gonglue>>() {
             }.getType();
             l=g.fromJson(a.getRes(),type);
