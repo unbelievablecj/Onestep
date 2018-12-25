@@ -1,7 +1,5 @@
 package com.example.administrator.view;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,16 +9,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.MyWishAdapter;
 import com.example.administrator.model.MyWish;
-import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +53,7 @@ public class MyWishListActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         String t = gson.toJson(myWishList);
                         Log.d("我的心愿单",t);
-                        FileSaveUtils.saveFile(t,"SaveUser","myWishList.txt");
+                        FileUtils.saveFile(t,"SaveUser","myWishList.txt");
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -76,7 +71,7 @@ public class MyWishListActivity extends AppCompatActivity {
 
     private void initMyWish() {
         Gson gson = new Gson();
-        String temp=FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/myWishList.txt");
+        String temp=FileUtils.readFile(FileUtils.getRealPath()+"/SaveUser/myWishList.txt");
         if(temp.length()!=0) {
             myWishList = gson.fromJson(temp, new TypeToken<List<MyWish>>() {
             }.getType());//从文件读入心愿单并显示
@@ -92,7 +87,7 @@ public class MyWishListActivity extends AppCompatActivity {
             try {
                 Gson gson = new Gson();
                 String t = gson.toJson(myWishList);
-                FileSaveUtils.saveFile(t,"SaveUser","myWishList.txt");
+                FileUtils.saveFile(t,"SaveUser","myWishList.txt");
             } catch (IOException e) {
                 e.printStackTrace();
             }

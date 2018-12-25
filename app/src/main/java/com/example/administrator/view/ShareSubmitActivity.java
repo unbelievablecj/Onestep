@@ -1,7 +1,6 @@
 package com.example.administrator.view;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
@@ -21,23 +19,29 @@ import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Picture;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.model.User;
-import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.FileUtils;
 import com.example.administrator.util.PictureUtil;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 分享攻略页面
+ */
+
 
 public class ShareSubmitActivity extends AppCompatActivity {
 
     private int labelNum;
     private static final String TAG = "ShareSubmitActivity";
 
-    private Strategy strategy;
-    private User user;
+    private Strategy strategy;  //总攻略
+    private User user;        //用户
     private Button back;
 
 
@@ -152,13 +156,13 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
 
                 try {
-                    FileSaveUtils.saveFile(gson.toJson(strategy),"strategy");
+                    FileUtils.saveFile(gson.toJson(strategy),"strategy");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
 
-                String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+                String userResult = FileUtils.readFile(FileUtils.getRealPath()+"/SaveUser/UserConfig.txt");
 
                 user = gson.fromJson(userResult,User.class);
 
@@ -171,11 +175,6 @@ public class ShareSubmitActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 sendMessage.interrupt();
-
-
-
-
-
 
                 startActivity(intent);
                 finish();
@@ -201,7 +200,7 @@ public class ShareSubmitActivity extends AppCompatActivity {
 
 //                String id;
 //                for(DotStrategy dotStrategy:dotStrategies){
-//                    id = connTool.uploadImage(new File(FileSaveUtils.getRealPath()+"dotStrategy/savePic/"+dotStrategy.getPicture().getName()));
+//                    id = connTool.uploadImage(new File(FileUtils.getRealPath()+"dotStrategy/savePic/"+dotStrategy.getPicture().getName()));
 //                    dotStrategy.getPicture().setUrl(id);
 //                }
 

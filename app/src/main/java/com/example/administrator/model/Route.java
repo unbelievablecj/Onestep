@@ -7,14 +7,18 @@ import java.io.Serializable;
 import java.util.List;
 import com.amap.api.maps.*;
 import com.amap.api.maps.model.LatLng;
-
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 路线类，用于存储点集以及总的路线长度
+ */
 
 public class Route implements Serializable {
 
-    //路线上的点集列表
-    private List<Point> points;
-    //路线长度
-    private Double total_distance;
+    private List<Point> points;    //路线上的点集列表
+    private Double total_distance;    //路线长度
+
 
     public List<Point> getPoints() {
         return points;

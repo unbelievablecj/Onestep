@@ -53,21 +53,16 @@ import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
-import com.example.administrator.model.Picture;
 import com.example.administrator.model.Point;
 import com.example.administrator.model.Route;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.util.AMapUtil;
-import com.example.administrator.util.FileCacheUtil;
-import com.example.administrator.util.FileSaveUtils;
-import com.example.administrator.util.FilenameUtil;
+import com.example.administrator.util.FileUtils;
 import com.example.administrator.util.PictureUtil;
 import com.example.administrator.util.ToastUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,10 +74,16 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static android.app.Activity.RESULT_OK;
 import static com.example.administrator.util.Constants.RC_CAMERA__CALENDAR_STORAGE_PHONE_LOCATION;
 
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 主页类
+ */
 
-public class HomeActivity extends Fragment implements View.OnClickListener ,
+public class HomeActivity extends Fragment implements View.OnClickListener,
         OnMapClickListener, OnInfoWindowClickListener, InfoWindowAdapter, OnMarkerClickListener,
-        OnPoiSearchListener,EasyPermissions.PermissionCallbacks{
+        OnPoiSearchListener, EasyPermissions.PermissionCallbacks {
 
 
     private static final String TAG = "HomeActivity";
@@ -110,30 +111,30 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
 
     //页面按钮
+    private int button_status = 0; //按钮状态
     private Button start_trace; //开始记录按钮
-    private int button_status = 0;
     private Button review; //写评论按钮
     private Button share; //分享按钮
-
 
 
     //定位功能属性
     private LocationSource.OnLocationChangedListener mListener;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
-    private AMapLocation privLocation;
-    private AMapLocation curLocation;
-    private double distance;
-    private boolean start_draw = false;
-    private CircleOptions circle;
+    private AMapLocation privLocation; //前一个点的位置
+    private AMapLocation curLocation;//当前点的位置
+    private double distance;//总的距离
+    private boolean start_draw = false; //是否开始画线
+    private CircleOptions circle;       //蒙版属性
 
 
     //数据部分属性
-    private Strategy strategy;
-    private Route route;
-    private DotStrategy dotStrategy;
-    private List<Point> points;
-    private List<DotStrategy> dotStrategies;
+    private Strategy strategy; //总攻略
+    private Route route;    //路线
+    private DotStrategy dotStrategy;    //地点攻略
+    private List<Point> points;     //一条路线上的点集
+    private List<DotStrategy> dotStrategies;    //所有的地点攻略
+    //计算一个攻略的特征值
     private static Double total_Latitude = 0.0;
     private static Double total_Longitude = 0.0;
     private static int count = 0;
@@ -143,86 +144,26 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     private View markerView;
     private CircleImageView icon;
 
-
+    //gson 类和JSON信息的转化
     private Gson gson = new Gson();
     private String strategyData;
 
 
-    //从写评论界面返回信息
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch(requestCode){
-            case 1 :
-                if(resultCode == RESULT_OK){
-                    DotStrategy dotStrategy = (DotStrategy)data.getSerializableExtra("strategy_data");
-                    dotStrategies.add(dotStrategy);
-                    strategyData = gson.toJson(dotStrategy);
-
-//                    Double feature = curLocation.getLatitude()+curLocation.getLongitude();
-//                    String fileName = FilenameUtil.getDotStrategyName(feature);
-
-
-
-                    if(dotStrategy.getPicture()==null){
-                        aMap.addMarker(new MarkerOptions()
-                                .anchor(0.5f, 0.5f)
-                                .icon(BitmapDescriptorFactory
-                                        .fromBitmap(BitmapFactory.decodeResource(
-                                                getResources(), R.mipmap.review_marker)))
-                                .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
-                    }else{
-                        markerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_strategy,null);
-                        icon = (CircleImageView) markerView.findViewById(R.id.marker_item_icon);
-                        Bitmap bitmap = PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes());
-//                        PictureUtil.compressSampling(dotStrategy.getPicture().getName())
-                        icon.setImageBitmap(bitmap);
-                        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
-                                .fromBitmap(PictureUtil.convertViewToBitmap(markerView));
-
-
-
-
-                        Marker marker = aMap.addMarker(new MarkerOptions()
-                                .anchor(0.5f, 0.5f)
-                                .icon(bitmapDescriptor)
-                                .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
-
-                        try {
-                            FileSaveUtils.saveFile(strategyData,"dotStrategy",marker.getId()+".txt");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-
-
-
-//                    Log.e(TAG,"信息："+dotStrategy.getPicture().getName());
-
-
-                    //按回退按钮
-//                    String dataBack = data.getStringExtra("dataBack");
-//                    if(dataBack != null){
-//                        Log.d("dataBack", dataBack);
-//                    }
-                }
-                break;
-            default : break;
-        }
-
-    }
-
-
-    //重写请求权限
+    /**
+     * 重写请求权限
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode,permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     /**
-     * 去申请权限
+     * 申请权限
      */
     private void requestPermissions() {
 
@@ -233,17 +174,9 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 Manifest.permission.READ_CALL_LOG
         };
 
-        //判断有没有权限
-        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-            //
+        //没有权限去申请权限
+        if (!EasyPermissions.hasPermissions(getActivity(), perms)) {
 
-        } else {
-
-            // 如果没有权限, 就去申请权限
-            // this: 上下文
-            // Dialog显示的正文
-            // RC_CAMERA_AND_RECORD_AUDIO 请求码, 用于回调的时候判断是哪次申请
-            // perms 就是申请的权限
             EasyPermissions.requestPermissions(this, "需要申请您的相机、手机访问、存储、定位权限", RC_CAMERA__CALENDAR_STORAGE_PHONE_LOCATION, perms);
 
         }
@@ -254,7 +187,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
      * 权限申请成功的回调
      *
      * @param requestCode 申请权限时的请求码
-     * @param perms 申请成功的权限集合
+     * @param perms       申请成功的权限集合
      */
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
@@ -268,9 +201,9 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
             } else if (perms.get(i).equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Log.i(TAG, "onPermissionsGranted: " + "存储权限成功");
-            }else if (perms.get(i).equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            } else if (perms.get(i).equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 Log.i(TAG, "onPermissionsGranted: " + "定位权限成功");
-            }else if (perms.get(i).equals(Manifest.permission.READ_CALL_LOG)) {
+            } else if (perms.get(i).equals(Manifest.permission.READ_CALL_LOG)) {
                 Log.i(TAG, "onPermissionsGranted: " + "手机访问权限成功");
             }
 
@@ -282,7 +215,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
      * 权限申请拒绝的回调
      *
      * @param requestCode 申请权限时的请求码
-     * @param perms 申请拒绝的权限集合
+     * @param perms       申请拒绝的权限集合
      */
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
@@ -298,11 +231,66 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
             } else if (perms.get(i).equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Log.i(TAG, "onPermissionsDenied: " + "存储权限失败");
-            }else if (perms.get(i).equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            } else if (perms.get(i).equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 Log.i(TAG, "onPermissionsDenied: " + "定位权限失败");
-            }else if (perms.get(i).equals(Manifest.permission.READ_CALL_LOG)) {
+            } else if (perms.get(i).equals(Manifest.permission.READ_CALL_LOG)) {
                 Log.i(TAG, "onPermissionsDenied: " + "手机访问权限失败");
             }
+        }
+
+    }
+
+
+    /**
+     * 从写评论界面返回信息
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    dotStrategy = (DotStrategy) data.getSerializableExtra("strategy_data");
+                    dotStrategies.add(dotStrategy);
+                    strategyData = gson.toJson(dotStrategy);
+
+                    if (dotStrategy.getPicture() == null) {
+                        aMap.addMarker(new MarkerOptions()
+                                .anchor(0.5f, 0.5f)
+                                .icon(BitmapDescriptorFactory
+                                        .fromBitmap(BitmapFactory.decodeResource(
+                                                getResources(), R.mipmap.review_marker)))
+                                .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
+                    } else {
+                        markerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_strategy, null);
+                        icon = (CircleImageView) markerView.findViewById(R.id.marker_item_icon);
+                        Bitmap bitmap = PictureUtil.getBitmap(dotStrategy.getPicture().getBitmapBytes());
+                        icon.setImageBitmap(bitmap);
+                        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
+                                .fromBitmap(PictureUtil.convertViewToBitmap(markerView));
+
+
+                        Marker marker = aMap.addMarker(new MarkerOptions()
+                                .anchor(0.5f, 0.5f)
+                                .icon(bitmapDescriptor)
+                                .title("$")
+                                .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
+
+                        try {
+                            FileUtils.saveFile(strategyData, "dotStrategy", marker.getId() + ".txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }
+                break;
+            default:
+                break;
         }
 
     }
@@ -316,7 +304,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_find:
-                    Intent intent = new Intent(getActivity(),FragmentItemSetsActivity.class);
+                    Intent intent = new Intent(getActivity(), FragmentItemSetsActivity.class);
                     startActivity(intent);
                     return true;
             }
@@ -325,17 +313,12 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     };
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_home,container,false);
+        view = inflater.inflate(R.layout.activity_home, container, false);
         requestPermissions();
-
-
-//        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mapView = (MapView) view.findViewById(R.id.map);
+        mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
 
         if (aMap == null) {
@@ -352,8 +335,6 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     }
 
 
-
-
     /**
      * 初始化AMap对象
      */
@@ -362,39 +343,43 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
         TextView searchButton = (TextView) view.findViewById(R.id.btn_search);
         searchButton.setOnClickListener(this);
-        start_trace =(Button)view.findViewById(R.id.start_trace);
-        review  =(Button)view.findViewById(R.id.review);
-        share = (Button)view.findViewById(R.id.share);
+        start_trace = (Button) view.findViewById(R.id.start_trace);
+        review = (Button) view.findViewById(R.id.review);
+        share = (Button) view.findViewById(R.id.share);
+        mPoiDetail = (RelativeLayout) view.findViewById(R.id.poi_detail);
+        mPoiName = (TextView) view.findViewById(R.id.poi_name);
+        mPoiAddress = (TextView) view.findViewById(R.id.poi_address);
+        mSearchText = (EditText) view.findViewById(R.id.input_edittext);
 
         circle = new CircleOptions().
-                center(new LatLng(30,116)).
+                center(new LatLng(30, 116)).
                 radius(10000000).
                 fillColor(Color.argb(55, 1, 1, 1));
 
-
-
-
+        //开始记录设置监听
         start_trace.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                switch (button_status){
+                if(poiOverlay!=null){
+                    poiOverlay.removeFromMap();
+                }
+
+                switch (button_status) {
                     //点击开始记录
                     case 0:
 
                         strategy = new Strategy();
                         points = new ArrayList<Point>();
                         dotStrategies = new ArrayList<DotStrategy>();
-
                         start_trace.setBackgroundResource(R.drawable.end_trace);
                         start_trace.setText(getResources().getString(R.string.end_trace));
-                        start_trace.setPadding(0,0,0,0);
+                        start_trace.setPadding(0, 0, 0, 0);
                         button_status = 1;
                         review.setVisibility(View.VISIBLE);
-                        review.setPadding(0,0,0,0);
+                        review.setPadding(0, 0, 0, 0);
                         start_draw = true;
                         aMap.addCircle(circle);
-
 
                         break;
 
@@ -406,16 +391,10 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                         review.setVisibility(View.INVISIBLE);
                         start_trace.setVisibility(View.INVISIBLE);
                         share.setVisibility(View.VISIBLE);
-                        share.setPadding(0,0,0,0);
-
-
+                        share.setPadding(0, 0, 0, 0);
                         start_draw = false;
 
-
-
                         break;
-
-
 
 
                 }
@@ -424,6 +403,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
             }
         });
 
+        //分享按钮设置监听
         share.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -434,40 +414,37 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 route = new Route();
                 route.setPoints(points);
                 route.setTotal_distance(distance);
-                Log.i(TAG, "经度"+total_Latitude/count);
-                strategy.setFeat_LatLng(new Point(total_Latitude/count,total_Longitude/count));
+                Log.i(TAG, "经度" + total_Latitude / count);
+                strategy.setFeat_LatLng(new Point(total_Latitude / count, total_Longitude / count));
                 strategy.setRoute(route);
                 strategy.setPublish_time(date);
                 strategy.setDotStrategy(dotStrategies);
-                Intent intent = new Intent(getActivity(),ShareSubmitActivity.class);
+
+                //总攻略类信息传入提交分享界面
+                Intent intent = new Intent(getActivity(), ShareSubmitActivity.class);
                 intent.putExtra("strategy_data", strategy);
                 startActivity(intent);
 
             }
         });
 
+        //写评论按钮设置监听
         review.setOnClickListener(new View.OnClickListener() {
 
             @Override
             //点击写评论按钮
             public void onClick(View v) {
 
-//                aMap.addMarker(new MarkerOptions()
-//                        .anchor(0.5f, 0.5f)
-//                        .icon(BitmapDescriptorFactory
-//                                .fromBitmap(BitmapFactory.decodeResource(
-//                                        getResources(), R.mipmap.review_marker)))
-//                        .position(new LatLng(curLocation.getLatitude(), curLocation.getLongitude())));
-
-                Intent intent = new Intent(getActivity(),CommentActivity.class);
-                startActivityForResult(intent,1);
+                if(poiOverlay!=null){
+                    poiOverlay.removeFromMap();
+                }
+                Intent intent = new Intent(getActivity(), CommentActivity.class);
+                startActivityForResult(intent, 1);
 
             }
 
 
         });
-
-
 
 
     }
@@ -494,50 +471,8 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 
-        mPoiDetail = (RelativeLayout) view.findViewById(R.id.poi_detail);
-        mPoiDetail.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-//				Intent intent = new Intent(PoiSearchActivity.this,
-//						SearchDetailActivity.class);
-//				intent.putExtra("poiitem", mPoi);
-//				startActivity(intent);
-
-            }
-        });
-        mPoiName = (TextView) view.findViewById(R.id.poi_name);
-        mPoiAddress = (TextView) view.findViewById(R.id.poi_address);
-        mSearchText = (EditText)view.findViewById(R.id.input_edittext);
     }
-
-
-
-
-
-    /**
-     * 开始进行poi搜索
-     */
-    /**
-     * 开始进行poi搜索
-     */
-    protected void doSearchQuery() {
-        keyWord = mSearchText.getText().toString().trim();
-        currentPage = 0;
-        query = new PoiSearch.Query(keyWord, "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-        query.setPageSize(20);// 设置每页最多返回多少条poiitem
-        query.setPageNum(currentPage);// 设置查第一页
-
-        search_point = new LatLonPoint(curLocation.getLatitude(),curLocation.getLongitude());
-
-
-        poiSearch = new PoiSearch(getActivity(), query);
-        poiSearch.setOnPoiSearchListener(this);
-        poiSearch.setBound(new SearchBound(search_point, 5000, true));//
-        // 设置搜索区域为以当前点为圆心，其周围5000米范围
-        poiSearch.searchPOIAsyn();// 异步搜索
-    }
-
 
     /**
      * 方法必须重写
@@ -579,7 +514,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_search:
                 doSearchQuery();
                 break;
@@ -590,6 +525,25 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     }
 
 
+    /**
+     * 开始进行poi搜索
+     */
+    protected void doSearchQuery() {
+        keyWord = mSearchText.getText().toString().trim();
+        currentPage = 0;
+        query = new PoiSearch.Query(keyWord, "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query.setPageSize(20);// 设置每页最多返回多少条poiitem
+        query.setPageNum(currentPage);// 设置查第一页
+
+        search_point = new LatLonPoint(curLocation.getLatitude(), curLocation.getLongitude());
+
+
+        poiSearch = new PoiSearch(getActivity(), query);
+        poiSearch.setOnPoiSearchListener(this);
+        poiSearch.setBound(new SearchBound(search_point, 5000, true));//
+        // 设置搜索区域为以当前点为圆心，其周围5000米范围
+        poiSearch.searchPOIAsyn();// 异步搜索
+    }
 
 
     //地点搜索
@@ -610,7 +564,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                             resetlastmarker();
                         }
                         //清理之前搜索结果的marker
-                        if (poiOverlay !=null) {
+                        if (poiOverlay != null) {
                             poiOverlay.removeFromMap();
                         }
                         aMap.clear();
@@ -644,7 +598,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 ToastUtil
                         .show(getActivity(), R.string.no_result);
             }
-        } else  {
+        } else {
             ToastUtil.showerror(this.getActivity(), rcode);
         }
     }
@@ -702,7 +656,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     .fromBitmap(BitmapFactory.decodeResource(
                             getResources(),
                             markers[index])));
-        }else {
+        } else {
             mlastMarker.setIcon(BitmapDescriptorFactory.fromBitmap(
                     BitmapFactory.decodeResource(getResources(), R.mipmap.marker_other_highlight)));
         }
@@ -735,55 +689,63 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-//        Log.i(TAG, "文件找到");
-
-        String s = marker.getId();
-        if(s!=null){
-            Intent intent = new Intent(getActivity(),DotStrategyActivity.class);
-            intent.putExtra("dotStrategyDetail",s);
-            startActivityForResult(intent,2);
-
-        }
-
-        if (marker.getObject() != null) {
 
 
-            whetherToShowDetailInfo(true);
-            try {
-                PoiItem mCurrentPoi = (PoiItem) marker.getObject();
-                if (mlastMarker == null) {
-                    mlastMarker = marker;
-                } else {
-                    // 将之前被点击的marker置为原来的状态
-                    resetlastmarker();
-                    mlastMarker = marker;
+
+            if(marker.getTitle()=="$"){
+                String s = marker.getId();
+                if (s != null) {
+                    Intent intent = new Intent(getActivity(), DotStrategyActivity.class);
+                    intent.putExtra("dotStrategyDetail", s);
+                    startActivityForResult(intent, 2);
+
                 }
-                detailMarker = marker;
-                detailMarker.setIcon(BitmapDescriptorFactory
-                        .fromBitmap(BitmapFactory.decodeResource(
-                                getResources(),
-                                R.mipmap.poi_marker_pressed)));
 
-                setPoiItemDisplayContent(mCurrentPoi);
-            } catch (Exception e) {
-                // TODO: handle exception
+            }else{
+                if (marker.getObject() != null) {
+                    whetherToShowDetailInfo(true);
+                try {
+                    PoiItem mCurrentPoi = (PoiItem) marker.getObject();
+                    if (mlastMarker == null) {
+                        mlastMarker = marker;
+                    } else {
+                        // 将之前被点击的marker置为原来的状态
+                        resetlastmarker();
+                        mlastMarker = marker;
+                    }
+                    detailMarker = marker;
+                    detailMarker.setIcon(BitmapDescriptorFactory
+                            .fromBitmap(BitmapFactory.decodeResource(
+                                    getResources(),
+                                    R.mipmap.poi_marker_pressed)));
+
+                    setPoiItemDisplayContent(mCurrentPoi);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            } else {
+                whetherToShowDetailInfo(false);
+                resetlastmarker();
+
             }
-        }else {
-            whetherToShowDetailInfo(false);
-            resetlastmarker();
+
         }
+
+
+
 
 
         return true;
     }
 
+    /**
+     * 写入搜素的信息
+     * @param mCurrentPoi
+     */
     private void setPoiItemDisplayContent(final PoiItem mCurrentPoi) {
         mPoiName.setText(mCurrentPoi.getTitle());
-        mPoiAddress.setText(mCurrentPoi.getSnippet()+mCurrentPoi.getDistance());
+        mPoiAddress.setText(mCurrentPoi.getSnippet() + mCurrentPoi.getDistance());
     }
-
-
-
 
 
     /**
@@ -806,17 +768,19 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
         options.aboveMaskLayer(true);
         aMap.addPolyline(options);
         //距离的计算
-        distance+= AMapUtils.calculateLineDistance(new LatLng(privLocation.getLatitude(),
+        distance += AMapUtils.calculateLineDistance(new LatLng(privLocation.getLatitude(),
                 privLocation.getLongitude()), new LatLng(curLocation.getLatitude(),
                 curLocation.getLongitude()));
 
     }
+
     public LocationSource mLocationSource = new LocationSource() {
         @Override
         public void activate(OnLocationChangedListener onLocationChangedListener) {
             mListener = onLocationChangedListener;
             initAmapLocation();
         }
+
         @Override
         public void deactivate() {
             mListener = null;
@@ -826,8 +790,6 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
             }
             mLocationClient = null;
         }
-
-
 
 
     };
@@ -871,9 +833,6 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     mListener.onLocationChanged(amapLocation);// 显示系统小蓝点,不写这一句无法显示到当前位置
                     amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
 
-
-
-
                     Log.e(TAG, "获取经纬度集合" + privLocation);//打Log记录点是否正确
 
                     amapLocation.getAccuracy();//获取精度信息
@@ -883,33 +842,18 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                     Log.e(TAG, "获取点的类型" + amapLocation.getLocationType());
                     if (start_draw) {
 
-
                         drawLines(amapLocation);//一边定位一边连线
-
-
-
-
-                        points.add(new Point(amapLocation.getLatitude(),amapLocation.getLongitude()));
-                        total_Latitude+= amapLocation.getLatitude();
-                        total_Longitude+= amapLocation.getLongitude();
-
-                        Log.i(TAG, "原来的 "+total_Latitude);
-
+                        points.add(new Point(amapLocation.getLatitude(), amapLocation.getLongitude()));
+                        total_Latitude += amapLocation.getLatitude();
+                        total_Longitude += amapLocation.getLongitude();
                         count++;
-//                        Toast.makeText(getActivity(), "经纬度"+distance+"KM",Toast.LENGTH_SHORT).show();
-
-
                     }
-                    //获取定位时间
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date(amapLocation.getTime());
-                    sdf.format(date);
+
                     privLocation = amapLocation;
                     curLocation = amapLocation;
 
                     AMapUtil.setCurLocation(curLocation);
 
-//
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
@@ -920,27 +864,23 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
     };
 
 
-
-
-
-
-
-
     private class myPoiOverlay {
         private AMap mamap;
         private List<PoiItem> mPois;
         private ArrayList<Marker> mPoiMarks = new ArrayList<Marker>();
-        public myPoiOverlay(AMap amap , List<PoiItem> pois) {
+
+        public myPoiOverlay(AMap amap, List<PoiItem> pois) {
             mamap = amap;
             mPois = pois;
         }
 
         /**
          * 添加Marker到地图中。
+         *
          * @since V2.1.0
          */
         public void addToMap() {
-            if(mPois != null) {
+            if (mPois != null) {
                 int size = mPois.size();
                 for (int i = 0; i < size; i++) {
                     Marker marker = mamap.addMarker(getMarkerOptions(i));
@@ -950,31 +890,6 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 }
             }
         }
-
-
-
-
-
-        private void setPoiItemDisplayContent(final PoiItem mCurrentPoi) {
-            mPoiName.setText(mCurrentPoi.getTitle());
-            mPoiAddress.setText(mCurrentPoi.getSnippet()+mCurrentPoi.getDistance());
-        }
-
-
-
-
-
-
-        private void whetherToShowDetailInfo(boolean isToShow) {
-            if (isToShow) {
-                mPoiDetail.setVisibility(View.VISIBLE);
-
-            } else {
-                mPoiDetail.setVisibility(View.GONE);
-
-            }
-        }
-
 
         /**
          * 去掉PoiOverlay上所有的Marker。
@@ -989,6 +904,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
         /**
          * 移动镜头到当前的视角。
+         *
          * @since V2.1.0
          */
         public void zoomToSpan() {
@@ -1002,7 +918,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
         private LatLngBounds getLatLngBounds() {
             LatLngBounds.Builder b = LatLngBounds.builder();
-            if(mPois != null) {
+            if (mPois != null) {
                 int size = mPois.size();
                 for (int i = 0; i < size; i++) {
                     b.include(new LatLng(mPois.get(i).getLatLonPoint().getLatitude(),
@@ -1048,6 +964,7 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
 
         /**
          * 返回第index的poi的信息。
+         *
          * @param index 第几个poi。
          * @return poi的信息。poi对象详见搜索服务模块的基础核心包（com.amap.api.services.core）中的类 <strong><a href="../../../../../../Search/com/amap/api/services/core/PoiItem.html" title="com.amap.api.services.core中的类">PoiItem</a></strong>。
          * @since V2.1.0
@@ -1064,19 +981,13 @@ public class HomeActivity extends Fragment implements View.OnClickListener ,
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(
                         BitmapFactory.decodeResource(getResources(), markers[arg0]));
                 return icon;
-            }else {
+            } else {
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(
                         BitmapFactory.decodeResource(getResources(), R.mipmap.marker_other_highlight));
                 return icon;
             }
         }
     }
-
-
-
-
-
-
 
 
 }

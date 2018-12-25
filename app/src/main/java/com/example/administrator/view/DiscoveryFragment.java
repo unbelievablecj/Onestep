@@ -2,9 +2,6 @@ package com.example.administrator.view;
 
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,14 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,27 +20,23 @@ import com.amap.api.location.AMapLocation;
 import com.example.administrator.R;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
 import com.example.administrator.connect.ConnTool;
-import com.example.administrator.model.DotStrategy;
-import com.example.administrator.model.Picture;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.util.AMapUtil;
-import com.example.administrator.util.FileSaveUtils;
-import com.example.administrator.util.PictureUtil;
-import com.example.administrator.util.ToastUtil;
+import com.example.administrator.util.FileUtils;
 import com.example.administrator.util.fenxiangkuang;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: wyz:从服务器获取信息并存储
+ */
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,7 +69,7 @@ public class DiscoveryFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         vkuanti=inflater.inflate(R.layout.sharing_templet,container,false);
-        inittest1();
+//        inittest1();
         final RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.fenxiangliebiao);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -176,19 +165,14 @@ public class DiscoveryFragment extends Fragment  {
     private class ConnectThread extends Thread{
 
 
+        /**
+         * 从服务器获取10条总攻略 并且进行存储
+         */
         @Override
         public void run() {
             super.run();
-
-
-
             ConnTool connTool = new ConnTool();
-
-
             curLocation = AMapUtil.getCurLocation();
-
-
-
             strategies = connTool.discover(curLocation.getLongitude(),curLocation.getLatitude(),start,end);
             if(strategies.size()==0){
 //                ToastUtil.show(getContext(),"没有更多的内容了！");
@@ -210,7 +194,7 @@ public class DiscoveryFragment extends Fragment  {
 
 
                     try {
-                        FileSaveUtils.saveFile(gson.toJson(strategy),"otherStrategies",strategy.getTitle()+format.format(strategy.getPublish_time())+".txt");
+                        FileUtils.saveFile(gson.toJson(strategy),"otherStrategies",strategy.getTitle()+format.format(strategy.getPublish_time())+".txt");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

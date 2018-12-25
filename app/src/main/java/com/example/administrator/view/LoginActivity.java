@@ -14,21 +14,13 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.User;
-import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.FileUtils;
 import com.example.administrator.util.GetUserInfomation;
-import com.example.administrator.util.JsonAnalyze;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 public class LoginActivity extends AppCompatActivity{
@@ -71,7 +63,7 @@ public class LoginActivity extends AppCompatActivity{
 //        if(userOld.getUser_mail()!=null)
 //        t1.setText(userOld.getUser_mail());
 
-        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+        String userResult = FileUtils.readFile(FileUtils.getRealPath()+"/SaveUser/UserConfig.txt");
         Log.d("登录",userResult);
         if(userResult.length()!=0) {
             userOld=GetUserInfomation.Get();
@@ -187,8 +179,8 @@ public class LoginActivity extends AppCompatActivity{
                         String temp = gson.toJson(user);
                         Log.d("登录状态11",temp);
                         try {
-//                            FileSaveUtils.saveFile("","","");
-                            FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");
+//                            FileUtils.saveFile("","","");
+                            FileUtils.saveFile(temp,"SaveUser","UserConfig.txt");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

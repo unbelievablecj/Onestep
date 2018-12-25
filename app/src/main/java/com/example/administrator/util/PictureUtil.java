@@ -2,15 +2,17 @@ package com.example.administrator.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.view.View;
-
 import java.io.ByteArrayOutputStream;
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 图片工具类 完成图片byte[]和bitmap的转换
+ */
 
 public class PictureUtil {
 
-    private static final String SAVE_PIC_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
-            Environment.getExternalStorageDirectory().getAbsolutePath() : "/mnt/sdcard";//保存到SD卡
 
     public static Bitmap getBitmap(byte[] data) {
         return BitmapFactory.decodeByteArray(data, 0, data.length);
@@ -21,6 +23,12 @@ public class PictureUtil {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, baops);
         return baops.toByteArray();
     }
+
+    /**
+     *  把View 转化成Bitmap
+     * @param view
+     * @return
+     */
     public static Bitmap convertViewToBitmap(View view) {
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
@@ -29,10 +37,15 @@ public class PictureUtil {
         return bitmap;
     }
 
+    /**
+     * 压缩图片
+     * @param name
+     * @return
+     */
     public static Bitmap compressSampling(String name) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 10;
-        return  BitmapFactory.decodeFile(SAVE_PIC_PATH+"/onestep/dotStrategy/savePic/"+name,options);
+        return  BitmapFactory.decodeFile(FileUtils.getRealPath()+"dotStrategy/savePic/"+name,options);
     }
 
 

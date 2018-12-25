@@ -9,7 +9,12 @@ import com.amap.api.services.core.AMapException;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 提示信息工具类 部分来自高德官方Demo
+ */
 public class ToastUtil {
 
 

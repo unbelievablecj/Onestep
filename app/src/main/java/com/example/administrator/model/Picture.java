@@ -1,24 +1,29 @@
 package com.example.administrator.model;
 
-import com.example.administrator.connect.PicJson;
-
 import java.io.Serializable;
 
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 图片类 用于图片的储存和转化
+ */
+
+
 public class Picture implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //经度
+    private byte[] bitmapBytes = null;    //图片的byte[]形式
+    private String name = null;    //图片名
+    private String url;    //与后端进行传输的url
+
 
     public void setBitmapBytes(byte[] bitmapBytes) {
         this.bitmapBytes = bitmapBytes;
     }
 
-    private byte[] bitmapBytes = null;
-
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name = null;
-    private String url;
 
     public String getUrl() {
         return url;
@@ -26,18 +31,6 @@ public class Picture implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-
-    public Picture(){
-
-    }
-
-    public Picture(byte[] bitmapBytes, String name) {
-
-        this.bitmapBytes = bitmapBytes;
-
-        this.name = name;
     }
 
     public byte[] getBitmapBytes() {
@@ -48,5 +41,15 @@ public class Picture implements Serializable {
         return this.name;
     }
 
+    public Picture(byte[] bitmapBytes, String name) {
+
+        this.bitmapBytes = bitmapBytes;
+        this.name = name;
+    }
+
+
+    public Picture() {
+
+    }
 
 }

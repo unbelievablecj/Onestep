@@ -1,12 +1,17 @@
 package com.example.administrator.model;
 
 import java.io.Serializable;
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 点类 用于存经纬度信息
+ */
+
 
 public class Point implements Serializable {
-    //纬度
-    private Double Latitude;
-    //经度
-    private Double Longitude;
+    private Double Latitude;    //纬度
+    private Double Longitude;    //经度
 
 
     public Point(Double latitude, Double longitude) {

@@ -1,24 +1,18 @@
 package com.example.administrator.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -27,22 +21,24 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.example.administrator.R;
 import com.example.administrator.adapter.ReviewerAdapter;
-import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.CommentDetails;
 import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Point;
 import com.example.administrator.model.Strategy;
-import com.example.administrator.util.AMapUtil;
-import com.example.administrator.util.FileSaveUtils;
-import com.example.administrator.util.PictureUtil;
+import com.example.administrator.util.FileUtils;
 import com.google.gson.Gson;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 其他人的总攻略页面
+ */
 
 public class StrategyActivity extends AppCompatActivity implements
         AMap.OnMapClickListener, AMap.OnMarkerClickListener{
@@ -88,6 +84,9 @@ public class StrategyActivity extends AppCompatActivity implements
         sendMessage.interrupt();
     }
 
+    /**
+     * 初始化地图设置
+     */
     private void setup(){
         UiSettings uiSettings = aMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);// 设置缩放按钮是否显示
@@ -173,6 +172,9 @@ public class StrategyActivity extends AppCompatActivity implements
     }
 
 
+    /**
+     * 从文件中读取其他人的总攻略
+     */
     private class ReadFileThread extends Thread{
 
 
@@ -184,7 +186,7 @@ public class StrategyActivity extends AppCompatActivity implements
             String s = (String)getIntent().getSerializableExtra("otherStrategies");
             Log.i(TAG, "文件名: "+s);
 
-            Strategy strategy = gson.fromJson(FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"otherStrategies/"+s+".txt"),Strategy.class);
+            Strategy strategy = gson.fromJson(FileUtils.readFile(FileUtils.getRealPath()+"otherStrategies/"+s+".txt"),Strategy.class);
 
             TextView place = findViewById(R.id.otherStrategy_place);
             place.setText(strategy.getTitle());
@@ -223,7 +225,7 @@ public class StrategyActivity extends AppCompatActivity implements
 
 
                 try {
-                    FileSaveUtils.saveFile(gson.toJson(dotStrategy),"otherDotStrategy",marker.getId()+".txt");
+                    FileUtils.saveFile(gson.toJson(dotStrategy),"otherDotStrategy",marker.getId()+".txt");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -3,30 +3,27 @@ package com.example.administrator.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
-import com.example.administrator.model.MyWish;
-import com.example.administrator.model.Strategy;
-import com.example.administrator.util.FileSaveUtils;
+import com.example.administrator.util.FileUtils;
 import com.example.administrator.util.PictureUtil;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version:
+ * @description: 地点攻略页面类
+ */
 
 public class DotStrategyActivity extends AppCompatActivity {
+
+    private DotStrategy dotStrategy;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,9 +33,18 @@ public class DotStrategyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dot_strategy);
         String string =(String)getIntent().getSerializableExtra("dotStrategyDetail");
-        String s = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"dotStrategy/"+string+".txt");
+        String s = FileUtils.readFile(FileUtils.getRealPath()+"dotStrategy/"+string+".txt");
+        dotStrategy = gson.fromJson(s,DotStrategy.class);
+        init();
 
-        final DotStrategy dotStrategy = gson.fromJson(s,DotStrategy.class);
+
+
+    }
+
+    /**
+     * 初始化页面信息
+     */
+    public void init(){
 
         TextView time = findViewById(R.id.doStrategy_time);
         DateFormat format = new SimpleDateFormat("yyyy MM-dd HH:mm:ss");
@@ -56,10 +62,6 @@ public class DotStrategyActivity extends AppCompatActivity {
 
         TextView place = findViewById(R.id.doStrategy_place);
         place.setText(dotStrategy.getPlace_name());
-
-
-
-
 
     }
 

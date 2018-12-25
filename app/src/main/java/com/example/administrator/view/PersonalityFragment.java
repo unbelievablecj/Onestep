@@ -4,26 +4,18 @@ package com.example.administrator.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.PersonalityMainAdapter;
-import com.example.administrator.adapter.fenxiangkuangAdapter;
 import com.example.administrator.model.Personality;
 import com.example.administrator.model.User;
-import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.GetUserInfomation;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +62,7 @@ public class PersonalityFragment extends Fragment {
             }
         });
 
-//        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+//        String userResult = FileUtils.readFile(FileUtils.getRealPath()+"/SaveUser/UserConfig.txt");
 //        Gson gson = new Gson();
         User user = GetUserInfomation.Get();
 //        Log.d("个人界面",user.getUser_name());

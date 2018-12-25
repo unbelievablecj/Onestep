@@ -7,7 +7,7 @@ public class GetUserInfomation {
 
     public static User Get()
     {
-        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+        String userResult = FileUtils.readFile(FileUtils.getRealPath()+"/SaveUser/UserConfig.txt");
         Gson gson = new Gson();
         User user = gson.fromJson(userResult,User.class);
         return user;

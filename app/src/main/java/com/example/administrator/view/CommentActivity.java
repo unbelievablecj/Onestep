@@ -2,7 +2,6 @@ package com.example.administrator.view;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
@@ -23,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -39,12 +37,8 @@ import com.example.administrator.R;
 import com.example.administrator.model.DotStrategy;
 import com.example.administrator.model.Picture;
 import com.example.administrator.util.AMapUtil;
-import com.example.administrator.util.ActivityManagerApplication;
-import com.example.administrator.util.FilenameUtil;
+import com.example.administrator.util.FileUtils;
 import com.example.administrator.util.PictureUtil;
-
-import org.w3c.dom.Comment;
-import org.w3c.dom.Document;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -418,7 +412,7 @@ public class CommentActivity extends AppCompatActivity {
             foder.mkdirs();
         }
 
-        fileName = FilenameUtil.createFileName(foder)+".JPEG";
+        fileName = FileUtils.createFileName(foder)+".JPEG";
 
         File myCaptureFile = new File(subForder, fileName);
 

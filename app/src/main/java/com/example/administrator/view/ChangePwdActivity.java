@@ -13,13 +13,7 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.User;
-import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.GetUserInfomation;
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class ChangePwdActivity extends AppCompatActivity {
 

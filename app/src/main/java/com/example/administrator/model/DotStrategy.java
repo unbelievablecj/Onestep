@@ -1,25 +1,28 @@
 package com.example.administrator.model;
 
-import android.graphics.Bitmap;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @date: 2018/12/25
+ * @author: wyz
+ * @version: 
+ * @description: 地点攻略类
+ */
+
+
+
 public class DotStrategy implements Serializable {
-    //地点名
-    private String place_name;
-    //地点评论
-    private String comment;
-    //地点图片(只能放入一张)
-    private Picture picture;
-    //点赞数
-    private int num_likes;
-    //发表时间
-    private Date publish_time;
-    //纬度
-    private Double Latitude;
-    //经度
-    private Double Longitude;
+    private String place_name;    //地点名
+    private String comment;    //地点评论
+    private Picture picture;    //地点图片(只能放入一张)
+    private int num_likes;    //点赞数
+    private Date publish_time;    //发表时间
+    private Double Latitude;    //纬度
+    private Double Longitude;    //经度
+
+
 
     public Double getLatitude() {
         return Latitude;
