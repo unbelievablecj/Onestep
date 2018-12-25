@@ -8,22 +8,39 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.administrator.R;
+import com.example.administrator.model.ActivityCollector;
+
+import java.io.IOException;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.example.administrator.util.Constants.RC_CAMERA__CALENDAR_STORAGE_PHONE_LOCATION;
 
-
+//陈玮
 public class MainActivity extends AppCompatActivity {
+    //静态读写权限申请
     private String perms[]= {
         Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
     };;
 
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);//从活动栈中删除活动
+    }
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityCollector.addActivity(this);
 
 
         //判断有没有权限

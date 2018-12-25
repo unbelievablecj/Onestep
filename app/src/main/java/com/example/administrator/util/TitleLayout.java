@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.administrator.R;
-
-public class TitleLayout extends LinearLayout {
+//陈玮
+public class TitleLayout extends LinearLayout {//标题栏自定义控件
     public TitleLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.title,this);

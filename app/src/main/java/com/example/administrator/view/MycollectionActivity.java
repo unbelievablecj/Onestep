@@ -1,8 +1,6 @@
 package com.example.administrator.view;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
-import com.example.administrator.util.fenxiangkuang;
+import com.example.administrator.model.fenxiangkuang;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//陈子恒，我的收藏界面
 public class MycollectionActivity extends AppCompatActivity {
 
     private List<fenxiangkuang> MycollectionList = new ArrayList<>();
@@ -29,7 +27,7 @@ public class MycollectionActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         final fenxiangkuangAdapter adapter = new fenxiangkuangAdapter(MycollectionList);
         recyclerView.setAdapter(adapter);
-        initMycollection();
+        initMycollection();//与后端的通信没弄好，暂时先这样初始化界面
     }
 
     private void initMycollection(){

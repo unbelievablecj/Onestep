@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.R;
-import com.example.administrator.util.fenxiangkuang;
+import com.example.administrator.model.fenxiangkuang;
 
 import java.util.List;
-
+//陈子恒，recyclerview分享框所需要的适配器
 public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdapter.ViewHolder> {
     private List<fenxiangkuang> mtest1List;
     private int flag;
@@ -92,6 +92,7 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
         holder.dianzanshu.setText(fenxiangkuang.getDianzan());
         holder.pinglunshu.setText(fenxiangkuang.getPinglun());
         holder.time.setText(fenxiangkuang.getTime());
+        //item跳转
         if(mOnItemClickListener!=null){
             holder.itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -101,6 +102,7 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
                 }
             });
         }
+        //框中点赞图标的点击事件
         holder.dianzan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +122,7 @@ public class fenxiangkuangAdapter extends RecyclerView.Adapter<fenxiangkuangAdap
                 ischeck[0]=true;
             }
         }});
+        //收藏图标的点击事件，暂时没有点了收藏就将此条目加入后端数据的逻辑
         holder.shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

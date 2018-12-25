@@ -12,7 +12,7 @@ import com.example.administrator.R;
 import com.example.administrator.model.MyWish;
 
 import java.util.List;
-
+//陈玮 我的心愿单适配器
 public class MyWishAdapter extends RecyclerView.Adapter<MyWishAdapter.ViewHolder> {
     private List<MyWish> myWishList;
 

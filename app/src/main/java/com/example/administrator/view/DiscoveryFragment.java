@@ -23,7 +23,7 @@ import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.util.AMapUtil;
 import com.example.administrator.util.FileUtils;
-import com.example.administrator.util.fenxiangkuang;
+import com.example.administrator.model.fenxiangkuang;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -41,6 +41,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
+//陈子恒，发现碎片界面，我弄了每个item的跳转和下拉刷新的模板，主逻辑由宜钊完成。
 public class DiscoveryFragment extends Fragment  {
 
     private SwipeRefreshLayout swipeRefresh;

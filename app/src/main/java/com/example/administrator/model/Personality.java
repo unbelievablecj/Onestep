@@ -1,5 +1,5 @@
 package com.example.administrator.model;
-
+//陈子恒，个人主页的类
 public class Personality {
     private String Personalitytext;
     private int Personalityview;

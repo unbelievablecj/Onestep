@@ -46,23 +46,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
-
+//陈玮   吴宜钊 //这是地点上简评的页面，包含相册和相机的调用以及数据传输
 public class CommentActivity extends AppCompatActivity {
     private static final String TAG = "CommentActivity";
 //    private int state = -1;
-    public static final int TAKE_POTHO=1;
-    public static final int CHOOSE_PHOTO=2;
+    public static final int TAKE_POTHO=1;//判断拍照的id号
+    public static final int CHOOSE_PHOTO=2;//判断从相册选取的id号
     private ImageView imageView;
     private Button button;
     private TextView title;
     private Uri uri;
     private DotStrategy strategy;
-    private Bitmap bitmap = null;
+    private Bitmap bitmap = null;//存放图片
     private Picture picture;
     private EditText label;
     private EditText content;
     private Button back;
-    private View progressBar;
+    private View progressBar;//进度条
 
     /* 首先默认个文件保存路径 */
     private static final String SAVE_PIC_PATH=Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)?
@@ -94,10 +94,10 @@ public class CommentActivity extends AppCompatActivity {
         Button commit = (Button)findViewById(R.id.titleButton2);
         progressBar = (ProgressBar)findViewById(R.id.write_comment_progress);
         title = (TextView)findViewById(R.id.title_name);
-        title.setText("写评论");
+        title.setText("地点简评");
 
 
-        back = (Button)findViewById(R.id.titleButton1) ;
+        back = (Button)findViewById(R.id.titleButton1) ;   //返回按钮点击事件
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +118,7 @@ public class CommentActivity extends AppCompatActivity {
             }
         });
 
-        commit.setVisibility(View.VISIBLE);//显示隐藏控件
+        commit.setVisibility(View.VISIBLE);//显示隐藏控件（提交按钮）
         commit.setText("提交");
 
         commit.setOnClickListener(new View.OnClickListener() {
@@ -137,14 +137,14 @@ public class CommentActivity extends AppCompatActivity {
                 {
                     Toast.makeText(CommentActivity.this,"内容不能为空",Toast.LENGTH_SHORT).show();
                     return;
-                }
+                } //提交的非空判断
 
                 //显示进度条
                 ProgressDialog.Builder progressDialog = new ProgressDialog.Builder(CommentActivity.this);
                 progressDialog.setTitle("正在提交评论");
                 progressDialog.setMessage("请稍等");
                 progressDialog.setCancelable(true);
-                progressDialog.show();
+                progressDialog.show();//提交的进度提示
 
                 if(bitmap!=null){
 
@@ -208,21 +208,21 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.show();
             }
-        });
+        });//点击图片标志底部上升栏显示
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
-        });
+        });//点击底部上升栏中的取消，底部上升栏消失
 
 
 
 
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {     //点击底部上升栏中的拍照按钮，调用相机
                 dialog.dismiss();
                 File outImage=new File(getExternalCacheDir(),"output_image.jpg");
 
@@ -239,7 +239,7 @@ public class CommentActivity extends AppCompatActivity {
                 {
                     e.printStackTrace();
                 }
-                if(Build.VERSION.SDK_INT>=24)
+                if(Build.VERSION.SDK_INT>=24)    //判断安卓版本号，不同系统版本调用权限方式不同
                 {
                     uri= FileProvider.getUriForFile(CommentActivity.this,"com.example.gdzc.cameraalbumtest.fileprovider",outImage);
                 }
@@ -255,14 +255,14 @@ public class CommentActivity extends AppCompatActivity {
 
         photoAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {     //如果点击了相册按钮，就调用相册
                 dialog.dismiss();
                 if(ContextCompat.checkSelfPermission(CommentActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED)
                 {
                     ActivityCompat.requestPermissions(CommentActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                 }
                 else{
-                    openAlbum();
+                    openAlbum(); //申请完相册读写权限就可以打开相册了
                 }
             }
         });
@@ -277,7 +277,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults) //判断是否允许打开相册
     {
         switch (requestCode)
         {
@@ -293,7 +293,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     @TargetApi(19)
-    private void handleImageOnKitKat(Intent data)
+    private void handleImageOnKitKat(Intent data) //处理图片（裁剪压缩等），最后调用displayImage()把图片显示在照片框上
     {
         if(data==null)
             return;

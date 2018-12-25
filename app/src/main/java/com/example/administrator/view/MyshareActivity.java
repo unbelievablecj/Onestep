@@ -2,30 +2,25 @@ package com.example.administrator.view;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
-import com.example.administrator.util.fenxiangkuang;
+import com.example.administrator.model.fenxiangkuang;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
+//陈子恒，我的分享界面，在界面数据处理同我的收藏一样先初始化，而不是从后端出出数据。
 public class MyshareActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private EditText start_time;
@@ -56,6 +51,7 @@ public class MyshareActivity extends AppCompatActivity implements View.OnTouchLi
         MyshareList.add(b);
 
     }
+    //时间布局文件所必须的函数，只能够选择时间。
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

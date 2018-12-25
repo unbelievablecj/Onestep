@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
+//陈子恒，我的个人主页
 public class PersonalityFragment extends Fragment {
 
     private List<Personality>personalityList=new ArrayList<>();
@@ -42,6 +43,7 @@ public class PersonalityFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         final PersonalityMainAdapter adapter=new PersonalityMainAdapter(personalityList);
         recyclerView.setAdapter(adapter);
+        //定义界面跳转
         adapter.setOnItemClickListener(new PersonalityMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

@@ -8,13 +8,25 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.R;
-
+import com.example.administrator.model.ActivityCollector;
+//陈玮 设置界面
 public class SettingsActivity extends AppCompatActivity {
+
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);//从活动栈中删除活动
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        ActivityCollector.addActivity(SettingsActivity.this);
         TextView textView = (TextView)findViewById(R.id.title_name);
         textView.setText("设置");
         Button outLogin = (Button)findViewById(R.id.outLogin);
@@ -23,8 +35,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this,LoginActivity.class);
+                ActivityCollector.finishAll();
                 startActivity(intent);
-                finish();
             }
         });
         changePwd.setOnClickListener(new View.OnClickListener() {
