@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+
+//陈玮 修改密码界面
 public class ChangePwdActivity extends AppCompatActivity {
 
 
@@ -56,10 +58,10 @@ public class ChangePwdActivity extends AppCompatActivity {
         newPassword = (EditText) findViewById(R.id.changePwd_newPwd);
         canViewPwd =(Button)findViewById(R.id.can_view_pwd);
 
-        time = new TimeCount(60000, 1000);
+        time = new TimeCount(60000, 1000);//计时器，用来判断验证码发送间隔时间
         sendVer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {//发送验证码
 
                 if(mail.getText().toString().length()==0)
                 {
@@ -67,8 +69,9 @@ public class ChangePwdActivity extends AppCompatActivity {
                     return;
                 }
 
+
                 time.start();
-                WorkThread sendMessage = new WorkThread();
+                WorkThread sendMessage = new WorkThread();//开线程发送验证码
                 sendMessage.start();
                 try {
                     sendMessage.join();
@@ -85,19 +88,20 @@ public class ChangePwdActivity extends AppCompatActivity {
 
         canViewPwd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(flagViewPwd == false)
+            public void onClick(View view) {//这是判断密码是否可见的按钮控制
+                //按下按钮后
+                if(flagViewPwd == false)//若密码不可见
                 {
                     flagViewPwd = true;
                     canViewPwd.setBackground(getDrawable(R.drawable.viewpwd));
-                    newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());//设置密码可见
 
                 }
                 else
                 {
                     flagViewPwd = false;
                     canViewPwd.setBackground(getDrawable(R.drawable.disview));
-                    newPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    newPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());//设置密码不可见
                 }
 
                 newPassword.postInvalidate();
@@ -105,7 +109,7 @@ public class ChangePwdActivity extends AppCompatActivity {
                 if (text instanceof Spannable) {
                     Spannable spanText = (Spannable)text;
                     Selection.setSelection(spanText, text.length());
-                }//让光标到达末尾
+                }//让光标到达末尾，不然每次切换密码可见性光标都会跳到开头
 
 
             }
@@ -120,6 +124,7 @@ public class ChangePwdActivity extends AppCompatActivity {
                if(state==-1)
                    return;
 
+               //开线程，发送当前信息改密码
                 WorkThread2 toChangePWD = new WorkThread2();
                 toChangePWD.start();
                 try {
@@ -151,7 +156,7 @@ public class ChangePwdActivity extends AppCompatActivity {
 
         }
 
-        private int judgeInput()
+        private int judgeInput()//判断输入合法性
         {
             if(mail.getText().toString().length()==0)
             {
@@ -176,7 +181,7 @@ public class ChangePwdActivity extends AppCompatActivity {
 
 
 
-    private  class WorkThread extends Thread
+    private  class WorkThread extends Thread//发送验证码线程
     {
         @Override
         public void run() {
@@ -200,7 +205,7 @@ public class ChangePwdActivity extends AppCompatActivity {
 
 
 
-    private  class WorkThread2 extends Thread
+    private  class WorkThread2 extends Thread//发送改密码用户信息线程
     {
         @Override
         public void run() {

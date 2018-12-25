@@ -18,6 +18,7 @@ import com.example.administrator.R;
 import com.example.administrator.connect.ConnTool;
 import com.example.administrator.model.ActivityCollector;
 import com.example.administrator.model.User;
+import com.example.administrator.util.AesUtil;
 import com.example.administrator.util.FileSaveUtils;
 import com.example.administrator.util.GetUserInfomation;
 import com.example.administrator.util.JsonAnalyze;
@@ -34,6 +35,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+//登录界面 陈玮
 
 public class LoginActivity extends AppCompatActivity{
     private String email = new String("");
@@ -45,7 +47,7 @@ public class LoginActivity extends AppCompatActivity{
     private CheckBox ck;
     private View progressBar;
     private User user;
-    private SharedPreferences sp;
+    private SharedPreferences sp;//保存boolean状态，记住密码框的点选状态
 
 
     @Override
@@ -92,14 +94,19 @@ public class LoginActivity extends AppCompatActivity{
 //        if(userOld.getUser_mail()!=null)
 //        t1.setText(userOld.getUser_mail());
 
-        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");
+        String userResult = FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/UserConfig.txt");//读用户配置文件
         Log.d("登录",userResult);
-        if(userResult.length()!=0) {
+        if(userResult.length()!=0) { //用户配置文件不为空
             userOld=GetUserInfomation.Get();
             t1.setText(userOld.getUser_mail());
-            if(sp.getBoolean("ISCHECK", false))
+            if(sp.getBoolean("ISCHECK", false))//记住密码框被点中
             {
                 ck.setChecked(true);
+//                try {
+//                   userOld.setUser_pwd(AesUtil.decrypt("abc",userOld.getUser_pwd()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 t2.setText(userOld.getUser_pwd());
             }
 
@@ -124,6 +131,7 @@ public class LoginActivity extends AppCompatActivity{
                  t1.setText(email);
                  progressBar.setVisibility(View.VISIBLE);//显示进度条
 
+                //开线程发送用户数据和服务器端匹配后登录
                  WorkThread sendMessage = new WorkThread();
                 sendMessage.start();
                 try {
@@ -134,11 +142,11 @@ public class LoginActivity extends AppCompatActivity{
                 sendMessage.interrupt();
 
 //                state = 0;
-                switch (state){
+                switch (state){ //登录的错误判断
                     case 0 :{
 
                         Intent intent = new Intent(LoginActivity.this,FragmentItemSetsActivity.class);
-                        ActivityCollector.finishAll();
+                        ActivityCollector.finishAll();//结束栈中所有活动打开主界面
                         startActivity(intent);
                         progressBar.setVisibility(View.GONE);
 //                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
@@ -168,7 +176,7 @@ public class LoginActivity extends AppCompatActivity{
 
 
         ck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) { // 检查记住密码框的点选状态，写入sp
                 if (ck.isChecked()) {
                     sp.edit().putBoolean("ISCHECK", true).commit();
 
@@ -218,14 +226,16 @@ public class LoginActivity extends AppCompatActivity{
 
 //
 //                    Log.d("登录",temp);
-                    if (user.getUser_name()!=null) {
+                    if (!user.getUser_name().equals(null)) {
 //                        responseData = response.body().string();
 //
 //                        String answer=JsonAnalyze.getJsonString(responseData);
                             state = 0;
                         Gson gson = new Gson();
+//                        user.setUser_pwd(AesUtil.encrypt("abc",user.getUser_pwd()));//密码进行Aes加密
+                        Log.d("登录加密","执行过这里");
                         String temp = gson.toJson(user);
-                        Log.d("登录状态11",temp);
+
                         try {
 //                            FileSaveUtils.saveFile("","","");
                             FileSaveUtils.saveFile(temp,"SaveUser","UserConfig.txt");

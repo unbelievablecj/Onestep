@@ -18,8 +18,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.example.administrator.util.Constants.RC_CAMERA__CALENDAR_STORAGE_PHONE_LOCATION;
 
-
+//陈玮
 public class MainActivity extends AppCompatActivity {
+    //静态读写权限申请
     private String perms[]= {
         Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE

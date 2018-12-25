@@ -26,10 +26,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
+//陈玮 注册界面
 public class RegisterActivity extends AppCompatActivity {
-    private int stateR = 2;
-    private int stateR2= 3;
+    private int stateR = 2;//判断输入是否正确的状态
+    private int stateR2= 3;//判断服务器返回结果是否匹配的状态
     private String email = new String();
     private String pwd = new String();
     private String Rpwd = new String();
@@ -59,7 +59,8 @@ public class RegisterActivity extends AppCompatActivity {
 //            }
 //        });
         time = new TimeCount(60000, 1000);
-       geticode = (Button) findViewById(R.id.geticode_button);
+
+       geticode = (Button) findViewById(R.id.geticode_button);//设置对发送验证码按钮的监听
        geticode.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -71,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                }
                else
                {
+                   //邮箱不为空后点击发送验证码，开线程发送验证码
                    WorkThread2 sendMessage2 = new RegisterActivity.WorkThread2();
                    sendMessage2.start();
                    try {
@@ -294,7 +296,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    class TimeCount extends CountDownTimer {
+    class TimeCount extends CountDownTimer {//发送验证码按钮计时器
 
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);

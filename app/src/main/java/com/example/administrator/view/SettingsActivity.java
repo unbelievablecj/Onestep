@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.model.ActivityCollector;
-
+//陈玮 设置界面
 public class SettingsActivity extends AppCompatActivity {
 
 

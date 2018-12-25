@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.administrator.R;
-
+//忘记密码界面 陈玮 功能未实现
 public class ForgetPWDActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

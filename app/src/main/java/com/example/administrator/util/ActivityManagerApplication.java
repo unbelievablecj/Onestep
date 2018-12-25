@@ -6,8 +6,8 @@ import android.app.Application;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-public class ActivityManagerApplication extends Application {
+//陈玮
+public class ActivityManagerApplication extends Application {//活动管理器
 
     private static Map<String,Activity> destoryMap = new HashMap<>();
 

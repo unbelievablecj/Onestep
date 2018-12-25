@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+//陈玮   我的心愿单界面
 public class MyWishListActivity extends AppCompatActivity {
     private List<MyWish> myWishList = new ArrayList<>();
     private Button back;
@@ -37,7 +38,7 @@ public class MyWishListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_wish_list);
 
 
-        initMyWish();
+        initMyWish();//初始化我的心愿单
 
 
         RecyclerView recyclerView =(RecyclerView)findViewById(R.id.my_wish_list);
@@ -45,12 +46,12 @@ public class MyWishListActivity extends AppCompatActivity {
         textView.setText("我的心愿单");
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        final MyWishAdapter adapter = new MyWishAdapter(myWishList);
+        final MyWishAdapter adapter = new MyWishAdapter(myWishList); //创建心愿单的recycleView(滚动菜单）
 
 
 
 
-        back = (Button)findViewById(R.id.titleButton1) ;
+        back = (Button)findViewById(R.id.titleButton1) ;//用户点击返回或者系统返回按键之后，把修改后的心愿单存入本地文件中
         back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -76,7 +77,7 @@ public class MyWishListActivity extends AppCompatActivity {
 
     private void initMyWish() {
         Gson gson = new Gson();
-        String temp=FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/myWishList.txt");
+        String temp=FileSaveUtils.readFile(FileSaveUtils.getRealPath()+"/SaveUser/myWishList.txt");//从文件中读出心愿单信息
         if(temp.length()!=0) {
             myWishList = gson.fromJson(temp, new TypeToken<List<MyWish>>() {
             }.getType());//从文件读入心愿单并显示
@@ -85,6 +86,7 @@ public class MyWishListActivity extends AppCompatActivity {
     }
 
 
+    //监听系统返回键
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //点击返回键

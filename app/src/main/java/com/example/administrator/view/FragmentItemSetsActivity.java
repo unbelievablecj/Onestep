@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.administrator.R;
 import com.example.administrator.model.ActivityCollector;
 
+//陈玮 fragment登录后的主活动 做Fragment的切换管理
 public class FragmentItemSetsActivity extends AppCompatActivity {
 
     private HomeActivity fragment1;
@@ -39,7 +40,7 @@ public class FragmentItemSetsActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             fragmentManager = getSupportFragmentManager();
             transaction = fragmentManager.beginTransaction();
-            switch (item.getItemId()) {
+            switch (item.getItemId()) {//判断点击了哪一个底部导航按钮，显示对应碎片
                 case R.id.navigation_home:
                     hideFragment(transaction);
                     //fragment1 = new HomeActivity();
@@ -114,10 +115,10 @@ public class FragmentItemSetsActivity extends AppCompatActivity {
 
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {//判断用户是否连续点击两次返回按键
         if(System.currentTimeMillis() - mExitTime < 800) {  //两次连点间隔小于0.8秒
             ActivityCollector.finishAll();  //关闭所有活动，退出应用
-            android.os.Process.killProcess(android.os.Process.myPid());//关闭进程
+            android.os.Process.killProcess(android.os.Process.myPid());//关闭进程（彻底关闭应用）
         }
         else{
             Toast.makeText(FragmentItemSetsActivity.this,"再按一次返回键退出应用",Toast.LENGTH_SHORT).show();
