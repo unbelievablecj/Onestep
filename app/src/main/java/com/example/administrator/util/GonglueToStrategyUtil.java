@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.example.administrator.connect.ConnTool;
 import com.google.gson.reflect.TypeToken;
-
+//陈思孝，将Gonglue类的对象转为Strategy类
 public class GonglueToStrategyUtil {
     /**
      * 对象转换
