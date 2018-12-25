@@ -14,7 +14,7 @@ import com.example.administrator.R;
 import com.example.administrator.model.Personality;
 
 import java.util.List;
-
+//陈子恒，个人主页的recyclerview的适配器
 public class PersonalityMainAdapter extends RecyclerView.Adapter<PersonalityMainAdapter.ViewHolder> {
     private List<Personality>mPersonalitylist;
 
@@ -49,6 +49,7 @@ public class PersonalityMainAdapter extends RecyclerView.Adapter<PersonalityMain
         Personality personality=mPersonalitylist.get(position);
         holder.personalityview.setImageResource(personality.getPersonalityview());
         holder.personalitytext.setText(personality.getPersonalitytext());
+        //每个item的点击事件所必须的，详细跳转定义在PersonalityFragment里
         if(mOnItemClickListener!=null){
             holder.itemView.setOnClickListener(new View.OnClickListener(){
                 @Override

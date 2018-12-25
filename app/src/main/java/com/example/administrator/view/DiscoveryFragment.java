@@ -2,9 +2,6 @@ package com.example.administrator.view;
 
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,14 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,31 +20,23 @@ import com.amap.api.location.AMapLocation;
 import com.example.administrator.R;
 import com.example.administrator.adapter.fenxiangkuangAdapter;
 import com.example.administrator.connect.ConnTool;
-import com.example.administrator.model.DotStrategy;
-import com.example.administrator.model.Picture;
 import com.example.administrator.model.Strategy;
 import com.example.administrator.util.AMapUtil;
 import com.example.administrator.util.FileSaveUtils;
-import com.example.administrator.util.PictureUtil;
-import com.example.administrator.util.ToastUtil;
-import com.example.administrator.util.fenxiangkuang;
+import com.example.administrator.model.fenxiangkuang;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
+//陈子恒，发现碎片界面，我弄了每个item的跳转和下拉刷新的模板，主逻辑由宜钊完成。
 public class DiscoveryFragment extends Fragment  {
 
     private SwipeRefreshLayout swipeRefresh;
